@@ -9,8 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/crypto-js": "^4.2.1",
     "@types/node": "^20.10.6",
     "ajax-hook": "^3.0.3",
+    "crypto-js": "^4.2.0",
     "less": "^4.2.0",
     "vue": "^3.3.4"
   },

@@ -122,6 +122,11 @@
   resolved "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.4.15.tgz#d7c6e6755c78567a951e04ab52ef0fd26de59f32"
   integrity sha512-eF2rxCRulEKXHTRiDrDy6erMYWqNw4LPdQ8UQA4huuxaQsVeRPFl2oM8oDGxMFhJUWZf9McpLtJasDDZb/Bpeg==
 
+"@types/crypto-js@^4.2.1":
+  version "4.2.1"
+  resolved "https://registry.npmmirror.com/@types/crypto-js/-/crypto-js-4.2.1.tgz#480edd76991a63050cb88db1a8840758c55a7135"
+  integrity sha512-FSPGd9+OcSok3RsM0UZ/9fcvMOXJ1ENE/ZbLfOPlBWj7BgXtEAM8VYfTtT760GiLbQIMoVozwVuisjvsVwqYWw==
+
 "@types/node@^20.10.6":
   version "20.10.6"
   resolved "https://registry.npmjs.org/@types/node/-/node-20.10.6.tgz#a3ec84c22965802bf763da55b2394424f22bfbb5"
@@ -311,6 +316,11 @@ cross-spawn@^7.0.3:
     path-key "^3.1.0"
     shebang-command "^2.0.0"
     which "^2.0.1"
+
+crypto-js@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npmmirror.com/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 csstype@^3.1.3:
   version "3.1.3"

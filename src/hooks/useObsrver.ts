@@ -1,4 +1,5 @@
 import { ref, onMounted, computed, watch } from 'vue';
+// import { decode } from '@/utils';
 
 /** 弹窗节点 */
 const MODAL_SELECTOR = 'n-modal-container';
@@ -52,18 +53,28 @@ export default function () {
     }
 
     /** 监听列表节点是否挂载(切换类型和重新渲染都会触发) */
-    const observerChildren = (node: HTMLDivElement, mutationsList: MutationRecord[], obs: MutationObserver, callBack = (e: HTMLDivElement) => {}) => {
+    const observerChildren = (node: HTMLDivElement, mutationsList: MutationRecord[], obs: MutationObserver, callBack = (e: HTMLDivElement) => { }) => {
         // 触发切换
         const target = mutationsList[0].target as HTMLDivElement;
         const itemList: NodeListOf<HTMLDivElement> = target.querySelectorAll(TAG_SELECTOR);
+
+        // 物价榜监听input内容并解析
+        // const inputList: NodeListOf<HTMLInputElement> = node.querySelectorAll('input');
+        // inputList.forEach(input => {
+        //     if (!/粘贴国服物价榜/.test(input.getAttribute('placeholder') || '')) return;
+        //     if (!input.value) return;
+        //     const data = decode(input.value);
+        //     // console.log(input.value)
+        // });
+
         callBack(node)
-        // console.log('正在浏览: ', type, itemList);
-        // 列表已加载 遍历已存在的卡片添加dom
+        // // console.log('正在浏览: ', type, itemList);
+        // 列表已加载 遍历已存在的卡片并添加dom
         itemList.forEach(e => {
             addCustomDom(e as HTMLDivElement, node);
         });
+        // 监听动态添加的卡片添加dom
         const childrenList: NodeListOf<HTMLDivElement> = target.querySelectorAll(CARD_CONTENT_SELECTOR);
-        // 动态添加物品时
         childrenList.forEach(child => {
             observerFnc(child, (mutationsList, obs) => {
                 mutationsList.forEach(item => {

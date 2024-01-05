@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch, nextTick } from 'vue';
-import { getModalPosition } from '@/utils';
+import { getModalPosition, decode } from '@/utils';
 // import { proxy } from "ajax-hook";
 import Hover from '@/container/Hover.vue';
 import useObsrver from '@/hooks/useObsrver';
@@ -54,28 +54,34 @@ const handleShowDivCard = (event: MouseEvent) => {
   })
 }
 
-
+const parseData = (e: MouseEvent) => {
+  console.log(e)
+  let btn = e.target as HTMLButtonElement;
+  if (btn.nodeName !== 'BUTTON') btn = btn.parentNode as HTMLButtonElement;
+  const prve = btn.previousElementSibling;
+  if (!prve) return;
+  const input = prve.querySelector('input');
+  if (!input) return;
+  const data = decode(input.value);
+  console.log(data);
+}
 onMounted(() => {
   initObserver({
     over: handleShowDivCard,
     change: (node) => {
       // 复制的数据没有带价格，所以不做了(笑)
-      // const btnList: NodeListOf<HTMLButtonElement> = node.querySelectorAll('.n-button');
-      // btnList.forEach(btn => {
-      //   if (btn.innerText !== '解析数据') return;
-      //   const key = Object.getOwnPropertySymbols(btn);
-      //   const tempEvent = (btn as any)[key[0]];
-      //   // const clickEvent = new Event('click', { bubbles: true, composed: true });
-      //   // btn.addEventListener('click', () => {
-      //   //   const myParse = JSON.parse;
-      //   //   // btn.dispatchEvent(clickEvent);
-      //   // });
-      // });
+      console.log('change')
+      const btnList: NodeListOf<HTMLButtonElement> = node.querySelectorAll('.n-button');
+      btnList.forEach(btn => {
+        if (btn.innerText !== '解析数据') return;
+        btn.removeEventListener('click', parseData);
+        btn.addEventListener('click', parseData);
+      });
     }
   });
   document.body.addEventListener('click', () => {
     visible.value = false;
-  })
+  });
 })
 </script>
 

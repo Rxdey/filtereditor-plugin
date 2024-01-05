@@ -1,0 +1,137 @@
+.divination-card {
+    --color-uniqueitem: #af6025;
+    --color-gemitem: #1ba29b;
+    --color-currencyitem: #aa9e82;
+    --color-rareitem: #ffff77;
+    --color-whiteitem: #c8c8c8;
+    --color-corrupted: #d20000;
+    --color-magicitem: #8888ff;
+    --color-default: #7f7f7f;
+    --color-augmented: #8888ff;
+    --color-enchanted: #b8daf2;
+    --color-divination: #0ebaff;
+    
+    --txt-color: #fff;
+    --card-width: 160px;
+    --card-height: calc(var(--card-width) / 440 * 670);
+    font-size: 12px;
+    color: var(--txt-color);
+    text-align: center;
+    display: inline-block;
+    width: var(--card-width);
+    height: var(--card-height);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    line-height: 1;
+    &--background {
+        position: absolute;
+        top: 8%;
+        left: 4%;
+        z-index: 1;
+        width: 90%;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            object-fit: contain;
+        }
+    }
+
+    &__exmod {
+        width: 100%;
+        height: 100%;
+        // background: url('/img/divination-card.png') no-repeat center;
+        background-image: url('https://cdn.poedb.tw/image/item/popup/divination-card.webp');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+
+        &.disabled {
+            // background-image: url('/img/divination-card-grid.png');
+            filter: brightness(0.4);
+        }
+    }
+
+    &--name {
+        color: #111;
+        font-weight: 800;
+        position: absolute;
+        width: 100%;
+        top: 2.9%;
+        font-size: 13px;
+    }
+
+    &--stack {
+        position: absolute;
+        top: 47.5%;
+        left: 8%;
+        font-size: 80%;
+        color: #c8c8c8;
+        text-align: center;
+        min-width: 17%;
+        transform: scale(0.8);
+
+        &.single {
+            color: #00bafe;
+        }
+    }
+
+    &--wrap {
+        position: absolute;
+        top: 49%;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        // margin: 0 2% 2%;
+        font-size: 109%;
+        display: flex;
+        flex-direction: column;
+        transform: scale(0.9);
+    }
+
+    &--line {
+        width: 70%;
+        background: url('data:image/webp;base64,UklGRvgBAABXRUJQVlA4IOwBAADwCwCdASoCAQQAPmUmjkWhoqIitpqrMIAMiWkA0JW+9ohbg3wONHHO2hWE+EZ3lcxPjAzpf5YdP7nUdGxoW/0ve42n0S1KbDYneakrOTFwunEr1C/VdrPGG/8G+9uM8OHcTjfvxu6qAAD++qDUzYUYStwr0qga4Q9GikbOaphkTdftbRXFk3dtQDAZL61gqoreKdI5KbcowsLTKQVQhFJzeuhIPiTBuShrcx5E9Q2ZpYzwXaCtHpzTibwo2vk4ieVHmtFuAVXFbDQLAPOqk6qK+8w2LXI9mQn8w/Ltfi/isVOuC+g2Q8eO8bebbooA+Zqs2r//6/13ZFhuK56wcGbATjlGfoO6N1K+BUnNddT0ac4Z8h+3nsu7e+iPparpOw9Dl8bNPcLMAy3v8LEeJijm8x/R5wMT6/vMh+LHiqS95t6VARBQrm/QwLrWBY42dyRO0gnqWQT5Kq2wqDgTwigtuoNbNw/dMeLZ+IByQrKHetqW2F7VZv63bz47qftPirH84flMSvGOa1YJvBy9K+SFLaxwvGp4t74koNwFx2AcHT/mepDZAGtCdA9Bmyv7+YMQTI+KmM5RjuvKvc1bhoLcZtShvFD/0iI5wukZlAooI3FDImliYp0AWoSbO1bmQXdUeaMvWCt6M0YAAAA=') no-repeat center;
+        background-size: contain;
+        height: 3px;
+        margin: 0 auto;
+        flex: 0 0 3px;
+    }
+
+    &--reward {
+        // flex: 1 1 auto;
+        min-height: 45px;
+        // padding: 0 0.5em;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        transform: scale(0.9);
+        .explicit-mod {
+            color: var(--mod-color);
+        }
+    }
+
+    &--flavour {
+        width: 115%;
+        margin-left: -7.5%;
+        margin-top: -4%;
+        white-space: pre-wrap;
+        color: var(--color-uniqueitem);
+        flex: 1 1 auto;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: center;
+        line-height: 1.3;
+        font-style: italic;
+        transform: scale(0.85);
+        font-size: 11px;
+    }
+}

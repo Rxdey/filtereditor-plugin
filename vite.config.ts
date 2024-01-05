@@ -10,6 +10,10 @@ export default defineConfig({
     monkey({
       entry: 'src/main.ts',
       userscript: {
+        name: '一乐编辑器命运卡高级编辑扩展',
+        description: '命运卡/暗金高级编辑预览',
+        author: 'rxdey',
+        license: 'MIT',
         icon: 'https://edit.filtereditor.cn/favicon.ico',
         namespace: 'npm/vite-plugin-monkey',
         match: ['https://edit.filtereditor.cn/'],

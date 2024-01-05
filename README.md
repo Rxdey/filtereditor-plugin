@@ -1,18 +1,19 @@
-# Vue 3 + TypeScript + Vite
+# 一乐编辑器命运卡高级编辑扩展
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+用`vite-plugin-monkey`重写一遍
+增加国服的暗金显示并且注明了限定掉落(打宝的时候有些限定需要屏蔽)
+>注意区分联盟限定和限定掉落
+联盟限定不是限定掉落
 
-## Recommended IDE Setup
+本来想把价格加上去，解码从物价榜复制的国服数据发现没有价格就放弃了
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+# 安装
+需先安装油猴插件
+然后前往[https://greasyfork.org/zh-CN/scripts/465833](https://greasyfork.org/zh-CN/scripts/465833)页面安装
 
-## Type Support For `.vue` Imports in TS
+# 使用
+打开页面就加载了，有bug可以反馈
+在命运卡和国服暗金右边加了个小图标，鼠标放上去会显示详情
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.

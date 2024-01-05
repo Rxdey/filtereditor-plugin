@@ -16,3 +16,11 @@ export type CardData = {
     explicitMod: ExplicitMod[];
     num?: number;
 };
+/** 传奇 */
+export type Unique = {
+    name: string;
+    href: string;
+    icon: string;
+    baseType: string;
+    limit?: string;
+};

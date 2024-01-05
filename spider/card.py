@@ -45,22 +45,22 @@ def parseList(url):
         lines = doc('table').eq(0).find('tbody tr')
         for line in lines:
             explicitMod = []
-            if len(pq(line).find('.explicitMod span')) <= 0:
+            if len(doc(line).find('.explicitMod span')) <= 0:
                 explicitMod = [{
-                    'type': 'magicitem', 'value': pq(line).find('.explicitMod').text()
+                    'type': 'magicitem', 'value': doc(line).find('.explicitMod').text()
                 }]
             else:
-                exList = pq(line).find('.explicitMod span')
+                exList = doc(line).find('.explicitMod span')
                 for ex in exList:
                     exObj = {
-                        'type': pq(ex).attr('class'),
-                        'value': pq(ex).text()
+                        'type': doc(ex).attr('class'),
+                        'value': doc(ex).text()
                     }
                     explicitMod.append(exObj)
             obj = {
-                'name': pq(line).find('td').eq(1).find('a').text(), 
-                'href': base_url + pq(line).find('td').eq(1).find('a').attr('href'),
-                'type': pq(line).find('td').eq(1).find('a').attr('href').replace('/cn/', '').replace('_', ' '),
+                'name': doc(line).find('td').eq(1).find('a').text(), 
+                'href': base_url + doc(line).find('td').eq(1).find('a').attr('href'),
+                'type': doc(line).find('td').eq(1).find('a').attr('href').replace('/cn/', '').replace('_', ' '),
                 'explicitMod': explicitMod
             }
             list.append(obj)
@@ -81,7 +81,7 @@ def getImageUrl(str):
 def fetchCardDetail(data):
     text = crawl_url(url=data["href"])
     if text == False:
-        print(f'请求卡片:{data["name"]} 详情失败失败')
+        print(f'请求卡片:{data["name"]} 详情失败')
         return
     doc = pq(text)
     title = doc('.FlavourText').text()

@@ -31,7 +31,11 @@ export default function () {
     // };
 
     /** 添加dom */
-    const addCustomDom = (el: HTMLDivElement, type: string) => {
+    const addCustomDom = (el: HTMLDivElement, node: HTMLDivElement) => {
+        const activeTag: HTMLDivElement | null = node.querySelector(EDIT_TYPE_SELECTOR);
+        if (!activeTag) return;
+        const type = activeTag.innerText;
+
         const parent: HTMLDivElement | null = el.querySelector('.n-tag__content');
         if (!parent) return;
         let content: HTMLSpanElement | null = parent.querySelector('.flex-y-center') || parent;
@@ -47,27 +51,26 @@ export default function () {
         // 每个单独监听事件性能开销大，放到父级
     }
 
-    /** 监听列表节点是否挂载 */
-    const observerChildren = (node: HTMLDivElement, mutationsList: MutationRecord[], obs: MutationObserver) => {
+    /** 监听列表节点是否挂载(切换类型和重新渲染都会触发) */
+    const observerChildren = (node: HTMLDivElement, mutationsList: MutationRecord[], obs: MutationObserver, callBack = (e: HTMLDivElement) => {}) => {
         // 触发切换
         const target = mutationsList[0].target as HTMLDivElement;
-        const activeTag: HTMLDivElement | null = node.querySelector(EDIT_TYPE_SELECTOR);
-        if (!activeTag) return;
-        const type = activeTag.innerText;
         const itemList: NodeListOf<HTMLDivElement> = target.querySelectorAll(TAG_SELECTOR);
+        callBack(node)
         // console.log('正在浏览: ', type, itemList);
         // 列表已加载 遍历已存在的卡片添加dom
         itemList.forEach(e => {
-            addCustomDom(e as HTMLDivElement, type);
+            addCustomDom(e as HTMLDivElement, node);
         });
         const childrenList: NodeListOf<HTMLDivElement> = target.querySelectorAll(CARD_CONTENT_SELECTOR);
+        // 动态添加物品时
         childrenList.forEach(child => {
             observerFnc(child, (mutationsList, obs) => {
                 mutationsList.forEach(item => {
                     (item.addedNodes as NodeListOf<HTMLDivElement>).forEach(el => {
                         if (!/n-tag/.test(el.className)) return;
                         if (el.querySelector('.hover-span')) return;
-                        addCustomDom(el, type);
+                        addCustomDom(el, node);
                     })
                 });
             })
@@ -76,7 +79,7 @@ export default function () {
     /** 监听高级编辑弹窗 */
     const initObserver = ({
         over = (e: MouseEvent) => { },
-        leave = (e: MouseEvent) => { },
+        change = (e: HTMLDivElement) => { },
     }) => {
         const body = document.querySelector("body");
         if (!body) return;
@@ -87,7 +90,7 @@ export default function () {
                         const container: HTMLDivElement | null = document.querySelector(MODAL_CONTENT_SELECTOR);
                         if (!container) return false;
                         container.onmouseover = over;
-                        observerFnc(container, (list, fnc) => { observerChildren((node), list, fnc) })
+                        observerFnc(container, (list, fnc) => { observerChildren(node, list, fnc, change) })
                         obs.disconnect();
                         return true;
                     }

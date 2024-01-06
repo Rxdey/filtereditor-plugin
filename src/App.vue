@@ -54,6 +54,7 @@ const handleShowDivCard = (event: MouseEvent) => {
   })
 }
 
+/** 弃用，改为劫持JSON.parse */
 const parseData = (e: MouseEvent) => {
   console.log(e)
   let btn = e.target as HTMLButtonElement;
@@ -70,13 +71,13 @@ onMounted(() => {
     over: handleShowDivCard,
     change: (node) => {
       // 复制的数据没有带价格，所以不做了(笑)
-      console.log('change')
-      const btnList: NodeListOf<HTMLButtonElement> = node.querySelectorAll('.n-button');
-      btnList.forEach(btn => {
-        if (btn.innerText !== '解析数据') return;
-        btn.removeEventListener('click', parseData);
-        btn.addEventListener('click', parseData);
-      });
+      // console.log('change')
+      // const btnList: NodeListOf<HTMLButtonElement> = node.querySelectorAll('.n-button');
+      // btnList.forEach(btn => {
+      //   if (btn.innerText !== '解析数据') return;
+      //   btn.removeEventListener('click', parseData);
+      //   btn.addEventListener('click', parseData);
+      // });
     }
   });
   document.body.addEventListener('click', () => {

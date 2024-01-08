@@ -1,21 +1,6621 @@
 // ==UserScript==
 // @name         一乐编辑器命运卡高级编辑扩展
 // @namespace    npm/vite-plugin-monkey
-// @version      1.0.0
+// @version      2.0.1
 // @author       rxdey
 // @description  命运卡/暗金高级编辑预览
 // @license      MIT
 // @icon         https://edit.filtereditor.cn/favicon.ico
-// @match        https://edit.filtereditor.cn/
+// @match        https://edit.filtereditor.cn/*
+// @match        https://price.filtereditor.cn/*
 // @require      https://cdn.jsdelivr.net/npm/vue@3.4.4/dist/vue.global.prod.js
 // @grant        GM_addStyle
+// @grant        GM_deleteValue
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @run-at       document-start
 // ==/UserScript==
 
-(e=>{if(typeof GM_addStyle=="function"){GM_addStyle(e);return}const t=document.createElement("style");t.textContent=e,document.head.append(t)})(" .divination-card[data-v-0bec371b]{--txt-color: #fff;--card-width: 160px;--card-height: calc(var(--card-width) / 440 * 670);font-size:12px;color:var(--txt-color);text-align:center;display:inline-block;width:var(--card-width);height:var(--card-height);position:relative;overflow:hidden;cursor:pointer;line-height:1}.divination-card--background[data-v-0bec371b]{position:absolute;top:8%;left:4%;z-index:1;width:90%;overflow:hidden}.divination-card--background img[data-v-0bec371b]{width:100%;object-fit:contain}.divination-card__exmod[data-v-0bec371b]{width:100%;height:100%;background-image:url(https://cdn.poedb.tw/image/item/popup/divination-card.webp);background-repeat:no-repeat;background-position:center;background-size:cover;position:absolute;top:0;left:0;z-index:2}.divination-card__exmod.disabled[data-v-0bec371b]{filter:brightness(.4)}.divination-card--name[data-v-0bec371b]{color:#111;font-weight:800;position:absolute;width:100%;top:2.9%;font-size:13px}.divination-card--stack[data-v-0bec371b]{position:absolute;top:47.5%;left:8%;font-size:80%;color:#c8c8c8;text-align:center;min-width:17%;transform:scale(.8)}.divination-card--stack.single[data-v-0bec371b]{color:#00bafe}.divination-card--wrap[data-v-0bec371b]{position:absolute;top:49%;left:0;bottom:0;right:0;font-size:109%;display:flex;flex-direction:column;transform:scale(.9)}.divination-card--line[data-v-0bec371b]{width:70%;background:url(data:image/webp;base64,UklGRvgBAABXRUJQVlA4IOwBAADwCwCdASoCAQQAPmUmjkWhoqIitpqrMIAMiWkA0JW+9ohbg3wONHHO2hWE+EZ3lcxPjAzpf5YdP7nUdGxoW/0ve42n0S1KbDYneakrOTFwunEr1C/VdrPGG/8G+9uM8OHcTjfvxu6qAAD++qDUzYUYStwr0qga4Q9GikbOaphkTdftbRXFk3dtQDAZL61gqoreKdI5KbcowsLTKQVQhFJzeuhIPiTBuShrcx5E9Q2ZpYzwXaCtHpzTibwo2vk4ieVHmtFuAVXFbDQLAPOqk6qK+8w2LXI9mQn8w/Ltfi/isVOuC+g2Q8eO8bebbooA+Zqs2r//6/13ZFhuK56wcGbATjlGfoO6N1K+BUnNddT0ac4Z8h+3nsu7e+iPparpOw9Dl8bNPcLMAy3v8LEeJijm8x/R5wMT6/vMh+LHiqS95t6VARBQrm/QwLrWBY42dyRO0gnqWQT5Kq2wqDgTwigtuoNbNw/dMeLZ+IByQrKHetqW2F7VZv63bz47qftPirH84flMSvGOa1YJvBy9K+SFLaxwvGp4t74koNwFx2AcHT/mepDZAGtCdA9Bmyv7+YMQTI+KmM5RjuvKvc1bhoLcZtShvFD/0iI5wukZlAooI3FDImliYp0AWoSbO1bmQXdUeaMvWCt6M0YAAAA=) no-repeat center;background-size:contain;height:3px;margin:0 auto;flex:0 0 3px}.divination-card--reward[data-v-0bec371b]{min-height:45px;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1;transform:scale(.9)}.divination-card--reward .explicit-mod[data-v-0bec371b]{color:var(--mod-color)}.divination-card--flavour[data-v-0bec371b]{width:115%;margin-left:-7.5%;margin-top:-4%;white-space:pre-wrap;color:var(--color-uniqueitem);flex:1 1 auto;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1.3;font-style:italic;transform:scale(.85);font-size:11px}.unique-item[data-v-31329ef8]{background-color:#48484e;padding:0 8px;color:#ffffffd1;max-height:400px;overflow-y:auto;box-shadow:0 0 16px #00000080}.unique-cell[data-v-31329ef8]{display:flex;flex-flow:row nowrap;font-size:14px;align-items:center;padding:8px 12px;border-bottom:1px solid #58585e}.unique-cell[data-v-31329ef8]:last-child{border:none}.unique-cell__icon[data-v-31329ef8]{width:32px;height:32px}.unique-cell__body[data-v-31329ef8]{flex:1;padding:0 8px}.unique-cell__body .limit[data-v-31329ef8]{white-space:pre-wrap;color:var(--color-currencyitem);font-size:12px;line-height:1.2}.unique-cell img[data-v-31329ef8]{width:100%;height:100%;object-fit:contain}.hover-wrap[data-v-f4ed1fca]{position:fixed;top:0;left:0;z-index:10000}.hover-span[data-v-83987bd6]{cursor:pointer}:root{--color-uniqueitem: #af6025;--color-gemitem: #1ba29b;--color-currencyitem: #aa9e82;--color-rareitem: #ffff77;--color-whiteitem: #c8c8c8;--color-corrupted: #d20000;--color-magicitem: #8888ff;--color-default: #7f7f7f;--color-augmented: #8888ff;--color-enchanted: #b8daf2;--color-divination: #0ebaff} ");
+(t=>{if(typeof GM_addStyle=="function"){GM_addStyle(t);return}const a=document.createElement("style");a.textContent=t,document.head.append(a)})(" .divination-card[data-v-d711aa2b]{--txt-color: #fff;--card-width: 160px;--card-height: calc(var(--card-width) / 440 * 670);font-size:12px;color:var(--txt-color);text-align:center;display:inline-block;width:var(--card-width);height:var(--card-height);position:relative;overflow:hidden;cursor:pointer;line-height:1}.divination-card--background[data-v-d711aa2b]{position:absolute;top:8%;left:4%;z-index:1;width:90%;overflow:hidden}.divination-card--background img[data-v-d711aa2b]{width:100%;object-fit:contain}.divination-card__exmod[data-v-d711aa2b]{width:100%;height:100%;background-image:url(https://cdn.poedb.tw/image/item/popup/divination-card.webp);background-repeat:no-repeat;background-position:center;background-size:cover;position:absolute;top:0;left:0;z-index:2}.divination-card__exmod.disabled[data-v-d711aa2b]{filter:brightness(.4)}.divination-card--name[data-v-d711aa2b]{color:#111;font-weight:800;position:absolute;width:100%;top:2.9%;font-size:13px}.divination-card--stack[data-v-d711aa2b]{position:absolute;top:47.5%;left:8%;font-size:80%;color:#c8c8c8;text-align:center;min-width:17%;transform:scale(.8)}.divination-card--stack.single[data-v-d711aa2b]{color:#00bafe}.divination-card--wrap[data-v-d711aa2b]{position:absolute;top:49%;left:0;bottom:0;right:0;font-size:109%;display:flex;flex-direction:column;transform:scale(.9)}.divination-card--line[data-v-d711aa2b]{width:70%;background:url(data:image/webp;base64,UklGRvgBAABXRUJQVlA4IOwBAADwCwCdASoCAQQAPmUmjkWhoqIitpqrMIAMiWkA0JW+9ohbg3wONHHO2hWE+EZ3lcxPjAzpf5YdP7nUdGxoW/0ve42n0S1KbDYneakrOTFwunEr1C/VdrPGG/8G+9uM8OHcTjfvxu6qAAD++qDUzYUYStwr0qga4Q9GikbOaphkTdftbRXFk3dtQDAZL61gqoreKdI5KbcowsLTKQVQhFJzeuhIPiTBuShrcx5E9Q2ZpYzwXaCtHpzTibwo2vk4ieVHmtFuAVXFbDQLAPOqk6qK+8w2LXI9mQn8w/Ltfi/isVOuC+g2Q8eO8bebbooA+Zqs2r//6/13ZFhuK56wcGbATjlGfoO6N1K+BUnNddT0ac4Z8h+3nsu7e+iPparpOw9Dl8bNPcLMAy3v8LEeJijm8x/R5wMT6/vMh+LHiqS95t6VARBQrm/QwLrWBY42dyRO0gnqWQT5Kq2wqDgTwigtuoNbNw/dMeLZ+IByQrKHetqW2F7VZv63bz47qftPirH84flMSvGOa1YJvBy9K+SFLaxwvGp4t74koNwFx2AcHT/mepDZAGtCdA9Bmyv7+YMQTI+KmM5RjuvKvc1bhoLcZtShvFD/0iI5wukZlAooI3FDImliYp0AWoSbO1bmQXdUeaMvWCt6M0YAAAA=) no-repeat center;background-size:contain;height:3px;margin:0 auto;flex:0 0 3px}.divination-card--reward[data-v-d711aa2b]{min-height:45px;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1;transform:scale(.9)}.divination-card--reward .explicit-mod[data-v-d711aa2b]{color:var(--mod-color)}.divination-card--flavour[data-v-d711aa2b]{width:115%;margin-left:-7.5%;margin-top:-4%;white-space:pre-wrap;color:var(--color-uniqueitem);flex:1 1 auto;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1.3;font-style:italic;transform:scale(.85);font-size:11px}.unique-item[data-v-2f78f109]{background-color:#48484e;padding:0 8px;color:#ffffffd1;max-height:400px;overflow-y:auto;box-shadow:0 0 16px #00000080}.unique-cell[data-v-2f78f109]{display:flex;flex-flow:row nowrap;font-size:14px;align-items:center;padding:8px 12px;border-bottom:1px solid #58585e}.unique-cell[data-v-2f78f109]:last-child{border:none}.unique-cell__icon[data-v-2f78f109]{width:32px;height:32px}.unique-cell__body[data-v-2f78f109]{flex:1;padding:0 16px}.unique-cell__body .limit[data-v-2f78f109]{white-space:pre-wrap;color:var(--color-default);font-size:12px;line-height:1.2}.unique-cell__price[data-v-2f78f109]{text-align:right;color:var(--color-currencyitem)}.unique-cell img[data-v-2f78f109]{width:100%;height:100%;object-fit:contain}.hover-wrap[data-v-b3f42858]{position:fixed;top:0;left:0;z-index:10000}.hover-span[data-v-ccb3046d]{cursor:pointer}:root{--color-uniqueitem: #af6025;--color-gemitem: #1ba29b;--color-currencyitem: #aa9e82;--color-rareitem: #ffff77;--color-whiteitem: #c8c8c8;--color-corrupted: #d20000;--color-magicitem: #8888ff;--color-default: #7f7f7f;--color-augmented: #8888ff;--color-enchanted: #b8daf2;--color-divination: #0ebaff} ");
 
 (function (vue) {
   'use strict';
 
+  var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
+  function getAugmentedNamespace(n) {
+    if (n.__esModule)
+      return n;
+    var f = n.default;
+    if (typeof f == "function") {
+      var a = function a2() {
+        if (this instanceof a2) {
+          return Reflect.construct(f, arguments, this.constructor);
+        }
+        return f.apply(this, arguments);
+      };
+      a.prototype = f.prototype;
+    } else
+      a = {};
+    Object.defineProperty(a, "__esModule", { value: true });
+    Object.keys(n).forEach(function(k) {
+      var d = Object.getOwnPropertyDescriptor(n, k);
+      Object.defineProperty(a, k, d.get ? d : {
+        enumerable: true,
+        get: function() {
+          return n[k];
+        }
+      });
+    });
+    return a;
+  }
+  var cryptoJs = { exports: {} };
+  function commonjsRequire(path) {
+    throw new Error('Could not dynamically require "' + path + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
+  }
+  var core = { exports: {} };
+  const __viteBrowserExternal = {};
+  const __viteBrowserExternal$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+    __proto__: null,
+    default: __viteBrowserExternal
+  }, Symbol.toStringTag, { value: "Module" }));
+  const require$$0 = /* @__PURE__ */ getAugmentedNamespace(__viteBrowserExternal$1);
+  var hasRequiredCore;
+  function requireCore() {
+    if (hasRequiredCore)
+      return core.exports;
+    hasRequiredCore = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory();
+        }
+      })(commonjsGlobal, function() {
+        var CryptoJS = CryptoJS || function(Math2, undefined$1) {
+          var crypto;
+          if (typeof window !== "undefined" && window.crypto) {
+            crypto = window.crypto;
+          }
+          if (typeof self !== "undefined" && self.crypto) {
+            crypto = self.crypto;
+          }
+          if (typeof globalThis !== "undefined" && globalThis.crypto) {
+            crypto = globalThis.crypto;
+          }
+          if (!crypto && typeof window !== "undefined" && window.msCrypto) {
+            crypto = window.msCrypto;
+          }
+          if (!crypto && typeof commonjsGlobal !== "undefined" && commonjsGlobal.crypto) {
+            crypto = commonjsGlobal.crypto;
+          }
+          if (!crypto && typeof commonjsRequire === "function") {
+            try {
+              crypto = require$$0;
+            } catch (err) {
+            }
+          }
+          var cryptoSecureRandomInt = function() {
+            if (crypto) {
+              if (typeof crypto.getRandomValues === "function") {
+                try {
+                  return crypto.getRandomValues(new Uint32Array(1))[0];
+                } catch (err) {
+                }
+              }
+              if (typeof crypto.randomBytes === "function") {
+                try {
+                  return crypto.randomBytes(4).readInt32LE();
+                } catch (err) {
+                }
+              }
+            }
+            throw new Error("Native crypto module could not be used to get secure random number.");
+          };
+          var create = Object.create || function() {
+            function F() {
+            }
+            return function(obj) {
+              var subtype;
+              F.prototype = obj;
+              subtype = new F();
+              F.prototype = null;
+              return subtype;
+            };
+          }();
+          var C = {};
+          var C_lib = C.lib = {};
+          var Base = C_lib.Base = function() {
+            return {
+              /**
+               * Creates a new object that inherits from this object.
+               *
+               * @param {Object} overrides Properties to copy into the new object.
+               *
+               * @return {Object} The new object.
+               *
+               * @static
+               *
+               * @example
+               *
+               *     var MyType = CryptoJS.lib.Base.extend({
+               *         field: 'value',
+               *
+               *         method: function () {
+               *         }
+               *     });
+               */
+              extend: function(overrides) {
+                var subtype = create(this);
+                if (overrides) {
+                  subtype.mixIn(overrides);
+                }
+                if (!subtype.hasOwnProperty("init") || this.init === subtype.init) {
+                  subtype.init = function() {
+                    subtype.$super.init.apply(this, arguments);
+                  };
+                }
+                subtype.init.prototype = subtype;
+                subtype.$super = this;
+                return subtype;
+              },
+              /**
+               * Extends this object and runs the init method.
+               * Arguments to create() will be passed to init().
+               *
+               * @return {Object} The new object.
+               *
+               * @static
+               *
+               * @example
+               *
+               *     var instance = MyType.create();
+               */
+              create: function() {
+                var instance = this.extend();
+                instance.init.apply(instance, arguments);
+                return instance;
+              },
+              /**
+               * Initializes a newly created object.
+               * Override this method to add some logic when your objects are created.
+               *
+               * @example
+               *
+               *     var MyType = CryptoJS.lib.Base.extend({
+               *         init: function () {
+               *             // ...
+               *         }
+               *     });
+               */
+              init: function() {
+              },
+              /**
+               * Copies properties into this object.
+               *
+               * @param {Object} properties The properties to mix in.
+               *
+               * @example
+               *
+               *     MyType.mixIn({
+               *         field: 'value'
+               *     });
+               */
+              mixIn: function(properties) {
+                for (var propertyName in properties) {
+                  if (properties.hasOwnProperty(propertyName)) {
+                    this[propertyName] = properties[propertyName];
+                  }
+                }
+                if (properties.hasOwnProperty("toString")) {
+                  this.toString = properties.toString;
+                }
+              },
+              /**
+               * Creates a copy of this object.
+               *
+               * @return {Object} The clone.
+               *
+               * @example
+               *
+               *     var clone = instance.clone();
+               */
+              clone: function() {
+                return this.init.prototype.extend(this);
+              }
+            };
+          }();
+          var WordArray = C_lib.WordArray = Base.extend({
+            /**
+             * Initializes a newly created word array.
+             *
+             * @param {Array} words (Optional) An array of 32-bit words.
+             * @param {number} sigBytes (Optional) The number of significant bytes in the words.
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.lib.WordArray.create();
+             *     var wordArray = CryptoJS.lib.WordArray.create([0x00010203, 0x04050607]);
+             *     var wordArray = CryptoJS.lib.WordArray.create([0x00010203, 0x04050607], 6);
+             */
+            init: function(words, sigBytes) {
+              words = this.words = words || [];
+              if (sigBytes != undefined$1) {
+                this.sigBytes = sigBytes;
+              } else {
+                this.sigBytes = words.length * 4;
+              }
+            },
+            /**
+             * Converts this word array to a string.
+             *
+             * @param {Encoder} encoder (Optional) The encoding strategy to use. Default: CryptoJS.enc.Hex
+             *
+             * @return {string} The stringified word array.
+             *
+             * @example
+             *
+             *     var string = wordArray + '';
+             *     var string = wordArray.toString();
+             *     var string = wordArray.toString(CryptoJS.enc.Utf8);
+             */
+            toString: function(encoder) {
+              return (encoder || Hex).stringify(this);
+            },
+            /**
+             * Concatenates a word array to this word array.
+             *
+             * @param {WordArray} wordArray The word array to append.
+             *
+             * @return {WordArray} This word array.
+             *
+             * @example
+             *
+             *     wordArray1.concat(wordArray2);
+             */
+            concat: function(wordArray) {
+              var thisWords = this.words;
+              var thatWords = wordArray.words;
+              var thisSigBytes = this.sigBytes;
+              var thatSigBytes = wordArray.sigBytes;
+              this.clamp();
+              if (thisSigBytes % 4) {
+                for (var i = 0; i < thatSigBytes; i++) {
+                  var thatByte = thatWords[i >>> 2] >>> 24 - i % 4 * 8 & 255;
+                  thisWords[thisSigBytes + i >>> 2] |= thatByte << 24 - (thisSigBytes + i) % 4 * 8;
+                }
+              } else {
+                for (var j = 0; j < thatSigBytes; j += 4) {
+                  thisWords[thisSigBytes + j >>> 2] = thatWords[j >>> 2];
+                }
+              }
+              this.sigBytes += thatSigBytes;
+              return this;
+            },
+            /**
+             * Removes insignificant bits.
+             *
+             * @example
+             *
+             *     wordArray.clamp();
+             */
+            clamp: function() {
+              var words = this.words;
+              var sigBytes = this.sigBytes;
+              words[sigBytes >>> 2] &= 4294967295 << 32 - sigBytes % 4 * 8;
+              words.length = Math2.ceil(sigBytes / 4);
+            },
+            /**
+             * Creates a copy of this word array.
+             *
+             * @return {WordArray} The clone.
+             *
+             * @example
+             *
+             *     var clone = wordArray.clone();
+             */
+            clone: function() {
+              var clone = Base.clone.call(this);
+              clone.words = this.words.slice(0);
+              return clone;
+            },
+            /**
+             * Creates a word array filled with random bytes.
+             *
+             * @param {number} nBytes The number of random bytes to generate.
+             *
+             * @return {WordArray} The random word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.lib.WordArray.random(16);
+             */
+            random: function(nBytes) {
+              var words = [];
+              for (var i = 0; i < nBytes; i += 4) {
+                words.push(cryptoSecureRandomInt());
+              }
+              return new WordArray.init(words, nBytes);
+            }
+          });
+          var C_enc = C.enc = {};
+          var Hex = C_enc.Hex = {
+            /**
+             * Converts a word array to a hex string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @return {string} The hex string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var hexString = CryptoJS.enc.Hex.stringify(wordArray);
+             */
+            stringify: function(wordArray) {
+              var words = wordArray.words;
+              var sigBytes = wordArray.sigBytes;
+              var hexChars = [];
+              for (var i = 0; i < sigBytes; i++) {
+                var bite = words[i >>> 2] >>> 24 - i % 4 * 8 & 255;
+                hexChars.push((bite >>> 4).toString(16));
+                hexChars.push((bite & 15).toString(16));
+              }
+              return hexChars.join("");
+            },
+            /**
+             * Converts a hex string to a word array.
+             *
+             * @param {string} hexStr The hex string.
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Hex.parse(hexString);
+             */
+            parse: function(hexStr) {
+              var hexStrLength = hexStr.length;
+              var words = [];
+              for (var i = 0; i < hexStrLength; i += 2) {
+                words[i >>> 3] |= parseInt(hexStr.substr(i, 2), 16) << 24 - i % 8 * 4;
+              }
+              return new WordArray.init(words, hexStrLength / 2);
+            }
+          };
+          var Latin1 = C_enc.Latin1 = {
+            /**
+             * Converts a word array to a Latin1 string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @return {string} The Latin1 string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var latin1String = CryptoJS.enc.Latin1.stringify(wordArray);
+             */
+            stringify: function(wordArray) {
+              var words = wordArray.words;
+              var sigBytes = wordArray.sigBytes;
+              var latin1Chars = [];
+              for (var i = 0; i < sigBytes; i++) {
+                var bite = words[i >>> 2] >>> 24 - i % 4 * 8 & 255;
+                latin1Chars.push(String.fromCharCode(bite));
+              }
+              return latin1Chars.join("");
+            },
+            /**
+             * Converts a Latin1 string to a word array.
+             *
+             * @param {string} latin1Str The Latin1 string.
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Latin1.parse(latin1String);
+             */
+            parse: function(latin1Str) {
+              var latin1StrLength = latin1Str.length;
+              var words = [];
+              for (var i = 0; i < latin1StrLength; i++) {
+                words[i >>> 2] |= (latin1Str.charCodeAt(i) & 255) << 24 - i % 4 * 8;
+              }
+              return new WordArray.init(words, latin1StrLength);
+            }
+          };
+          var Utf8 = C_enc.Utf8 = {
+            /**
+             * Converts a word array to a UTF-8 string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @return {string} The UTF-8 string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var utf8String = CryptoJS.enc.Utf8.stringify(wordArray);
+             */
+            stringify: function(wordArray) {
+              try {
+                return decodeURIComponent(escape(Latin1.stringify(wordArray)));
+              } catch (e) {
+                throw new Error("Malformed UTF-8 data");
+              }
+            },
+            /**
+             * Converts a UTF-8 string to a word array.
+             *
+             * @param {string} utf8Str The UTF-8 string.
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Utf8.parse(utf8String);
+             */
+            parse: function(utf8Str) {
+              return Latin1.parse(unescape(encodeURIComponent(utf8Str)));
+            }
+          };
+          var BufferedBlockAlgorithm = C_lib.BufferedBlockAlgorithm = Base.extend({
+            /**
+             * Resets this block algorithm's data buffer to its initial state.
+             *
+             * @example
+             *
+             *     bufferedBlockAlgorithm.reset();
+             */
+            reset: function() {
+              this._data = new WordArray.init();
+              this._nDataBytes = 0;
+            },
+            /**
+             * Adds new data to this block algorithm's buffer.
+             *
+             * @param {WordArray|string} data The data to append. Strings are converted to a WordArray using UTF-8.
+             *
+             * @example
+             *
+             *     bufferedBlockAlgorithm._append('data');
+             *     bufferedBlockAlgorithm._append(wordArray);
+             */
+            _append: function(data) {
+              if (typeof data == "string") {
+                data = Utf8.parse(data);
+              }
+              this._data.concat(data);
+              this._nDataBytes += data.sigBytes;
+            },
+            /**
+             * Processes available data blocks.
+             *
+             * This method invokes _doProcessBlock(offset), which must be implemented by a concrete subtype.
+             *
+             * @param {boolean} doFlush Whether all blocks and partial blocks should be processed.
+             *
+             * @return {WordArray} The processed data.
+             *
+             * @example
+             *
+             *     var processedData = bufferedBlockAlgorithm._process();
+             *     var processedData = bufferedBlockAlgorithm._process(!!'flush');
+             */
+            _process: function(doFlush) {
+              var processedWords;
+              var data = this._data;
+              var dataWords = data.words;
+              var dataSigBytes = data.sigBytes;
+              var blockSize = this.blockSize;
+              var blockSizeBytes = blockSize * 4;
+              var nBlocksReady = dataSigBytes / blockSizeBytes;
+              if (doFlush) {
+                nBlocksReady = Math2.ceil(nBlocksReady);
+              } else {
+                nBlocksReady = Math2.max((nBlocksReady | 0) - this._minBufferSize, 0);
+              }
+              var nWordsReady = nBlocksReady * blockSize;
+              var nBytesReady = Math2.min(nWordsReady * 4, dataSigBytes);
+              if (nWordsReady) {
+                for (var offset = 0; offset < nWordsReady; offset += blockSize) {
+                  this._doProcessBlock(dataWords, offset);
+                }
+                processedWords = dataWords.splice(0, nWordsReady);
+                data.sigBytes -= nBytesReady;
+              }
+              return new WordArray.init(processedWords, nBytesReady);
+            },
+            /**
+             * Creates a copy of this object.
+             *
+             * @return {Object} The clone.
+             *
+             * @example
+             *
+             *     var clone = bufferedBlockAlgorithm.clone();
+             */
+            clone: function() {
+              var clone = Base.clone.call(this);
+              clone._data = this._data.clone();
+              return clone;
+            },
+            _minBufferSize: 0
+          });
+          C_lib.Hasher = BufferedBlockAlgorithm.extend({
+            /**
+             * Configuration options.
+             */
+            cfg: Base.extend(),
+            /**
+             * Initializes a newly created hasher.
+             *
+             * @param {Object} cfg (Optional) The configuration options to use for this hash computation.
+             *
+             * @example
+             *
+             *     var hasher = CryptoJS.algo.SHA256.create();
+             */
+            init: function(cfg) {
+              this.cfg = this.cfg.extend(cfg);
+              this.reset();
+            },
+            /**
+             * Resets this hasher to its initial state.
+             *
+             * @example
+             *
+             *     hasher.reset();
+             */
+            reset: function() {
+              BufferedBlockAlgorithm.reset.call(this);
+              this._doReset();
+            },
+            /**
+             * Updates this hasher with a message.
+             *
+             * @param {WordArray|string} messageUpdate The message to append.
+             *
+             * @return {Hasher} This hasher.
+             *
+             * @example
+             *
+             *     hasher.update('message');
+             *     hasher.update(wordArray);
+             */
+            update: function(messageUpdate) {
+              this._append(messageUpdate);
+              this._process();
+              return this;
+            },
+            /**
+             * Finalizes the hash computation.
+             * Note that the finalize operation is effectively a destructive, read-once operation.
+             *
+             * @param {WordArray|string} messageUpdate (Optional) A final message update.
+             *
+             * @return {WordArray} The hash.
+             *
+             * @example
+             *
+             *     var hash = hasher.finalize();
+             *     var hash = hasher.finalize('message');
+             *     var hash = hasher.finalize(wordArray);
+             */
+            finalize: function(messageUpdate) {
+              if (messageUpdate) {
+                this._append(messageUpdate);
+              }
+              var hash = this._doFinalize();
+              return hash;
+            },
+            blockSize: 512 / 32,
+            /**
+             * Creates a shortcut function to a hasher's object interface.
+             *
+             * @param {Hasher} hasher The hasher to create a helper for.
+             *
+             * @return {Function} The shortcut function.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var SHA256 = CryptoJS.lib.Hasher._createHelper(CryptoJS.algo.SHA256);
+             */
+            _createHelper: function(hasher) {
+              return function(message, cfg) {
+                return new hasher.init(cfg).finalize(message);
+              };
+            },
+            /**
+             * Creates a shortcut function to the HMAC's object interface.
+             *
+             * @param {Hasher} hasher The hasher to use in this HMAC helper.
+             *
+             * @return {Function} The shortcut function.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var HmacSHA256 = CryptoJS.lib.Hasher._createHmacHelper(CryptoJS.algo.SHA256);
+             */
+            _createHmacHelper: function(hasher) {
+              return function(message, key) {
+                return new C_algo.HMAC.init(hasher, key).finalize(message);
+              };
+            }
+          });
+          var C_algo = C.algo = {};
+          return C;
+        }(Math);
+        return CryptoJS;
+      });
+    })(core);
+    return core.exports;
+  }
+  var x64Core = { exports: {} };
+  var hasRequiredX64Core;
+  function requireX64Core() {
+    if (hasRequiredX64Core)
+      return x64Core.exports;
+    hasRequiredX64Core = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function(undefined$1) {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var Base = C_lib.Base;
+          var X32WordArray = C_lib.WordArray;
+          var C_x64 = C.x64 = {};
+          C_x64.Word = Base.extend({
+            /**
+             * Initializes a newly created 64-bit word.
+             *
+             * @param {number} high The high 32 bits.
+             * @param {number} low The low 32 bits.
+             *
+             * @example
+             *
+             *     var x64Word = CryptoJS.x64.Word.create(0x00010203, 0x04050607);
+             */
+            init: function(high, low) {
+              this.high = high;
+              this.low = low;
+            }
+            /**
+             * Bitwise NOTs this word.
+             *
+             * @return {X64Word} A new x64-Word object after negating.
+             *
+             * @example
+             *
+             *     var negated = x64Word.not();
+             */
+            // not: function () {
+            // var high = ~this.high;
+            // var low = ~this.low;
+            // return X64Word.create(high, low);
+            // },
+            /**
+             * Bitwise ANDs this word with the passed word.
+             *
+             * @param {X64Word} word The x64-Word to AND with this word.
+             *
+             * @return {X64Word} A new x64-Word object after ANDing.
+             *
+             * @example
+             *
+             *     var anded = x64Word.and(anotherX64Word);
+             */
+            // and: function (word) {
+            // var high = this.high & word.high;
+            // var low = this.low & word.low;
+            // return X64Word.create(high, low);
+            // },
+            /**
+             * Bitwise ORs this word with the passed word.
+             *
+             * @param {X64Word} word The x64-Word to OR with this word.
+             *
+             * @return {X64Word} A new x64-Word object after ORing.
+             *
+             * @example
+             *
+             *     var ored = x64Word.or(anotherX64Word);
+             */
+            // or: function (word) {
+            // var high = this.high | word.high;
+            // var low = this.low | word.low;
+            // return X64Word.create(high, low);
+            // },
+            /**
+             * Bitwise XORs this word with the passed word.
+             *
+             * @param {X64Word} word The x64-Word to XOR with this word.
+             *
+             * @return {X64Word} A new x64-Word object after XORing.
+             *
+             * @example
+             *
+             *     var xored = x64Word.xor(anotherX64Word);
+             */
+            // xor: function (word) {
+            // var high = this.high ^ word.high;
+            // var low = this.low ^ word.low;
+            // return X64Word.create(high, low);
+            // },
+            /**
+             * Shifts this word n bits to the left.
+             *
+             * @param {number} n The number of bits to shift.
+             *
+             * @return {X64Word} A new x64-Word object after shifting.
+             *
+             * @example
+             *
+             *     var shifted = x64Word.shiftL(25);
+             */
+            // shiftL: function (n) {
+            // if (n < 32) {
+            // var high = (this.high << n) | (this.low >>> (32 - n));
+            // var low = this.low << n;
+            // } else {
+            // var high = this.low << (n - 32);
+            // var low = 0;
+            // }
+            // return X64Word.create(high, low);
+            // },
+            /**
+             * Shifts this word n bits to the right.
+             *
+             * @param {number} n The number of bits to shift.
+             *
+             * @return {X64Word} A new x64-Word object after shifting.
+             *
+             * @example
+             *
+             *     var shifted = x64Word.shiftR(7);
+             */
+            // shiftR: function (n) {
+            // if (n < 32) {
+            // var low = (this.low >>> n) | (this.high << (32 - n));
+            // var high = this.high >>> n;
+            // } else {
+            // var low = this.high >>> (n - 32);
+            // var high = 0;
+            // }
+            // return X64Word.create(high, low);
+            // },
+            /**
+             * Rotates this word n bits to the left.
+             *
+             * @param {number} n The number of bits to rotate.
+             *
+             * @return {X64Word} A new x64-Word object after rotating.
+             *
+             * @example
+             *
+             *     var rotated = x64Word.rotL(25);
+             */
+            // rotL: function (n) {
+            // return this.shiftL(n).or(this.shiftR(64 - n));
+            // },
+            /**
+             * Rotates this word n bits to the right.
+             *
+             * @param {number} n The number of bits to rotate.
+             *
+             * @return {X64Word} A new x64-Word object after rotating.
+             *
+             * @example
+             *
+             *     var rotated = x64Word.rotR(7);
+             */
+            // rotR: function (n) {
+            // return this.shiftR(n).or(this.shiftL(64 - n));
+            // },
+            /**
+             * Adds this word with the passed word.
+             *
+             * @param {X64Word} word The x64-Word to add with this word.
+             *
+             * @return {X64Word} A new x64-Word object after adding.
+             *
+             * @example
+             *
+             *     var added = x64Word.add(anotherX64Word);
+             */
+            // add: function (word) {
+            // var low = (this.low + word.low) | 0;
+            // var carry = (low >>> 0) < (this.low >>> 0) ? 1 : 0;
+            // var high = (this.high + word.high + carry) | 0;
+            // return X64Word.create(high, low);
+            // }
+          });
+          C_x64.WordArray = Base.extend({
+            /**
+             * Initializes a newly created word array.
+             *
+             * @param {Array} words (Optional) An array of CryptoJS.x64.Word objects.
+             * @param {number} sigBytes (Optional) The number of significant bytes in the words.
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.x64.WordArray.create();
+             *
+             *     var wordArray = CryptoJS.x64.WordArray.create([
+             *         CryptoJS.x64.Word.create(0x00010203, 0x04050607),
+             *         CryptoJS.x64.Word.create(0x18191a1b, 0x1c1d1e1f)
+             *     ]);
+             *
+             *     var wordArray = CryptoJS.x64.WordArray.create([
+             *         CryptoJS.x64.Word.create(0x00010203, 0x04050607),
+             *         CryptoJS.x64.Word.create(0x18191a1b, 0x1c1d1e1f)
+             *     ], 10);
+             */
+            init: function(words, sigBytes) {
+              words = this.words = words || [];
+              if (sigBytes != undefined$1) {
+                this.sigBytes = sigBytes;
+              } else {
+                this.sigBytes = words.length * 8;
+              }
+            },
+            /**
+             * Converts this 64-bit word array to a 32-bit word array.
+             *
+             * @return {CryptoJS.lib.WordArray} This word array's data as a 32-bit word array.
+             *
+             * @example
+             *
+             *     var x32WordArray = x64WordArray.toX32();
+             */
+            toX32: function() {
+              var x64Words = this.words;
+              var x64WordsLength = x64Words.length;
+              var x32Words = [];
+              for (var i = 0; i < x64WordsLength; i++) {
+                var x64Word = x64Words[i];
+                x32Words.push(x64Word.high);
+                x32Words.push(x64Word.low);
+              }
+              return X32WordArray.create(x32Words, this.sigBytes);
+            },
+            /**
+             * Creates a copy of this word array.
+             *
+             * @return {X64WordArray} The clone.
+             *
+             * @example
+             *
+             *     var clone = x64WordArray.clone();
+             */
+            clone: function() {
+              var clone = Base.clone.call(this);
+              var words = clone.words = this.words.slice(0);
+              var wordsLength = words.length;
+              for (var i = 0; i < wordsLength; i++) {
+                words[i] = words[i].clone();
+              }
+              return clone;
+            }
+          });
+        })();
+        return CryptoJS;
+      });
+    })(x64Core);
+    return x64Core.exports;
+  }
+  var libTypedarrays = { exports: {} };
+  var hasRequiredLibTypedarrays;
+  function requireLibTypedarrays() {
+    if (hasRequiredLibTypedarrays)
+      return libTypedarrays.exports;
+    hasRequiredLibTypedarrays = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          if (typeof ArrayBuffer != "function") {
+            return;
+          }
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var superInit = WordArray.init;
+          var subInit = WordArray.init = function(typedArray) {
+            if (typedArray instanceof ArrayBuffer) {
+              typedArray = new Uint8Array(typedArray);
+            }
+            if (typedArray instanceof Int8Array || typeof Uint8ClampedArray !== "undefined" && typedArray instanceof Uint8ClampedArray || typedArray instanceof Int16Array || typedArray instanceof Uint16Array || typedArray instanceof Int32Array || typedArray instanceof Uint32Array || typedArray instanceof Float32Array || typedArray instanceof Float64Array) {
+              typedArray = new Uint8Array(typedArray.buffer, typedArray.byteOffset, typedArray.byteLength);
+            }
+            if (typedArray instanceof Uint8Array) {
+              var typedArrayByteLength = typedArray.byteLength;
+              var words = [];
+              for (var i = 0; i < typedArrayByteLength; i++) {
+                words[i >>> 2] |= typedArray[i] << 24 - i % 4 * 8;
+              }
+              superInit.call(this, words, typedArrayByteLength);
+            } else {
+              superInit.apply(this, arguments);
+            }
+          };
+          subInit.prototype = WordArray;
+        })();
+        return CryptoJS.lib.WordArray;
+      });
+    })(libTypedarrays);
+    return libTypedarrays.exports;
+  }
+  var encUtf16 = { exports: {} };
+  var hasRequiredEncUtf16;
+  function requireEncUtf16() {
+    if (hasRequiredEncUtf16)
+      return encUtf16.exports;
+    hasRequiredEncUtf16 = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var C_enc = C.enc;
+          C_enc.Utf16 = C_enc.Utf16BE = {
+            /**
+             * Converts a word array to a UTF-16 BE string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @return {string} The UTF-16 BE string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var utf16String = CryptoJS.enc.Utf16.stringify(wordArray);
+             */
+            stringify: function(wordArray) {
+              var words = wordArray.words;
+              var sigBytes = wordArray.sigBytes;
+              var utf16Chars = [];
+              for (var i = 0; i < sigBytes; i += 2) {
+                var codePoint = words[i >>> 2] >>> 16 - i % 4 * 8 & 65535;
+                utf16Chars.push(String.fromCharCode(codePoint));
+              }
+              return utf16Chars.join("");
+            },
+            /**
+             * Converts a UTF-16 BE string to a word array.
+             *
+             * @param {string} utf16Str The UTF-16 BE string.
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Utf16.parse(utf16String);
+             */
+            parse: function(utf16Str) {
+              var utf16StrLength = utf16Str.length;
+              var words = [];
+              for (var i = 0; i < utf16StrLength; i++) {
+                words[i >>> 1] |= utf16Str.charCodeAt(i) << 16 - i % 2 * 16;
+              }
+              return WordArray.create(words, utf16StrLength * 2);
+            }
+          };
+          C_enc.Utf16LE = {
+            /**
+             * Converts a word array to a UTF-16 LE string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @return {string} The UTF-16 LE string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var utf16Str = CryptoJS.enc.Utf16LE.stringify(wordArray);
+             */
+            stringify: function(wordArray) {
+              var words = wordArray.words;
+              var sigBytes = wordArray.sigBytes;
+              var utf16Chars = [];
+              for (var i = 0; i < sigBytes; i += 2) {
+                var codePoint = swapEndian(words[i >>> 2] >>> 16 - i % 4 * 8 & 65535);
+                utf16Chars.push(String.fromCharCode(codePoint));
+              }
+              return utf16Chars.join("");
+            },
+            /**
+             * Converts a UTF-16 LE string to a word array.
+             *
+             * @param {string} utf16Str The UTF-16 LE string.
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Utf16LE.parse(utf16Str);
+             */
+            parse: function(utf16Str) {
+              var utf16StrLength = utf16Str.length;
+              var words = [];
+              for (var i = 0; i < utf16StrLength; i++) {
+                words[i >>> 1] |= swapEndian(utf16Str.charCodeAt(i) << 16 - i % 2 * 16);
+              }
+              return WordArray.create(words, utf16StrLength * 2);
+            }
+          };
+          function swapEndian(word) {
+            return word << 8 & 4278255360 | word >>> 8 & 16711935;
+          }
+        })();
+        return CryptoJS.enc.Utf16;
+      });
+    })(encUtf16);
+    return encUtf16.exports;
+  }
+  var encBase64 = { exports: {} };
+  var hasRequiredEncBase64;
+  function requireEncBase64() {
+    if (hasRequiredEncBase64)
+      return encBase64.exports;
+    hasRequiredEncBase64 = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var C_enc = C.enc;
+          C_enc.Base64 = {
+            /**
+             * Converts a word array to a Base64 string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @return {string} The Base64 string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var base64String = CryptoJS.enc.Base64.stringify(wordArray);
+             */
+            stringify: function(wordArray) {
+              var words = wordArray.words;
+              var sigBytes = wordArray.sigBytes;
+              var map = this._map;
+              wordArray.clamp();
+              var base64Chars = [];
+              for (var i = 0; i < sigBytes; i += 3) {
+                var byte1 = words[i >>> 2] >>> 24 - i % 4 * 8 & 255;
+                var byte2 = words[i + 1 >>> 2] >>> 24 - (i + 1) % 4 * 8 & 255;
+                var byte3 = words[i + 2 >>> 2] >>> 24 - (i + 2) % 4 * 8 & 255;
+                var triplet = byte1 << 16 | byte2 << 8 | byte3;
+                for (var j = 0; j < 4 && i + j * 0.75 < sigBytes; j++) {
+                  base64Chars.push(map.charAt(triplet >>> 6 * (3 - j) & 63));
+                }
+              }
+              var paddingChar = map.charAt(64);
+              if (paddingChar) {
+                while (base64Chars.length % 4) {
+                  base64Chars.push(paddingChar);
+                }
+              }
+              return base64Chars.join("");
+            },
+            /**
+             * Converts a Base64 string to a word array.
+             *
+             * @param {string} base64Str The Base64 string.
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Base64.parse(base64String);
+             */
+            parse: function(base64Str) {
+              var base64StrLength = base64Str.length;
+              var map = this._map;
+              var reverseMap = this._reverseMap;
+              if (!reverseMap) {
+                reverseMap = this._reverseMap = [];
+                for (var j = 0; j < map.length; j++) {
+                  reverseMap[map.charCodeAt(j)] = j;
+                }
+              }
+              var paddingChar = map.charAt(64);
+              if (paddingChar) {
+                var paddingIndex = base64Str.indexOf(paddingChar);
+                if (paddingIndex !== -1) {
+                  base64StrLength = paddingIndex;
+                }
+              }
+              return parseLoop(base64Str, base64StrLength, reverseMap);
+            },
+            _map: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
+          };
+          function parseLoop(base64Str, base64StrLength, reverseMap) {
+            var words = [];
+            var nBytes = 0;
+            for (var i = 0; i < base64StrLength; i++) {
+              if (i % 4) {
+                var bits1 = reverseMap[base64Str.charCodeAt(i - 1)] << i % 4 * 2;
+                var bits2 = reverseMap[base64Str.charCodeAt(i)] >>> 6 - i % 4 * 2;
+                var bitsCombined = bits1 | bits2;
+                words[nBytes >>> 2] |= bitsCombined << 24 - nBytes % 4 * 8;
+                nBytes++;
+              }
+            }
+            return WordArray.create(words, nBytes);
+          }
+        })();
+        return CryptoJS.enc.Base64;
+      });
+    })(encBase64);
+    return encBase64.exports;
+  }
+  var encBase64url = { exports: {} };
+  var hasRequiredEncBase64url;
+  function requireEncBase64url() {
+    if (hasRequiredEncBase64url)
+      return encBase64url.exports;
+    hasRequiredEncBase64url = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var C_enc = C.enc;
+          C_enc.Base64url = {
+            /**
+             * Converts a word array to a Base64url string.
+             *
+             * @param {WordArray} wordArray The word array.
+             *
+             * @param {boolean} urlSafe Whether to use url safe
+             *
+             * @return {string} The Base64url string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var base64String = CryptoJS.enc.Base64url.stringify(wordArray);
+             */
+            stringify: function(wordArray, urlSafe) {
+              if (urlSafe === void 0) {
+                urlSafe = true;
+              }
+              var words = wordArray.words;
+              var sigBytes = wordArray.sigBytes;
+              var map = urlSafe ? this._safe_map : this._map;
+              wordArray.clamp();
+              var base64Chars = [];
+              for (var i = 0; i < sigBytes; i += 3) {
+                var byte1 = words[i >>> 2] >>> 24 - i % 4 * 8 & 255;
+                var byte2 = words[i + 1 >>> 2] >>> 24 - (i + 1) % 4 * 8 & 255;
+                var byte3 = words[i + 2 >>> 2] >>> 24 - (i + 2) % 4 * 8 & 255;
+                var triplet = byte1 << 16 | byte2 << 8 | byte3;
+                for (var j = 0; j < 4 && i + j * 0.75 < sigBytes; j++) {
+                  base64Chars.push(map.charAt(triplet >>> 6 * (3 - j) & 63));
+                }
+              }
+              var paddingChar = map.charAt(64);
+              if (paddingChar) {
+                while (base64Chars.length % 4) {
+                  base64Chars.push(paddingChar);
+                }
+              }
+              return base64Chars.join("");
+            },
+            /**
+             * Converts a Base64url string to a word array.
+             *
+             * @param {string} base64Str The Base64url string.
+             *
+             * @param {boolean} urlSafe Whether to use url safe
+             *
+             * @return {WordArray} The word array.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var wordArray = CryptoJS.enc.Base64url.parse(base64String);
+             */
+            parse: function(base64Str, urlSafe) {
+              if (urlSafe === void 0) {
+                urlSafe = true;
+              }
+              var base64StrLength = base64Str.length;
+              var map = urlSafe ? this._safe_map : this._map;
+              var reverseMap = this._reverseMap;
+              if (!reverseMap) {
+                reverseMap = this._reverseMap = [];
+                for (var j = 0; j < map.length; j++) {
+                  reverseMap[map.charCodeAt(j)] = j;
+                }
+              }
+              var paddingChar = map.charAt(64);
+              if (paddingChar) {
+                var paddingIndex = base64Str.indexOf(paddingChar);
+                if (paddingIndex !== -1) {
+                  base64StrLength = paddingIndex;
+                }
+              }
+              return parseLoop(base64Str, base64StrLength, reverseMap);
+            },
+            _map: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+            _safe_map: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+          };
+          function parseLoop(base64Str, base64StrLength, reverseMap) {
+            var words = [];
+            var nBytes = 0;
+            for (var i = 0; i < base64StrLength; i++) {
+              if (i % 4) {
+                var bits1 = reverseMap[base64Str.charCodeAt(i - 1)] << i % 4 * 2;
+                var bits2 = reverseMap[base64Str.charCodeAt(i)] >>> 6 - i % 4 * 2;
+                var bitsCombined = bits1 | bits2;
+                words[nBytes >>> 2] |= bitsCombined << 24 - nBytes % 4 * 8;
+                nBytes++;
+              }
+            }
+            return WordArray.create(words, nBytes);
+          }
+        })();
+        return CryptoJS.enc.Base64url;
+      });
+    })(encBase64url);
+    return encBase64url.exports;
+  }
+  var md5 = { exports: {} };
+  var hasRequiredMd5;
+  function requireMd5() {
+    if (hasRequiredMd5)
+      return md5.exports;
+    hasRequiredMd5 = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function(Math2) {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var Hasher = C_lib.Hasher;
+          var C_algo = C.algo;
+          var T = [];
+          (function() {
+            for (var i = 0; i < 64; i++) {
+              T[i] = Math2.abs(Math2.sin(i + 1)) * 4294967296 | 0;
+            }
+          })();
+          var MD5 = C_algo.MD5 = Hasher.extend({
+            _doReset: function() {
+              this._hash = new WordArray.init([
+                1732584193,
+                4023233417,
+                2562383102,
+                271733878
+              ]);
+            },
+            _doProcessBlock: function(M, offset) {
+              for (var i = 0; i < 16; i++) {
+                var offset_i = offset + i;
+                var M_offset_i = M[offset_i];
+                M[offset_i] = (M_offset_i << 8 | M_offset_i >>> 24) & 16711935 | (M_offset_i << 24 | M_offset_i >>> 8) & 4278255360;
+              }
+              var H = this._hash.words;
+              var M_offset_0 = M[offset + 0];
+              var M_offset_1 = M[offset + 1];
+              var M_offset_2 = M[offset + 2];
+              var M_offset_3 = M[offset + 3];
+              var M_offset_4 = M[offset + 4];
+              var M_offset_5 = M[offset + 5];
+              var M_offset_6 = M[offset + 6];
+              var M_offset_7 = M[offset + 7];
+              var M_offset_8 = M[offset + 8];
+              var M_offset_9 = M[offset + 9];
+              var M_offset_10 = M[offset + 10];
+              var M_offset_11 = M[offset + 11];
+              var M_offset_12 = M[offset + 12];
+              var M_offset_13 = M[offset + 13];
+              var M_offset_14 = M[offset + 14];
+              var M_offset_15 = M[offset + 15];
+              var a = H[0];
+              var b = H[1];
+              var c = H[2];
+              var d = H[3];
+              a = FF(a, b, c, d, M_offset_0, 7, T[0]);
+              d = FF(d, a, b, c, M_offset_1, 12, T[1]);
+              c = FF(c, d, a, b, M_offset_2, 17, T[2]);
+              b = FF(b, c, d, a, M_offset_3, 22, T[3]);
+              a = FF(a, b, c, d, M_offset_4, 7, T[4]);
+              d = FF(d, a, b, c, M_offset_5, 12, T[5]);
+              c = FF(c, d, a, b, M_offset_6, 17, T[6]);
+              b = FF(b, c, d, a, M_offset_7, 22, T[7]);
+              a = FF(a, b, c, d, M_offset_8, 7, T[8]);
+              d = FF(d, a, b, c, M_offset_9, 12, T[9]);
+              c = FF(c, d, a, b, M_offset_10, 17, T[10]);
+              b = FF(b, c, d, a, M_offset_11, 22, T[11]);
+              a = FF(a, b, c, d, M_offset_12, 7, T[12]);
+              d = FF(d, a, b, c, M_offset_13, 12, T[13]);
+              c = FF(c, d, a, b, M_offset_14, 17, T[14]);
+              b = FF(b, c, d, a, M_offset_15, 22, T[15]);
+              a = GG(a, b, c, d, M_offset_1, 5, T[16]);
+              d = GG(d, a, b, c, M_offset_6, 9, T[17]);
+              c = GG(c, d, a, b, M_offset_11, 14, T[18]);
+              b = GG(b, c, d, a, M_offset_0, 20, T[19]);
+              a = GG(a, b, c, d, M_offset_5, 5, T[20]);
+              d = GG(d, a, b, c, M_offset_10, 9, T[21]);
+              c = GG(c, d, a, b, M_offset_15, 14, T[22]);
+              b = GG(b, c, d, a, M_offset_4, 20, T[23]);
+              a = GG(a, b, c, d, M_offset_9, 5, T[24]);
+              d = GG(d, a, b, c, M_offset_14, 9, T[25]);
+              c = GG(c, d, a, b, M_offset_3, 14, T[26]);
+              b = GG(b, c, d, a, M_offset_8, 20, T[27]);
+              a = GG(a, b, c, d, M_offset_13, 5, T[28]);
+              d = GG(d, a, b, c, M_offset_2, 9, T[29]);
+              c = GG(c, d, a, b, M_offset_7, 14, T[30]);
+              b = GG(b, c, d, a, M_offset_12, 20, T[31]);
+              a = HH(a, b, c, d, M_offset_5, 4, T[32]);
+              d = HH(d, a, b, c, M_offset_8, 11, T[33]);
+              c = HH(c, d, a, b, M_offset_11, 16, T[34]);
+              b = HH(b, c, d, a, M_offset_14, 23, T[35]);
+              a = HH(a, b, c, d, M_offset_1, 4, T[36]);
+              d = HH(d, a, b, c, M_offset_4, 11, T[37]);
+              c = HH(c, d, a, b, M_offset_7, 16, T[38]);
+              b = HH(b, c, d, a, M_offset_10, 23, T[39]);
+              a = HH(a, b, c, d, M_offset_13, 4, T[40]);
+              d = HH(d, a, b, c, M_offset_0, 11, T[41]);
+              c = HH(c, d, a, b, M_offset_3, 16, T[42]);
+              b = HH(b, c, d, a, M_offset_6, 23, T[43]);
+              a = HH(a, b, c, d, M_offset_9, 4, T[44]);
+              d = HH(d, a, b, c, M_offset_12, 11, T[45]);
+              c = HH(c, d, a, b, M_offset_15, 16, T[46]);
+              b = HH(b, c, d, a, M_offset_2, 23, T[47]);
+              a = II(a, b, c, d, M_offset_0, 6, T[48]);
+              d = II(d, a, b, c, M_offset_7, 10, T[49]);
+              c = II(c, d, a, b, M_offset_14, 15, T[50]);
+              b = II(b, c, d, a, M_offset_5, 21, T[51]);
+              a = II(a, b, c, d, M_offset_12, 6, T[52]);
+              d = II(d, a, b, c, M_offset_3, 10, T[53]);
+              c = II(c, d, a, b, M_offset_10, 15, T[54]);
+              b = II(b, c, d, a, M_offset_1, 21, T[55]);
+              a = II(a, b, c, d, M_offset_8, 6, T[56]);
+              d = II(d, a, b, c, M_offset_15, 10, T[57]);
+              c = II(c, d, a, b, M_offset_6, 15, T[58]);
+              b = II(b, c, d, a, M_offset_13, 21, T[59]);
+              a = II(a, b, c, d, M_offset_4, 6, T[60]);
+              d = II(d, a, b, c, M_offset_11, 10, T[61]);
+              c = II(c, d, a, b, M_offset_2, 15, T[62]);
+              b = II(b, c, d, a, M_offset_9, 21, T[63]);
+              H[0] = H[0] + a | 0;
+              H[1] = H[1] + b | 0;
+              H[2] = H[2] + c | 0;
+              H[3] = H[3] + d | 0;
+            },
+            _doFinalize: function() {
+              var data = this._data;
+              var dataWords = data.words;
+              var nBitsTotal = this._nDataBytes * 8;
+              var nBitsLeft = data.sigBytes * 8;
+              dataWords[nBitsLeft >>> 5] |= 128 << 24 - nBitsLeft % 32;
+              var nBitsTotalH = Math2.floor(nBitsTotal / 4294967296);
+              var nBitsTotalL = nBitsTotal;
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 15] = (nBitsTotalH << 8 | nBitsTotalH >>> 24) & 16711935 | (nBitsTotalH << 24 | nBitsTotalH >>> 8) & 4278255360;
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 14] = (nBitsTotalL << 8 | nBitsTotalL >>> 24) & 16711935 | (nBitsTotalL << 24 | nBitsTotalL >>> 8) & 4278255360;
+              data.sigBytes = (dataWords.length + 1) * 4;
+              this._process();
+              var hash = this._hash;
+              var H = hash.words;
+              for (var i = 0; i < 4; i++) {
+                var H_i = H[i];
+                H[i] = (H_i << 8 | H_i >>> 24) & 16711935 | (H_i << 24 | H_i >>> 8) & 4278255360;
+              }
+              return hash;
+            },
+            clone: function() {
+              var clone = Hasher.clone.call(this);
+              clone._hash = this._hash.clone();
+              return clone;
+            }
+          });
+          function FF(a, b, c, d, x, s, t) {
+            var n = a + (b & c | ~b & d) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          function GG(a, b, c, d, x, s, t) {
+            var n = a + (b & d | c & ~d) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          function HH(a, b, c, d, x, s, t) {
+            var n = a + (b ^ c ^ d) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          function II(a, b, c, d, x, s, t) {
+            var n = a + (c ^ (b | ~d)) + x + t;
+            return (n << s | n >>> 32 - s) + b;
+          }
+          C.MD5 = Hasher._createHelper(MD5);
+          C.HmacMD5 = Hasher._createHmacHelper(MD5);
+        })(Math);
+        return CryptoJS.MD5;
+      });
+    })(md5);
+    return md5.exports;
+  }
+  var sha1 = { exports: {} };
+  var hasRequiredSha1;
+  function requireSha1() {
+    if (hasRequiredSha1)
+      return sha1.exports;
+    hasRequiredSha1 = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var Hasher = C_lib.Hasher;
+          var C_algo = C.algo;
+          var W = [];
+          var SHA1 = C_algo.SHA1 = Hasher.extend({
+            _doReset: function() {
+              this._hash = new WordArray.init([
+                1732584193,
+                4023233417,
+                2562383102,
+                271733878,
+                3285377520
+              ]);
+            },
+            _doProcessBlock: function(M, offset) {
+              var H = this._hash.words;
+              var a = H[0];
+              var b = H[1];
+              var c = H[2];
+              var d = H[3];
+              var e = H[4];
+              for (var i = 0; i < 80; i++) {
+                if (i < 16) {
+                  W[i] = M[offset + i] | 0;
+                } else {
+                  var n = W[i - 3] ^ W[i - 8] ^ W[i - 14] ^ W[i - 16];
+                  W[i] = n << 1 | n >>> 31;
+                }
+                var t = (a << 5 | a >>> 27) + e + W[i];
+                if (i < 20) {
+                  t += (b & c | ~b & d) + 1518500249;
+                } else if (i < 40) {
+                  t += (b ^ c ^ d) + 1859775393;
+                } else if (i < 60) {
+                  t += (b & c | b & d | c & d) - 1894007588;
+                } else {
+                  t += (b ^ c ^ d) - 899497514;
+                }
+                e = d;
+                d = c;
+                c = b << 30 | b >>> 2;
+                b = a;
+                a = t;
+              }
+              H[0] = H[0] + a | 0;
+              H[1] = H[1] + b | 0;
+              H[2] = H[2] + c | 0;
+              H[3] = H[3] + d | 0;
+              H[4] = H[4] + e | 0;
+            },
+            _doFinalize: function() {
+              var data = this._data;
+              var dataWords = data.words;
+              var nBitsTotal = this._nDataBytes * 8;
+              var nBitsLeft = data.sigBytes * 8;
+              dataWords[nBitsLeft >>> 5] |= 128 << 24 - nBitsLeft % 32;
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 14] = Math.floor(nBitsTotal / 4294967296);
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 15] = nBitsTotal;
+              data.sigBytes = dataWords.length * 4;
+              this._process();
+              return this._hash;
+            },
+            clone: function() {
+              var clone = Hasher.clone.call(this);
+              clone._hash = this._hash.clone();
+              return clone;
+            }
+          });
+          C.SHA1 = Hasher._createHelper(SHA1);
+          C.HmacSHA1 = Hasher._createHmacHelper(SHA1);
+        })();
+        return CryptoJS.SHA1;
+      });
+    })(sha1);
+    return sha1.exports;
+  }
+  var sha256 = { exports: {} };
+  var hasRequiredSha256;
+  function requireSha256() {
+    if (hasRequiredSha256)
+      return sha256.exports;
+    hasRequiredSha256 = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function(Math2) {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var Hasher = C_lib.Hasher;
+          var C_algo = C.algo;
+          var H = [];
+          var K = [];
+          (function() {
+            function isPrime(n2) {
+              var sqrtN = Math2.sqrt(n2);
+              for (var factor = 2; factor <= sqrtN; factor++) {
+                if (!(n2 % factor)) {
+                  return false;
+                }
+              }
+              return true;
+            }
+            function getFractionalBits(n2) {
+              return (n2 - (n2 | 0)) * 4294967296 | 0;
+            }
+            var n = 2;
+            var nPrime = 0;
+            while (nPrime < 64) {
+              if (isPrime(n)) {
+                if (nPrime < 8) {
+                  H[nPrime] = getFractionalBits(Math2.pow(n, 1 / 2));
+                }
+                K[nPrime] = getFractionalBits(Math2.pow(n, 1 / 3));
+                nPrime++;
+              }
+              n++;
+            }
+          })();
+          var W = [];
+          var SHA256 = C_algo.SHA256 = Hasher.extend({
+            _doReset: function() {
+              this._hash = new WordArray.init(H.slice(0));
+            },
+            _doProcessBlock: function(M, offset) {
+              var H2 = this._hash.words;
+              var a = H2[0];
+              var b = H2[1];
+              var c = H2[2];
+              var d = H2[3];
+              var e = H2[4];
+              var f = H2[5];
+              var g = H2[6];
+              var h = H2[7];
+              for (var i = 0; i < 64; i++) {
+                if (i < 16) {
+                  W[i] = M[offset + i] | 0;
+                } else {
+                  var gamma0x = W[i - 15];
+                  var gamma0 = (gamma0x << 25 | gamma0x >>> 7) ^ (gamma0x << 14 | gamma0x >>> 18) ^ gamma0x >>> 3;
+                  var gamma1x = W[i - 2];
+                  var gamma1 = (gamma1x << 15 | gamma1x >>> 17) ^ (gamma1x << 13 | gamma1x >>> 19) ^ gamma1x >>> 10;
+                  W[i] = gamma0 + W[i - 7] + gamma1 + W[i - 16];
+                }
+                var ch = e & f ^ ~e & g;
+                var maj = a & b ^ a & c ^ b & c;
+                var sigma0 = (a << 30 | a >>> 2) ^ (a << 19 | a >>> 13) ^ (a << 10 | a >>> 22);
+                var sigma1 = (e << 26 | e >>> 6) ^ (e << 21 | e >>> 11) ^ (e << 7 | e >>> 25);
+                var t1 = h + sigma1 + ch + K[i] + W[i];
+                var t2 = sigma0 + maj;
+                h = g;
+                g = f;
+                f = e;
+                e = d + t1 | 0;
+                d = c;
+                c = b;
+                b = a;
+                a = t1 + t2 | 0;
+              }
+              H2[0] = H2[0] + a | 0;
+              H2[1] = H2[1] + b | 0;
+              H2[2] = H2[2] + c | 0;
+              H2[3] = H2[3] + d | 0;
+              H2[4] = H2[4] + e | 0;
+              H2[5] = H2[5] + f | 0;
+              H2[6] = H2[6] + g | 0;
+              H2[7] = H2[7] + h | 0;
+            },
+            _doFinalize: function() {
+              var data = this._data;
+              var dataWords = data.words;
+              var nBitsTotal = this._nDataBytes * 8;
+              var nBitsLeft = data.sigBytes * 8;
+              dataWords[nBitsLeft >>> 5] |= 128 << 24 - nBitsLeft % 32;
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 14] = Math2.floor(nBitsTotal / 4294967296);
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 15] = nBitsTotal;
+              data.sigBytes = dataWords.length * 4;
+              this._process();
+              return this._hash;
+            },
+            clone: function() {
+              var clone = Hasher.clone.call(this);
+              clone._hash = this._hash.clone();
+              return clone;
+            }
+          });
+          C.SHA256 = Hasher._createHelper(SHA256);
+          C.HmacSHA256 = Hasher._createHmacHelper(SHA256);
+        })(Math);
+        return CryptoJS.SHA256;
+      });
+    })(sha256);
+    return sha256.exports;
+  }
+  var sha224 = { exports: {} };
+  var hasRequiredSha224;
+  function requireSha224() {
+    if (hasRequiredSha224)
+      return sha224.exports;
+    hasRequiredSha224 = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireSha256());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var C_algo = C.algo;
+          var SHA256 = C_algo.SHA256;
+          var SHA224 = C_algo.SHA224 = SHA256.extend({
+            _doReset: function() {
+              this._hash = new WordArray.init([
+                3238371032,
+                914150663,
+                812702999,
+                4144912697,
+                4290775857,
+                1750603025,
+                1694076839,
+                3204075428
+              ]);
+            },
+            _doFinalize: function() {
+              var hash = SHA256._doFinalize.call(this);
+              hash.sigBytes -= 4;
+              return hash;
+            }
+          });
+          C.SHA224 = SHA256._createHelper(SHA224);
+          C.HmacSHA224 = SHA256._createHmacHelper(SHA224);
+        })();
+        return CryptoJS.SHA224;
+      });
+    })(sha224);
+    return sha224.exports;
+  }
+  var sha512 = { exports: {} };
+  var hasRequiredSha512;
+  function requireSha512() {
+    if (hasRequiredSha512)
+      return sha512.exports;
+    hasRequiredSha512 = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireX64Core());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var Hasher = C_lib.Hasher;
+          var C_x64 = C.x64;
+          var X64Word = C_x64.Word;
+          var X64WordArray = C_x64.WordArray;
+          var C_algo = C.algo;
+          function X64Word_create() {
+            return X64Word.create.apply(X64Word, arguments);
+          }
+          var K = [
+            X64Word_create(1116352408, 3609767458),
+            X64Word_create(1899447441, 602891725),
+            X64Word_create(3049323471, 3964484399),
+            X64Word_create(3921009573, 2173295548),
+            X64Word_create(961987163, 4081628472),
+            X64Word_create(1508970993, 3053834265),
+            X64Word_create(2453635748, 2937671579),
+            X64Word_create(2870763221, 3664609560),
+            X64Word_create(3624381080, 2734883394),
+            X64Word_create(310598401, 1164996542),
+            X64Word_create(607225278, 1323610764),
+            X64Word_create(1426881987, 3590304994),
+            X64Word_create(1925078388, 4068182383),
+            X64Word_create(2162078206, 991336113),
+            X64Word_create(2614888103, 633803317),
+            X64Word_create(3248222580, 3479774868),
+            X64Word_create(3835390401, 2666613458),
+            X64Word_create(4022224774, 944711139),
+            X64Word_create(264347078, 2341262773),
+            X64Word_create(604807628, 2007800933),
+            X64Word_create(770255983, 1495990901),
+            X64Word_create(1249150122, 1856431235),
+            X64Word_create(1555081692, 3175218132),
+            X64Word_create(1996064986, 2198950837),
+            X64Word_create(2554220882, 3999719339),
+            X64Word_create(2821834349, 766784016),
+            X64Word_create(2952996808, 2566594879),
+            X64Word_create(3210313671, 3203337956),
+            X64Word_create(3336571891, 1034457026),
+            X64Word_create(3584528711, 2466948901),
+            X64Word_create(113926993, 3758326383),
+            X64Word_create(338241895, 168717936),
+            X64Word_create(666307205, 1188179964),
+            X64Word_create(773529912, 1546045734),
+            X64Word_create(1294757372, 1522805485),
+            X64Word_create(1396182291, 2643833823),
+            X64Word_create(1695183700, 2343527390),
+            X64Word_create(1986661051, 1014477480),
+            X64Word_create(2177026350, 1206759142),
+            X64Word_create(2456956037, 344077627),
+            X64Word_create(2730485921, 1290863460),
+            X64Word_create(2820302411, 3158454273),
+            X64Word_create(3259730800, 3505952657),
+            X64Word_create(3345764771, 106217008),
+            X64Word_create(3516065817, 3606008344),
+            X64Word_create(3600352804, 1432725776),
+            X64Word_create(4094571909, 1467031594),
+            X64Word_create(275423344, 851169720),
+            X64Word_create(430227734, 3100823752),
+            X64Word_create(506948616, 1363258195),
+            X64Word_create(659060556, 3750685593),
+            X64Word_create(883997877, 3785050280),
+            X64Word_create(958139571, 3318307427),
+            X64Word_create(1322822218, 3812723403),
+            X64Word_create(1537002063, 2003034995),
+            X64Word_create(1747873779, 3602036899),
+            X64Word_create(1955562222, 1575990012),
+            X64Word_create(2024104815, 1125592928),
+            X64Word_create(2227730452, 2716904306),
+            X64Word_create(2361852424, 442776044),
+            X64Word_create(2428436474, 593698344),
+            X64Word_create(2756734187, 3733110249),
+            X64Word_create(3204031479, 2999351573),
+            X64Word_create(3329325298, 3815920427),
+            X64Word_create(3391569614, 3928383900),
+            X64Word_create(3515267271, 566280711),
+            X64Word_create(3940187606, 3454069534),
+            X64Word_create(4118630271, 4000239992),
+            X64Word_create(116418474, 1914138554),
+            X64Word_create(174292421, 2731055270),
+            X64Word_create(289380356, 3203993006),
+            X64Word_create(460393269, 320620315),
+            X64Word_create(685471733, 587496836),
+            X64Word_create(852142971, 1086792851),
+            X64Word_create(1017036298, 365543100),
+            X64Word_create(1126000580, 2618297676),
+            X64Word_create(1288033470, 3409855158),
+            X64Word_create(1501505948, 4234509866),
+            X64Word_create(1607167915, 987167468),
+            X64Word_create(1816402316, 1246189591)
+          ];
+          var W = [];
+          (function() {
+            for (var i = 0; i < 80; i++) {
+              W[i] = X64Word_create();
+            }
+          })();
+          var SHA512 = C_algo.SHA512 = Hasher.extend({
+            _doReset: function() {
+              this._hash = new X64WordArray.init([
+                new X64Word.init(1779033703, 4089235720),
+                new X64Word.init(3144134277, 2227873595),
+                new X64Word.init(1013904242, 4271175723),
+                new X64Word.init(2773480762, 1595750129),
+                new X64Word.init(1359893119, 2917565137),
+                new X64Word.init(2600822924, 725511199),
+                new X64Word.init(528734635, 4215389547),
+                new X64Word.init(1541459225, 327033209)
+              ]);
+            },
+            _doProcessBlock: function(M, offset) {
+              var H = this._hash.words;
+              var H0 = H[0];
+              var H1 = H[1];
+              var H2 = H[2];
+              var H3 = H[3];
+              var H4 = H[4];
+              var H5 = H[5];
+              var H6 = H[6];
+              var H7 = H[7];
+              var H0h = H0.high;
+              var H0l = H0.low;
+              var H1h = H1.high;
+              var H1l = H1.low;
+              var H2h = H2.high;
+              var H2l = H2.low;
+              var H3h = H3.high;
+              var H3l = H3.low;
+              var H4h = H4.high;
+              var H4l = H4.low;
+              var H5h = H5.high;
+              var H5l = H5.low;
+              var H6h = H6.high;
+              var H6l = H6.low;
+              var H7h = H7.high;
+              var H7l = H7.low;
+              var ah = H0h;
+              var al = H0l;
+              var bh = H1h;
+              var bl = H1l;
+              var ch = H2h;
+              var cl = H2l;
+              var dh = H3h;
+              var dl = H3l;
+              var eh = H4h;
+              var el = H4l;
+              var fh = H5h;
+              var fl = H5l;
+              var gh = H6h;
+              var gl = H6l;
+              var hh = H7h;
+              var hl = H7l;
+              for (var i = 0; i < 80; i++) {
+                var Wil;
+                var Wih;
+                var Wi = W[i];
+                if (i < 16) {
+                  Wih = Wi.high = M[offset + i * 2] | 0;
+                  Wil = Wi.low = M[offset + i * 2 + 1] | 0;
+                } else {
+                  var gamma0x = W[i - 15];
+                  var gamma0xh = gamma0x.high;
+                  var gamma0xl = gamma0x.low;
+                  var gamma0h = (gamma0xh >>> 1 | gamma0xl << 31) ^ (gamma0xh >>> 8 | gamma0xl << 24) ^ gamma0xh >>> 7;
+                  var gamma0l = (gamma0xl >>> 1 | gamma0xh << 31) ^ (gamma0xl >>> 8 | gamma0xh << 24) ^ (gamma0xl >>> 7 | gamma0xh << 25);
+                  var gamma1x = W[i - 2];
+                  var gamma1xh = gamma1x.high;
+                  var gamma1xl = gamma1x.low;
+                  var gamma1h = (gamma1xh >>> 19 | gamma1xl << 13) ^ (gamma1xh << 3 | gamma1xl >>> 29) ^ gamma1xh >>> 6;
+                  var gamma1l = (gamma1xl >>> 19 | gamma1xh << 13) ^ (gamma1xl << 3 | gamma1xh >>> 29) ^ (gamma1xl >>> 6 | gamma1xh << 26);
+                  var Wi7 = W[i - 7];
+                  var Wi7h = Wi7.high;
+                  var Wi7l = Wi7.low;
+                  var Wi16 = W[i - 16];
+                  var Wi16h = Wi16.high;
+                  var Wi16l = Wi16.low;
+                  Wil = gamma0l + Wi7l;
+                  Wih = gamma0h + Wi7h + (Wil >>> 0 < gamma0l >>> 0 ? 1 : 0);
+                  Wil = Wil + gamma1l;
+                  Wih = Wih + gamma1h + (Wil >>> 0 < gamma1l >>> 0 ? 1 : 0);
+                  Wil = Wil + Wi16l;
+                  Wih = Wih + Wi16h + (Wil >>> 0 < Wi16l >>> 0 ? 1 : 0);
+                  Wi.high = Wih;
+                  Wi.low = Wil;
+                }
+                var chh = eh & fh ^ ~eh & gh;
+                var chl = el & fl ^ ~el & gl;
+                var majh = ah & bh ^ ah & ch ^ bh & ch;
+                var majl = al & bl ^ al & cl ^ bl & cl;
+                var sigma0h = (ah >>> 28 | al << 4) ^ (ah << 30 | al >>> 2) ^ (ah << 25 | al >>> 7);
+                var sigma0l = (al >>> 28 | ah << 4) ^ (al << 30 | ah >>> 2) ^ (al << 25 | ah >>> 7);
+                var sigma1h = (eh >>> 14 | el << 18) ^ (eh >>> 18 | el << 14) ^ (eh << 23 | el >>> 9);
+                var sigma1l = (el >>> 14 | eh << 18) ^ (el >>> 18 | eh << 14) ^ (el << 23 | eh >>> 9);
+                var Ki = K[i];
+                var Kih = Ki.high;
+                var Kil = Ki.low;
+                var t1l = hl + sigma1l;
+                var t1h = hh + sigma1h + (t1l >>> 0 < hl >>> 0 ? 1 : 0);
+                var t1l = t1l + chl;
+                var t1h = t1h + chh + (t1l >>> 0 < chl >>> 0 ? 1 : 0);
+                var t1l = t1l + Kil;
+                var t1h = t1h + Kih + (t1l >>> 0 < Kil >>> 0 ? 1 : 0);
+                var t1l = t1l + Wil;
+                var t1h = t1h + Wih + (t1l >>> 0 < Wil >>> 0 ? 1 : 0);
+                var t2l = sigma0l + majl;
+                var t2h = sigma0h + majh + (t2l >>> 0 < sigma0l >>> 0 ? 1 : 0);
+                hh = gh;
+                hl = gl;
+                gh = fh;
+                gl = fl;
+                fh = eh;
+                fl = el;
+                el = dl + t1l | 0;
+                eh = dh + t1h + (el >>> 0 < dl >>> 0 ? 1 : 0) | 0;
+                dh = ch;
+                dl = cl;
+                ch = bh;
+                cl = bl;
+                bh = ah;
+                bl = al;
+                al = t1l + t2l | 0;
+                ah = t1h + t2h + (al >>> 0 < t1l >>> 0 ? 1 : 0) | 0;
+              }
+              H0l = H0.low = H0l + al;
+              H0.high = H0h + ah + (H0l >>> 0 < al >>> 0 ? 1 : 0);
+              H1l = H1.low = H1l + bl;
+              H1.high = H1h + bh + (H1l >>> 0 < bl >>> 0 ? 1 : 0);
+              H2l = H2.low = H2l + cl;
+              H2.high = H2h + ch + (H2l >>> 0 < cl >>> 0 ? 1 : 0);
+              H3l = H3.low = H3l + dl;
+              H3.high = H3h + dh + (H3l >>> 0 < dl >>> 0 ? 1 : 0);
+              H4l = H4.low = H4l + el;
+              H4.high = H4h + eh + (H4l >>> 0 < el >>> 0 ? 1 : 0);
+              H5l = H5.low = H5l + fl;
+              H5.high = H5h + fh + (H5l >>> 0 < fl >>> 0 ? 1 : 0);
+              H6l = H6.low = H6l + gl;
+              H6.high = H6h + gh + (H6l >>> 0 < gl >>> 0 ? 1 : 0);
+              H7l = H7.low = H7l + hl;
+              H7.high = H7h + hh + (H7l >>> 0 < hl >>> 0 ? 1 : 0);
+            },
+            _doFinalize: function() {
+              var data = this._data;
+              var dataWords = data.words;
+              var nBitsTotal = this._nDataBytes * 8;
+              var nBitsLeft = data.sigBytes * 8;
+              dataWords[nBitsLeft >>> 5] |= 128 << 24 - nBitsLeft % 32;
+              dataWords[(nBitsLeft + 128 >>> 10 << 5) + 30] = Math.floor(nBitsTotal / 4294967296);
+              dataWords[(nBitsLeft + 128 >>> 10 << 5) + 31] = nBitsTotal;
+              data.sigBytes = dataWords.length * 4;
+              this._process();
+              var hash = this._hash.toX32();
+              return hash;
+            },
+            clone: function() {
+              var clone = Hasher.clone.call(this);
+              clone._hash = this._hash.clone();
+              return clone;
+            },
+            blockSize: 1024 / 32
+          });
+          C.SHA512 = Hasher._createHelper(SHA512);
+          C.HmacSHA512 = Hasher._createHmacHelper(SHA512);
+        })();
+        return CryptoJS.SHA512;
+      });
+    })(sha512);
+    return sha512.exports;
+  }
+  var sha384 = { exports: {} };
+  var hasRequiredSha384;
+  function requireSha384() {
+    if (hasRequiredSha384)
+      return sha384.exports;
+    hasRequiredSha384 = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireX64Core(), requireSha512());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_x64 = C.x64;
+          var X64Word = C_x64.Word;
+          var X64WordArray = C_x64.WordArray;
+          var C_algo = C.algo;
+          var SHA512 = C_algo.SHA512;
+          var SHA384 = C_algo.SHA384 = SHA512.extend({
+            _doReset: function() {
+              this._hash = new X64WordArray.init([
+                new X64Word.init(3418070365, 3238371032),
+                new X64Word.init(1654270250, 914150663),
+                new X64Word.init(2438529370, 812702999),
+                new X64Word.init(355462360, 4144912697),
+                new X64Word.init(1731405415, 4290775857),
+                new X64Word.init(2394180231, 1750603025),
+                new X64Word.init(3675008525, 1694076839),
+                new X64Word.init(1203062813, 3204075428)
+              ]);
+            },
+            _doFinalize: function() {
+              var hash = SHA512._doFinalize.call(this);
+              hash.sigBytes -= 16;
+              return hash;
+            }
+          });
+          C.SHA384 = SHA512._createHelper(SHA384);
+          C.HmacSHA384 = SHA512._createHmacHelper(SHA384);
+        })();
+        return CryptoJS.SHA384;
+      });
+    })(sha384);
+    return sha384.exports;
+  }
+  var sha3 = { exports: {} };
+  var hasRequiredSha3;
+  function requireSha3() {
+    if (hasRequiredSha3)
+      return sha3.exports;
+    hasRequiredSha3 = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireX64Core());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function(Math2) {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var Hasher = C_lib.Hasher;
+          var C_x64 = C.x64;
+          var X64Word = C_x64.Word;
+          var C_algo = C.algo;
+          var RHO_OFFSETS = [];
+          var PI_INDEXES = [];
+          var ROUND_CONSTANTS = [];
+          (function() {
+            var x = 1, y = 0;
+            for (var t = 0; t < 24; t++) {
+              RHO_OFFSETS[x + 5 * y] = (t + 1) * (t + 2) / 2 % 64;
+              var newX = y % 5;
+              var newY = (2 * x + 3 * y) % 5;
+              x = newX;
+              y = newY;
+            }
+            for (var x = 0; x < 5; x++) {
+              for (var y = 0; y < 5; y++) {
+                PI_INDEXES[x + 5 * y] = y + (2 * x + 3 * y) % 5 * 5;
+              }
+            }
+            var LFSR = 1;
+            for (var i = 0; i < 24; i++) {
+              var roundConstantMsw = 0;
+              var roundConstantLsw = 0;
+              for (var j = 0; j < 7; j++) {
+                if (LFSR & 1) {
+                  var bitPosition = (1 << j) - 1;
+                  if (bitPosition < 32) {
+                    roundConstantLsw ^= 1 << bitPosition;
+                  } else {
+                    roundConstantMsw ^= 1 << bitPosition - 32;
+                  }
+                }
+                if (LFSR & 128) {
+                  LFSR = LFSR << 1 ^ 113;
+                } else {
+                  LFSR <<= 1;
+                }
+              }
+              ROUND_CONSTANTS[i] = X64Word.create(roundConstantMsw, roundConstantLsw);
+            }
+          })();
+          var T = [];
+          (function() {
+            for (var i = 0; i < 25; i++) {
+              T[i] = X64Word.create();
+            }
+          })();
+          var SHA3 = C_algo.SHA3 = Hasher.extend({
+            /**
+             * Configuration options.
+             *
+             * @property {number} outputLength
+             *   The desired number of bits in the output hash.
+             *   Only values permitted are: 224, 256, 384, 512.
+             *   Default: 512
+             */
+            cfg: Hasher.cfg.extend({
+              outputLength: 512
+            }),
+            _doReset: function() {
+              var state = this._state = [];
+              for (var i = 0; i < 25; i++) {
+                state[i] = new X64Word.init();
+              }
+              this.blockSize = (1600 - 2 * this.cfg.outputLength) / 32;
+            },
+            _doProcessBlock: function(M, offset) {
+              var state = this._state;
+              var nBlockSizeLanes = this.blockSize / 2;
+              for (var i = 0; i < nBlockSizeLanes; i++) {
+                var M2i = M[offset + 2 * i];
+                var M2i1 = M[offset + 2 * i + 1];
+                M2i = (M2i << 8 | M2i >>> 24) & 16711935 | (M2i << 24 | M2i >>> 8) & 4278255360;
+                M2i1 = (M2i1 << 8 | M2i1 >>> 24) & 16711935 | (M2i1 << 24 | M2i1 >>> 8) & 4278255360;
+                var lane = state[i];
+                lane.high ^= M2i1;
+                lane.low ^= M2i;
+              }
+              for (var round = 0; round < 24; round++) {
+                for (var x = 0; x < 5; x++) {
+                  var tMsw = 0, tLsw = 0;
+                  for (var y = 0; y < 5; y++) {
+                    var lane = state[x + 5 * y];
+                    tMsw ^= lane.high;
+                    tLsw ^= lane.low;
+                  }
+                  var Tx = T[x];
+                  Tx.high = tMsw;
+                  Tx.low = tLsw;
+                }
+                for (var x = 0; x < 5; x++) {
+                  var Tx4 = T[(x + 4) % 5];
+                  var Tx1 = T[(x + 1) % 5];
+                  var Tx1Msw = Tx1.high;
+                  var Tx1Lsw = Tx1.low;
+                  var tMsw = Tx4.high ^ (Tx1Msw << 1 | Tx1Lsw >>> 31);
+                  var tLsw = Tx4.low ^ (Tx1Lsw << 1 | Tx1Msw >>> 31);
+                  for (var y = 0; y < 5; y++) {
+                    var lane = state[x + 5 * y];
+                    lane.high ^= tMsw;
+                    lane.low ^= tLsw;
+                  }
+                }
+                for (var laneIndex = 1; laneIndex < 25; laneIndex++) {
+                  var tMsw;
+                  var tLsw;
+                  var lane = state[laneIndex];
+                  var laneMsw = lane.high;
+                  var laneLsw = lane.low;
+                  var rhoOffset = RHO_OFFSETS[laneIndex];
+                  if (rhoOffset < 32) {
+                    tMsw = laneMsw << rhoOffset | laneLsw >>> 32 - rhoOffset;
+                    tLsw = laneLsw << rhoOffset | laneMsw >>> 32 - rhoOffset;
+                  } else {
+                    tMsw = laneLsw << rhoOffset - 32 | laneMsw >>> 64 - rhoOffset;
+                    tLsw = laneMsw << rhoOffset - 32 | laneLsw >>> 64 - rhoOffset;
+                  }
+                  var TPiLane = T[PI_INDEXES[laneIndex]];
+                  TPiLane.high = tMsw;
+                  TPiLane.low = tLsw;
+                }
+                var T0 = T[0];
+                var state0 = state[0];
+                T0.high = state0.high;
+                T0.low = state0.low;
+                for (var x = 0; x < 5; x++) {
+                  for (var y = 0; y < 5; y++) {
+                    var laneIndex = x + 5 * y;
+                    var lane = state[laneIndex];
+                    var TLane = T[laneIndex];
+                    var Tx1Lane = T[(x + 1) % 5 + 5 * y];
+                    var Tx2Lane = T[(x + 2) % 5 + 5 * y];
+                    lane.high = TLane.high ^ ~Tx1Lane.high & Tx2Lane.high;
+                    lane.low = TLane.low ^ ~Tx1Lane.low & Tx2Lane.low;
+                  }
+                }
+                var lane = state[0];
+                var roundConstant = ROUND_CONSTANTS[round];
+                lane.high ^= roundConstant.high;
+                lane.low ^= roundConstant.low;
+              }
+            },
+            _doFinalize: function() {
+              var data = this._data;
+              var dataWords = data.words;
+              this._nDataBytes * 8;
+              var nBitsLeft = data.sigBytes * 8;
+              var blockSizeBits = this.blockSize * 32;
+              dataWords[nBitsLeft >>> 5] |= 1 << 24 - nBitsLeft % 32;
+              dataWords[(Math2.ceil((nBitsLeft + 1) / blockSizeBits) * blockSizeBits >>> 5) - 1] |= 128;
+              data.sigBytes = dataWords.length * 4;
+              this._process();
+              var state = this._state;
+              var outputLengthBytes = this.cfg.outputLength / 8;
+              var outputLengthLanes = outputLengthBytes / 8;
+              var hashWords = [];
+              for (var i = 0; i < outputLengthLanes; i++) {
+                var lane = state[i];
+                var laneMsw = lane.high;
+                var laneLsw = lane.low;
+                laneMsw = (laneMsw << 8 | laneMsw >>> 24) & 16711935 | (laneMsw << 24 | laneMsw >>> 8) & 4278255360;
+                laneLsw = (laneLsw << 8 | laneLsw >>> 24) & 16711935 | (laneLsw << 24 | laneLsw >>> 8) & 4278255360;
+                hashWords.push(laneLsw);
+                hashWords.push(laneMsw);
+              }
+              return new WordArray.init(hashWords, outputLengthBytes);
+            },
+            clone: function() {
+              var clone = Hasher.clone.call(this);
+              var state = clone._state = this._state.slice(0);
+              for (var i = 0; i < 25; i++) {
+                state[i] = state[i].clone();
+              }
+              return clone;
+            }
+          });
+          C.SHA3 = Hasher._createHelper(SHA3);
+          C.HmacSHA3 = Hasher._createHmacHelper(SHA3);
+        })(Math);
+        return CryptoJS.SHA3;
+      });
+    })(sha3);
+    return sha3.exports;
+  }
+  var ripemd160 = { exports: {} };
+  var hasRequiredRipemd160;
+  function requireRipemd160() {
+    if (hasRequiredRipemd160)
+      return ripemd160.exports;
+    hasRequiredRipemd160 = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        /** @preserve
+        			(c) 2012 by Cédric Mesnil. All rights reserved.
+        
+        			Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+        
+        			    - Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+        			    - Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+        
+        			THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+        			*/
+        (function(Math2) {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var Hasher = C_lib.Hasher;
+          var C_algo = C.algo;
+          var _zl = WordArray.create([
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            7,
+            4,
+            13,
+            1,
+            10,
+            6,
+            15,
+            3,
+            12,
+            0,
+            9,
+            5,
+            2,
+            14,
+            11,
+            8,
+            3,
+            10,
+            14,
+            4,
+            9,
+            15,
+            8,
+            1,
+            2,
+            7,
+            0,
+            6,
+            13,
+            11,
+            5,
+            12,
+            1,
+            9,
+            11,
+            10,
+            0,
+            8,
+            12,
+            4,
+            13,
+            3,
+            7,
+            15,
+            14,
+            5,
+            6,
+            2,
+            4,
+            0,
+            5,
+            9,
+            7,
+            12,
+            2,
+            10,
+            14,
+            1,
+            3,
+            8,
+            11,
+            6,
+            15,
+            13
+          ]);
+          var _zr = WordArray.create([
+            5,
+            14,
+            7,
+            0,
+            9,
+            2,
+            11,
+            4,
+            13,
+            6,
+            15,
+            8,
+            1,
+            10,
+            3,
+            12,
+            6,
+            11,
+            3,
+            7,
+            0,
+            13,
+            5,
+            10,
+            14,
+            15,
+            8,
+            12,
+            4,
+            9,
+            1,
+            2,
+            15,
+            5,
+            1,
+            3,
+            7,
+            14,
+            6,
+            9,
+            11,
+            8,
+            12,
+            2,
+            10,
+            0,
+            4,
+            13,
+            8,
+            6,
+            4,
+            1,
+            3,
+            11,
+            15,
+            0,
+            5,
+            12,
+            2,
+            13,
+            9,
+            7,
+            10,
+            14,
+            12,
+            15,
+            10,
+            4,
+            1,
+            5,
+            8,
+            7,
+            6,
+            2,
+            13,
+            14,
+            0,
+            3,
+            9,
+            11
+          ]);
+          var _sl = WordArray.create([
+            11,
+            14,
+            15,
+            12,
+            5,
+            8,
+            7,
+            9,
+            11,
+            13,
+            14,
+            15,
+            6,
+            7,
+            9,
+            8,
+            7,
+            6,
+            8,
+            13,
+            11,
+            9,
+            7,
+            15,
+            7,
+            12,
+            15,
+            9,
+            11,
+            7,
+            13,
+            12,
+            11,
+            13,
+            6,
+            7,
+            14,
+            9,
+            13,
+            15,
+            14,
+            8,
+            13,
+            6,
+            5,
+            12,
+            7,
+            5,
+            11,
+            12,
+            14,
+            15,
+            14,
+            15,
+            9,
+            8,
+            9,
+            14,
+            5,
+            6,
+            8,
+            6,
+            5,
+            12,
+            9,
+            15,
+            5,
+            11,
+            6,
+            8,
+            13,
+            12,
+            5,
+            12,
+            13,
+            14,
+            11,
+            8,
+            5,
+            6
+          ]);
+          var _sr = WordArray.create([
+            8,
+            9,
+            9,
+            11,
+            13,
+            15,
+            15,
+            5,
+            7,
+            7,
+            8,
+            11,
+            14,
+            14,
+            12,
+            6,
+            9,
+            13,
+            15,
+            7,
+            12,
+            8,
+            9,
+            11,
+            7,
+            7,
+            12,
+            7,
+            6,
+            15,
+            13,
+            11,
+            9,
+            7,
+            15,
+            11,
+            8,
+            6,
+            6,
+            14,
+            12,
+            13,
+            5,
+            14,
+            13,
+            13,
+            7,
+            5,
+            15,
+            5,
+            8,
+            11,
+            14,
+            14,
+            6,
+            14,
+            6,
+            9,
+            12,
+            9,
+            12,
+            5,
+            15,
+            8,
+            8,
+            5,
+            12,
+            9,
+            12,
+            5,
+            14,
+            6,
+            8,
+            13,
+            6,
+            5,
+            15,
+            13,
+            11,
+            11
+          ]);
+          var _hl = WordArray.create([0, 1518500249, 1859775393, 2400959708, 2840853838]);
+          var _hr = WordArray.create([1352829926, 1548603684, 1836072691, 2053994217, 0]);
+          var RIPEMD160 = C_algo.RIPEMD160 = Hasher.extend({
+            _doReset: function() {
+              this._hash = WordArray.create([1732584193, 4023233417, 2562383102, 271733878, 3285377520]);
+            },
+            _doProcessBlock: function(M, offset) {
+              for (var i = 0; i < 16; i++) {
+                var offset_i = offset + i;
+                var M_offset_i = M[offset_i];
+                M[offset_i] = (M_offset_i << 8 | M_offset_i >>> 24) & 16711935 | (M_offset_i << 24 | M_offset_i >>> 8) & 4278255360;
+              }
+              var H = this._hash.words;
+              var hl = _hl.words;
+              var hr = _hr.words;
+              var zl = _zl.words;
+              var zr = _zr.words;
+              var sl = _sl.words;
+              var sr = _sr.words;
+              var al, bl, cl, dl, el;
+              var ar, br, cr, dr, er;
+              ar = al = H[0];
+              br = bl = H[1];
+              cr = cl = H[2];
+              dr = dl = H[3];
+              er = el = H[4];
+              var t;
+              for (var i = 0; i < 80; i += 1) {
+                t = al + M[offset + zl[i]] | 0;
+                if (i < 16) {
+                  t += f1(bl, cl, dl) + hl[0];
+                } else if (i < 32) {
+                  t += f2(bl, cl, dl) + hl[1];
+                } else if (i < 48) {
+                  t += f3(bl, cl, dl) + hl[2];
+                } else if (i < 64) {
+                  t += f4(bl, cl, dl) + hl[3];
+                } else {
+                  t += f5(bl, cl, dl) + hl[4];
+                }
+                t = t | 0;
+                t = rotl(t, sl[i]);
+                t = t + el | 0;
+                al = el;
+                el = dl;
+                dl = rotl(cl, 10);
+                cl = bl;
+                bl = t;
+                t = ar + M[offset + zr[i]] | 0;
+                if (i < 16) {
+                  t += f5(br, cr, dr) + hr[0];
+                } else if (i < 32) {
+                  t += f4(br, cr, dr) + hr[1];
+                } else if (i < 48) {
+                  t += f3(br, cr, dr) + hr[2];
+                } else if (i < 64) {
+                  t += f2(br, cr, dr) + hr[3];
+                } else {
+                  t += f1(br, cr, dr) + hr[4];
+                }
+                t = t | 0;
+                t = rotl(t, sr[i]);
+                t = t + er | 0;
+                ar = er;
+                er = dr;
+                dr = rotl(cr, 10);
+                cr = br;
+                br = t;
+              }
+              t = H[1] + cl + dr | 0;
+              H[1] = H[2] + dl + er | 0;
+              H[2] = H[3] + el + ar | 0;
+              H[3] = H[4] + al + br | 0;
+              H[4] = H[0] + bl + cr | 0;
+              H[0] = t;
+            },
+            _doFinalize: function() {
+              var data = this._data;
+              var dataWords = data.words;
+              var nBitsTotal = this._nDataBytes * 8;
+              var nBitsLeft = data.sigBytes * 8;
+              dataWords[nBitsLeft >>> 5] |= 128 << 24 - nBitsLeft % 32;
+              dataWords[(nBitsLeft + 64 >>> 9 << 4) + 14] = (nBitsTotal << 8 | nBitsTotal >>> 24) & 16711935 | (nBitsTotal << 24 | nBitsTotal >>> 8) & 4278255360;
+              data.sigBytes = (dataWords.length + 1) * 4;
+              this._process();
+              var hash = this._hash;
+              var H = hash.words;
+              for (var i = 0; i < 5; i++) {
+                var H_i = H[i];
+                H[i] = (H_i << 8 | H_i >>> 24) & 16711935 | (H_i << 24 | H_i >>> 8) & 4278255360;
+              }
+              return hash;
+            },
+            clone: function() {
+              var clone = Hasher.clone.call(this);
+              clone._hash = this._hash.clone();
+              return clone;
+            }
+          });
+          function f1(x, y, z) {
+            return x ^ y ^ z;
+          }
+          function f2(x, y, z) {
+            return x & y | ~x & z;
+          }
+          function f3(x, y, z) {
+            return (x | ~y) ^ z;
+          }
+          function f4(x, y, z) {
+            return x & z | y & ~z;
+          }
+          function f5(x, y, z) {
+            return x ^ (y | ~z);
+          }
+          function rotl(x, n) {
+            return x << n | x >>> 32 - n;
+          }
+          C.RIPEMD160 = Hasher._createHelper(RIPEMD160);
+          C.HmacRIPEMD160 = Hasher._createHmacHelper(RIPEMD160);
+        })();
+        return CryptoJS.RIPEMD160;
+      });
+    })(ripemd160);
+    return ripemd160.exports;
+  }
+  var hmac = { exports: {} };
+  var hasRequiredHmac;
+  function requireHmac() {
+    if (hasRequiredHmac)
+      return hmac.exports;
+    hasRequiredHmac = 1;
+    (function(module, exports) {
+      (function(root, factory) {
+        {
+          module.exports = factory(requireCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var Base = C_lib.Base;
+          var C_enc = C.enc;
+          var Utf8 = C_enc.Utf8;
+          var C_algo = C.algo;
+          C_algo.HMAC = Base.extend({
+            /**
+             * Initializes a newly created HMAC.
+             *
+             * @param {Hasher} hasher The hash algorithm to use.
+             * @param {WordArray|string} key The secret key.
+             *
+             * @example
+             *
+             *     var hmacHasher = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, key);
+             */
+            init: function(hasher, key) {
+              hasher = this._hasher = new hasher.init();
+              if (typeof key == "string") {
+                key = Utf8.parse(key);
+              }
+              var hasherBlockSize = hasher.blockSize;
+              var hasherBlockSizeBytes = hasherBlockSize * 4;
+              if (key.sigBytes > hasherBlockSizeBytes) {
+                key = hasher.finalize(key);
+              }
+              key.clamp();
+              var oKey = this._oKey = key.clone();
+              var iKey = this._iKey = key.clone();
+              var oKeyWords = oKey.words;
+              var iKeyWords = iKey.words;
+              for (var i = 0; i < hasherBlockSize; i++) {
+                oKeyWords[i] ^= 1549556828;
+                iKeyWords[i] ^= 909522486;
+              }
+              oKey.sigBytes = iKey.sigBytes = hasherBlockSizeBytes;
+              this.reset();
+            },
+            /**
+             * Resets this HMAC to its initial state.
+             *
+             * @example
+             *
+             *     hmacHasher.reset();
+             */
+            reset: function() {
+              var hasher = this._hasher;
+              hasher.reset();
+              hasher.update(this._iKey);
+            },
+            /**
+             * Updates this HMAC with a message.
+             *
+             * @param {WordArray|string} messageUpdate The message to append.
+             *
+             * @return {HMAC} This HMAC instance.
+             *
+             * @example
+             *
+             *     hmacHasher.update('message');
+             *     hmacHasher.update(wordArray);
+             */
+            update: function(messageUpdate) {
+              this._hasher.update(messageUpdate);
+              return this;
+            },
+            /**
+             * Finalizes the HMAC computation.
+             * Note that the finalize operation is effectively a destructive, read-once operation.
+             *
+             * @param {WordArray|string} messageUpdate (Optional) A final message update.
+             *
+             * @return {WordArray} The HMAC.
+             *
+             * @example
+             *
+             *     var hmac = hmacHasher.finalize();
+             *     var hmac = hmacHasher.finalize('message');
+             *     var hmac = hmacHasher.finalize(wordArray);
+             */
+            finalize: function(messageUpdate) {
+              var hasher = this._hasher;
+              var innerHash = hasher.finalize(messageUpdate);
+              hasher.reset();
+              var hmac2 = hasher.finalize(this._oKey.clone().concat(innerHash));
+              return hmac2;
+            }
+          });
+        })();
+      });
+    })(hmac);
+    return hmac.exports;
+  }
+  var pbkdf2 = { exports: {} };
+  var hasRequiredPbkdf2;
+  function requirePbkdf2() {
+    if (hasRequiredPbkdf2)
+      return pbkdf2.exports;
+    hasRequiredPbkdf2 = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireSha256(), requireHmac());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var Base = C_lib.Base;
+          var WordArray = C_lib.WordArray;
+          var C_algo = C.algo;
+          var SHA256 = C_algo.SHA256;
+          var HMAC = C_algo.HMAC;
+          var PBKDF2 = C_algo.PBKDF2 = Base.extend({
+            /**
+             * Configuration options.
+             *
+             * @property {number} keySize The key size in words to generate. Default: 4 (128 bits)
+             * @property {Hasher} hasher The hasher to use. Default: SHA256
+             * @property {number} iterations The number of iterations to perform. Default: 250000
+             */
+            cfg: Base.extend({
+              keySize: 128 / 32,
+              hasher: SHA256,
+              iterations: 25e4
+            }),
+            /**
+             * Initializes a newly created key derivation function.
+             *
+             * @param {Object} cfg (Optional) The configuration options to use for the derivation.
+             *
+             * @example
+             *
+             *     var kdf = CryptoJS.algo.PBKDF2.create();
+             *     var kdf = CryptoJS.algo.PBKDF2.create({ keySize: 8 });
+             *     var kdf = CryptoJS.algo.PBKDF2.create({ keySize: 8, iterations: 1000 });
+             */
+            init: function(cfg) {
+              this.cfg = this.cfg.extend(cfg);
+            },
+            /**
+             * Computes the Password-Based Key Derivation Function 2.
+             *
+             * @param {WordArray|string} password The password.
+             * @param {WordArray|string} salt A salt.
+             *
+             * @return {WordArray} The derived key.
+             *
+             * @example
+             *
+             *     var key = kdf.compute(password, salt);
+             */
+            compute: function(password, salt) {
+              var cfg = this.cfg;
+              var hmac2 = HMAC.create(cfg.hasher, password);
+              var derivedKey = WordArray.create();
+              var blockIndex = WordArray.create([1]);
+              var derivedKeyWords = derivedKey.words;
+              var blockIndexWords = blockIndex.words;
+              var keySize = cfg.keySize;
+              var iterations = cfg.iterations;
+              while (derivedKeyWords.length < keySize) {
+                var block = hmac2.update(salt).finalize(blockIndex);
+                hmac2.reset();
+                var blockWords = block.words;
+                var blockWordsLength = blockWords.length;
+                var intermediate = block;
+                for (var i = 1; i < iterations; i++) {
+                  intermediate = hmac2.finalize(intermediate);
+                  hmac2.reset();
+                  var intermediateWords = intermediate.words;
+                  for (var j = 0; j < blockWordsLength; j++) {
+                    blockWords[j] ^= intermediateWords[j];
+                  }
+                }
+                derivedKey.concat(block);
+                blockIndexWords[0]++;
+              }
+              derivedKey.sigBytes = keySize * 4;
+              return derivedKey;
+            }
+          });
+          C.PBKDF2 = function(password, salt, cfg) {
+            return PBKDF2.create(cfg).compute(password, salt);
+          };
+        })();
+        return CryptoJS.PBKDF2;
+      });
+    })(pbkdf2);
+    return pbkdf2.exports;
+  }
+  var evpkdf = { exports: {} };
+  var hasRequiredEvpkdf;
+  function requireEvpkdf() {
+    if (hasRequiredEvpkdf)
+      return evpkdf.exports;
+    hasRequiredEvpkdf = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireSha1(), requireHmac());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var Base = C_lib.Base;
+          var WordArray = C_lib.WordArray;
+          var C_algo = C.algo;
+          var MD5 = C_algo.MD5;
+          var EvpKDF = C_algo.EvpKDF = Base.extend({
+            /**
+             * Configuration options.
+             *
+             * @property {number} keySize The key size in words to generate. Default: 4 (128 bits)
+             * @property {Hasher} hasher The hash algorithm to use. Default: MD5
+             * @property {number} iterations The number of iterations to perform. Default: 1
+             */
+            cfg: Base.extend({
+              keySize: 128 / 32,
+              hasher: MD5,
+              iterations: 1
+            }),
+            /**
+             * Initializes a newly created key derivation function.
+             *
+             * @param {Object} cfg (Optional) The configuration options to use for the derivation.
+             *
+             * @example
+             *
+             *     var kdf = CryptoJS.algo.EvpKDF.create();
+             *     var kdf = CryptoJS.algo.EvpKDF.create({ keySize: 8 });
+             *     var kdf = CryptoJS.algo.EvpKDF.create({ keySize: 8, iterations: 1000 });
+             */
+            init: function(cfg) {
+              this.cfg = this.cfg.extend(cfg);
+            },
+            /**
+             * Derives a key from a password.
+             *
+             * @param {WordArray|string} password The password.
+             * @param {WordArray|string} salt A salt.
+             *
+             * @return {WordArray} The derived key.
+             *
+             * @example
+             *
+             *     var key = kdf.compute(password, salt);
+             */
+            compute: function(password, salt) {
+              var block;
+              var cfg = this.cfg;
+              var hasher = cfg.hasher.create();
+              var derivedKey = WordArray.create();
+              var derivedKeyWords = derivedKey.words;
+              var keySize = cfg.keySize;
+              var iterations = cfg.iterations;
+              while (derivedKeyWords.length < keySize) {
+                if (block) {
+                  hasher.update(block);
+                }
+                block = hasher.update(password).finalize(salt);
+                hasher.reset();
+                for (var i = 1; i < iterations; i++) {
+                  block = hasher.finalize(block);
+                  hasher.reset();
+                }
+                derivedKey.concat(block);
+              }
+              derivedKey.sigBytes = keySize * 4;
+              return derivedKey;
+            }
+          });
+          C.EvpKDF = function(password, salt, cfg) {
+            return EvpKDF.create(cfg).compute(password, salt);
+          };
+        })();
+        return CryptoJS.EvpKDF;
+      });
+    })(evpkdf);
+    return evpkdf.exports;
+  }
+  var cipherCore = { exports: {} };
+  var hasRequiredCipherCore;
+  function requireCipherCore() {
+    if (hasRequiredCipherCore)
+      return cipherCore.exports;
+    hasRequiredCipherCore = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireEvpkdf());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.lib.Cipher || function(undefined$1) {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var Base = C_lib.Base;
+          var WordArray = C_lib.WordArray;
+          var BufferedBlockAlgorithm = C_lib.BufferedBlockAlgorithm;
+          var C_enc = C.enc;
+          C_enc.Utf8;
+          var Base64 = C_enc.Base64;
+          var C_algo = C.algo;
+          var EvpKDF = C_algo.EvpKDF;
+          var Cipher = C_lib.Cipher = BufferedBlockAlgorithm.extend({
+            /**
+             * Configuration options.
+             *
+             * @property {WordArray} iv The IV to use for this operation.
+             */
+            cfg: Base.extend(),
+            /**
+             * Creates this cipher in encryption mode.
+             *
+             * @param {WordArray} key The key.
+             * @param {Object} cfg (Optional) The configuration options to use for this operation.
+             *
+             * @return {Cipher} A cipher instance.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var cipher = CryptoJS.algo.AES.createEncryptor(keyWordArray, { iv: ivWordArray });
+             */
+            createEncryptor: function(key, cfg) {
+              return this.create(this._ENC_XFORM_MODE, key, cfg);
+            },
+            /**
+             * Creates this cipher in decryption mode.
+             *
+             * @param {WordArray} key The key.
+             * @param {Object} cfg (Optional) The configuration options to use for this operation.
+             *
+             * @return {Cipher} A cipher instance.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var cipher = CryptoJS.algo.AES.createDecryptor(keyWordArray, { iv: ivWordArray });
+             */
+            createDecryptor: function(key, cfg) {
+              return this.create(this._DEC_XFORM_MODE, key, cfg);
+            },
+            /**
+             * Initializes a newly created cipher.
+             *
+             * @param {number} xformMode Either the encryption or decryption transormation mode constant.
+             * @param {WordArray} key The key.
+             * @param {Object} cfg (Optional) The configuration options to use for this operation.
+             *
+             * @example
+             *
+             *     var cipher = CryptoJS.algo.AES.create(CryptoJS.algo.AES._ENC_XFORM_MODE, keyWordArray, { iv: ivWordArray });
+             */
+            init: function(xformMode, key, cfg) {
+              this.cfg = this.cfg.extend(cfg);
+              this._xformMode = xformMode;
+              this._key = key;
+              this.reset();
+            },
+            /**
+             * Resets this cipher to its initial state.
+             *
+             * @example
+             *
+             *     cipher.reset();
+             */
+            reset: function() {
+              BufferedBlockAlgorithm.reset.call(this);
+              this._doReset();
+            },
+            /**
+             * Adds data to be encrypted or decrypted.
+             *
+             * @param {WordArray|string} dataUpdate The data to encrypt or decrypt.
+             *
+             * @return {WordArray} The data after processing.
+             *
+             * @example
+             *
+             *     var encrypted = cipher.process('data');
+             *     var encrypted = cipher.process(wordArray);
+             */
+            process: function(dataUpdate) {
+              this._append(dataUpdate);
+              return this._process();
+            },
+            /**
+             * Finalizes the encryption or decryption process.
+             * Note that the finalize operation is effectively a destructive, read-once operation.
+             *
+             * @param {WordArray|string} dataUpdate The final data to encrypt or decrypt.
+             *
+             * @return {WordArray} The data after final processing.
+             *
+             * @example
+             *
+             *     var encrypted = cipher.finalize();
+             *     var encrypted = cipher.finalize('data');
+             *     var encrypted = cipher.finalize(wordArray);
+             */
+            finalize: function(dataUpdate) {
+              if (dataUpdate) {
+                this._append(dataUpdate);
+              }
+              var finalProcessedData = this._doFinalize();
+              return finalProcessedData;
+            },
+            keySize: 128 / 32,
+            ivSize: 128 / 32,
+            _ENC_XFORM_MODE: 1,
+            _DEC_XFORM_MODE: 2,
+            /**
+             * Creates shortcut functions to a cipher's object interface.
+             *
+             * @param {Cipher} cipher The cipher to create a helper for.
+             *
+             * @return {Object} An object with encrypt and decrypt shortcut functions.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var AES = CryptoJS.lib.Cipher._createHelper(CryptoJS.algo.AES);
+             */
+            _createHelper: function() {
+              function selectCipherStrategy(key) {
+                if (typeof key == "string") {
+                  return PasswordBasedCipher;
+                } else {
+                  return SerializableCipher;
+                }
+              }
+              return function(cipher) {
+                return {
+                  encrypt: function(message, key, cfg) {
+                    return selectCipherStrategy(key).encrypt(cipher, message, key, cfg);
+                  },
+                  decrypt: function(ciphertext, key, cfg) {
+                    return selectCipherStrategy(key).decrypt(cipher, ciphertext, key, cfg);
+                  }
+                };
+              };
+            }()
+          });
+          C_lib.StreamCipher = Cipher.extend({
+            _doFinalize: function() {
+              var finalProcessedBlocks = this._process(true);
+              return finalProcessedBlocks;
+            },
+            blockSize: 1
+          });
+          var C_mode = C.mode = {};
+          var BlockCipherMode = C_lib.BlockCipherMode = Base.extend({
+            /**
+             * Creates this mode for encryption.
+             *
+             * @param {Cipher} cipher A block cipher instance.
+             * @param {Array} iv The IV words.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var mode = CryptoJS.mode.CBC.createEncryptor(cipher, iv.words);
+             */
+            createEncryptor: function(cipher, iv) {
+              return this.Encryptor.create(cipher, iv);
+            },
+            /**
+             * Creates this mode for decryption.
+             *
+             * @param {Cipher} cipher A block cipher instance.
+             * @param {Array} iv The IV words.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var mode = CryptoJS.mode.CBC.createDecryptor(cipher, iv.words);
+             */
+            createDecryptor: function(cipher, iv) {
+              return this.Decryptor.create(cipher, iv);
+            },
+            /**
+             * Initializes a newly created mode.
+             *
+             * @param {Cipher} cipher A block cipher instance.
+             * @param {Array} iv The IV words.
+             *
+             * @example
+             *
+             *     var mode = CryptoJS.mode.CBC.Encryptor.create(cipher, iv.words);
+             */
+            init: function(cipher, iv) {
+              this._cipher = cipher;
+              this._iv = iv;
+            }
+          });
+          var CBC = C_mode.CBC = function() {
+            var CBC2 = BlockCipherMode.extend();
+            CBC2.Encryptor = CBC2.extend({
+              /**
+               * Processes the data block at offset.
+               *
+               * @param {Array} words The data words to operate on.
+               * @param {number} offset The offset where the block starts.
+               *
+               * @example
+               *
+               *     mode.processBlock(data.words, offset);
+               */
+              processBlock: function(words, offset) {
+                var cipher = this._cipher;
+                var blockSize = cipher.blockSize;
+                xorBlock.call(this, words, offset, blockSize);
+                cipher.encryptBlock(words, offset);
+                this._prevBlock = words.slice(offset, offset + blockSize);
+              }
+            });
+            CBC2.Decryptor = CBC2.extend({
+              /**
+               * Processes the data block at offset.
+               *
+               * @param {Array} words The data words to operate on.
+               * @param {number} offset The offset where the block starts.
+               *
+               * @example
+               *
+               *     mode.processBlock(data.words, offset);
+               */
+              processBlock: function(words, offset) {
+                var cipher = this._cipher;
+                var blockSize = cipher.blockSize;
+                var thisBlock = words.slice(offset, offset + blockSize);
+                cipher.decryptBlock(words, offset);
+                xorBlock.call(this, words, offset, blockSize);
+                this._prevBlock = thisBlock;
+              }
+            });
+            function xorBlock(words, offset, blockSize) {
+              var block;
+              var iv = this._iv;
+              if (iv) {
+                block = iv;
+                this._iv = undefined$1;
+              } else {
+                block = this._prevBlock;
+              }
+              for (var i = 0; i < blockSize; i++) {
+                words[offset + i] ^= block[i];
+              }
+            }
+            return CBC2;
+          }();
+          var C_pad = C.pad = {};
+          var Pkcs7 = C_pad.Pkcs7 = {
+            /**
+             * Pads data using the algorithm defined in PKCS #5/7.
+             *
+             * @param {WordArray} data The data to pad.
+             * @param {number} blockSize The multiple that the data should be padded to.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     CryptoJS.pad.Pkcs7.pad(wordArray, 4);
+             */
+            pad: function(data, blockSize) {
+              var blockSizeBytes = blockSize * 4;
+              var nPaddingBytes = blockSizeBytes - data.sigBytes % blockSizeBytes;
+              var paddingWord = nPaddingBytes << 24 | nPaddingBytes << 16 | nPaddingBytes << 8 | nPaddingBytes;
+              var paddingWords = [];
+              for (var i = 0; i < nPaddingBytes; i += 4) {
+                paddingWords.push(paddingWord);
+              }
+              var padding = WordArray.create(paddingWords, nPaddingBytes);
+              data.concat(padding);
+            },
+            /**
+             * Unpads data that had been padded using the algorithm defined in PKCS #5/7.
+             *
+             * @param {WordArray} data The data to unpad.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     CryptoJS.pad.Pkcs7.unpad(wordArray);
+             */
+            unpad: function(data) {
+              var nPaddingBytes = data.words[data.sigBytes - 1 >>> 2] & 255;
+              data.sigBytes -= nPaddingBytes;
+            }
+          };
+          C_lib.BlockCipher = Cipher.extend({
+            /**
+             * Configuration options.
+             *
+             * @property {Mode} mode The block mode to use. Default: CBC
+             * @property {Padding} padding The padding strategy to use. Default: Pkcs7
+             */
+            cfg: Cipher.cfg.extend({
+              mode: CBC,
+              padding: Pkcs7
+            }),
+            reset: function() {
+              var modeCreator;
+              Cipher.reset.call(this);
+              var cfg = this.cfg;
+              var iv = cfg.iv;
+              var mode = cfg.mode;
+              if (this._xformMode == this._ENC_XFORM_MODE) {
+                modeCreator = mode.createEncryptor;
+              } else {
+                modeCreator = mode.createDecryptor;
+                this._minBufferSize = 1;
+              }
+              if (this._mode && this._mode.__creator == modeCreator) {
+                this._mode.init(this, iv && iv.words);
+              } else {
+                this._mode = modeCreator.call(mode, this, iv && iv.words);
+                this._mode.__creator = modeCreator;
+              }
+            },
+            _doProcessBlock: function(words, offset) {
+              this._mode.processBlock(words, offset);
+            },
+            _doFinalize: function() {
+              var finalProcessedBlocks;
+              var padding = this.cfg.padding;
+              if (this._xformMode == this._ENC_XFORM_MODE) {
+                padding.pad(this._data, this.blockSize);
+                finalProcessedBlocks = this._process(true);
+              } else {
+                finalProcessedBlocks = this._process(true);
+                padding.unpad(finalProcessedBlocks);
+              }
+              return finalProcessedBlocks;
+            },
+            blockSize: 128 / 32
+          });
+          var CipherParams = C_lib.CipherParams = Base.extend({
+            /**
+             * Initializes a newly created cipher params object.
+             *
+             * @param {Object} cipherParams An object with any of the possible cipher parameters.
+             *
+             * @example
+             *
+             *     var cipherParams = CryptoJS.lib.CipherParams.create({
+             *         ciphertext: ciphertextWordArray,
+             *         key: keyWordArray,
+             *         iv: ivWordArray,
+             *         salt: saltWordArray,
+             *         algorithm: CryptoJS.algo.AES,
+             *         mode: CryptoJS.mode.CBC,
+             *         padding: CryptoJS.pad.PKCS7,
+             *         blockSize: 4,
+             *         formatter: CryptoJS.format.OpenSSL
+             *     });
+             */
+            init: function(cipherParams) {
+              this.mixIn(cipherParams);
+            },
+            /**
+             * Converts this cipher params object to a string.
+             *
+             * @param {Format} formatter (Optional) The formatting strategy to use.
+             *
+             * @return {string} The stringified cipher params.
+             *
+             * @throws Error If neither the formatter nor the default formatter is set.
+             *
+             * @example
+             *
+             *     var string = cipherParams + '';
+             *     var string = cipherParams.toString();
+             *     var string = cipherParams.toString(CryptoJS.format.OpenSSL);
+             */
+            toString: function(formatter) {
+              return (formatter || this.formatter).stringify(this);
+            }
+          });
+          var C_format = C.format = {};
+          var OpenSSLFormatter = C_format.OpenSSL = {
+            /**
+             * Converts a cipher params object to an OpenSSL-compatible string.
+             *
+             * @param {CipherParams} cipherParams The cipher params object.
+             *
+             * @return {string} The OpenSSL-compatible string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var openSSLString = CryptoJS.format.OpenSSL.stringify(cipherParams);
+             */
+            stringify: function(cipherParams) {
+              var wordArray;
+              var ciphertext = cipherParams.ciphertext;
+              var salt = cipherParams.salt;
+              if (salt) {
+                wordArray = WordArray.create([1398893684, 1701076831]).concat(salt).concat(ciphertext);
+              } else {
+                wordArray = ciphertext;
+              }
+              return wordArray.toString(Base64);
+            },
+            /**
+             * Converts an OpenSSL-compatible string to a cipher params object.
+             *
+             * @param {string} openSSLStr The OpenSSL-compatible string.
+             *
+             * @return {CipherParams} The cipher params object.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var cipherParams = CryptoJS.format.OpenSSL.parse(openSSLString);
+             */
+            parse: function(openSSLStr) {
+              var salt;
+              var ciphertext = Base64.parse(openSSLStr);
+              var ciphertextWords = ciphertext.words;
+              if (ciphertextWords[0] == 1398893684 && ciphertextWords[1] == 1701076831) {
+                salt = WordArray.create(ciphertextWords.slice(2, 4));
+                ciphertextWords.splice(0, 4);
+                ciphertext.sigBytes -= 16;
+              }
+              return CipherParams.create({ ciphertext, salt });
+            }
+          };
+          var SerializableCipher = C_lib.SerializableCipher = Base.extend({
+            /**
+             * Configuration options.
+             *
+             * @property {Formatter} format The formatting strategy to convert cipher param objects to and from a string. Default: OpenSSL
+             */
+            cfg: Base.extend({
+              format: OpenSSLFormatter
+            }),
+            /**
+             * Encrypts a message.
+             *
+             * @param {Cipher} cipher The cipher algorithm to use.
+             * @param {WordArray|string} message The message to encrypt.
+             * @param {WordArray} key The key.
+             * @param {Object} cfg (Optional) The configuration options to use for this operation.
+             *
+             * @return {CipherParams} A cipher params object.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var ciphertextParams = CryptoJS.lib.SerializableCipher.encrypt(CryptoJS.algo.AES, message, key);
+             *     var ciphertextParams = CryptoJS.lib.SerializableCipher.encrypt(CryptoJS.algo.AES, message, key, { iv: iv });
+             *     var ciphertextParams = CryptoJS.lib.SerializableCipher.encrypt(CryptoJS.algo.AES, message, key, { iv: iv, format: CryptoJS.format.OpenSSL });
+             */
+            encrypt: function(cipher, message, key, cfg) {
+              cfg = this.cfg.extend(cfg);
+              var encryptor = cipher.createEncryptor(key, cfg);
+              var ciphertext = encryptor.finalize(message);
+              var cipherCfg = encryptor.cfg;
+              return CipherParams.create({
+                ciphertext,
+                key,
+                iv: cipherCfg.iv,
+                algorithm: cipher,
+                mode: cipherCfg.mode,
+                padding: cipherCfg.padding,
+                blockSize: cipher.blockSize,
+                formatter: cfg.format
+              });
+            },
+            /**
+             * Decrypts serialized ciphertext.
+             *
+             * @param {Cipher} cipher The cipher algorithm to use.
+             * @param {CipherParams|string} ciphertext The ciphertext to decrypt.
+             * @param {WordArray} key The key.
+             * @param {Object} cfg (Optional) The configuration options to use for this operation.
+             *
+             * @return {WordArray} The plaintext.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var plaintext = CryptoJS.lib.SerializableCipher.decrypt(CryptoJS.algo.AES, formattedCiphertext, key, { iv: iv, format: CryptoJS.format.OpenSSL });
+             *     var plaintext = CryptoJS.lib.SerializableCipher.decrypt(CryptoJS.algo.AES, ciphertextParams, key, { iv: iv, format: CryptoJS.format.OpenSSL });
+             */
+            decrypt: function(cipher, ciphertext, key, cfg) {
+              cfg = this.cfg.extend(cfg);
+              ciphertext = this._parse(ciphertext, cfg.format);
+              var plaintext = cipher.createDecryptor(key, cfg).finalize(ciphertext.ciphertext);
+              return plaintext;
+            },
+            /**
+             * Converts serialized ciphertext to CipherParams,
+             * else assumed CipherParams already and returns ciphertext unchanged.
+             *
+             * @param {CipherParams|string} ciphertext The ciphertext.
+             * @param {Formatter} format The formatting strategy to use to parse serialized ciphertext.
+             *
+             * @return {CipherParams} The unserialized ciphertext.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var ciphertextParams = CryptoJS.lib.SerializableCipher._parse(ciphertextStringOrParams, format);
+             */
+            _parse: function(ciphertext, format) {
+              if (typeof ciphertext == "string") {
+                return format.parse(ciphertext, this);
+              } else {
+                return ciphertext;
+              }
+            }
+          });
+          var C_kdf = C.kdf = {};
+          var OpenSSLKdf = C_kdf.OpenSSL = {
+            /**
+             * Derives a key and IV from a password.
+             *
+             * @param {string} password The password to derive from.
+             * @param {number} keySize The size in words of the key to generate.
+             * @param {number} ivSize The size in words of the IV to generate.
+             * @param {WordArray|string} salt (Optional) A 64-bit salt to use. If omitted, a salt will be generated randomly.
+             *
+             * @return {CipherParams} A cipher params object with the key, IV, and salt.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var derivedParams = CryptoJS.kdf.OpenSSL.execute('Password', 256/32, 128/32);
+             *     var derivedParams = CryptoJS.kdf.OpenSSL.execute('Password', 256/32, 128/32, 'saltsalt');
+             */
+            execute: function(password, keySize, ivSize, salt, hasher) {
+              if (!salt) {
+                salt = WordArray.random(64 / 8);
+              }
+              if (!hasher) {
+                var key = EvpKDF.create({ keySize: keySize + ivSize }).compute(password, salt);
+              } else {
+                var key = EvpKDF.create({ keySize: keySize + ivSize, hasher }).compute(password, salt);
+              }
+              var iv = WordArray.create(key.words.slice(keySize), ivSize * 4);
+              key.sigBytes = keySize * 4;
+              return CipherParams.create({ key, iv, salt });
+            }
+          };
+          var PasswordBasedCipher = C_lib.PasswordBasedCipher = SerializableCipher.extend({
+            /**
+             * Configuration options.
+             *
+             * @property {KDF} kdf The key derivation function to use to generate a key and IV from a password. Default: OpenSSL
+             */
+            cfg: SerializableCipher.cfg.extend({
+              kdf: OpenSSLKdf
+            }),
+            /**
+             * Encrypts a message using a password.
+             *
+             * @param {Cipher} cipher The cipher algorithm to use.
+             * @param {WordArray|string} message The message to encrypt.
+             * @param {string} password The password.
+             * @param {Object} cfg (Optional) The configuration options to use for this operation.
+             *
+             * @return {CipherParams} A cipher params object.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var ciphertextParams = CryptoJS.lib.PasswordBasedCipher.encrypt(CryptoJS.algo.AES, message, 'password');
+             *     var ciphertextParams = CryptoJS.lib.PasswordBasedCipher.encrypt(CryptoJS.algo.AES, message, 'password', { format: CryptoJS.format.OpenSSL });
+             */
+            encrypt: function(cipher, message, password, cfg) {
+              cfg = this.cfg.extend(cfg);
+              var derivedParams = cfg.kdf.execute(password, cipher.keySize, cipher.ivSize, cfg.salt, cfg.hasher);
+              cfg.iv = derivedParams.iv;
+              var ciphertext = SerializableCipher.encrypt.call(this, cipher, message, derivedParams.key, cfg);
+              ciphertext.mixIn(derivedParams);
+              return ciphertext;
+            },
+            /**
+             * Decrypts serialized ciphertext using a password.
+             *
+             * @param {Cipher} cipher The cipher algorithm to use.
+             * @param {CipherParams|string} ciphertext The ciphertext to decrypt.
+             * @param {string} password The password.
+             * @param {Object} cfg (Optional) The configuration options to use for this operation.
+             *
+             * @return {WordArray} The plaintext.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var plaintext = CryptoJS.lib.PasswordBasedCipher.decrypt(CryptoJS.algo.AES, formattedCiphertext, 'password', { format: CryptoJS.format.OpenSSL });
+             *     var plaintext = CryptoJS.lib.PasswordBasedCipher.decrypt(CryptoJS.algo.AES, ciphertextParams, 'password', { format: CryptoJS.format.OpenSSL });
+             */
+            decrypt: function(cipher, ciphertext, password, cfg) {
+              cfg = this.cfg.extend(cfg);
+              ciphertext = this._parse(ciphertext, cfg.format);
+              var derivedParams = cfg.kdf.execute(password, cipher.keySize, cipher.ivSize, ciphertext.salt, cfg.hasher);
+              cfg.iv = derivedParams.iv;
+              var plaintext = SerializableCipher.decrypt.call(this, cipher, ciphertext, derivedParams.key, cfg);
+              return plaintext;
+            }
+          });
+        }();
+      });
+    })(cipherCore);
+    return cipherCore.exports;
+  }
+  var modeCfb = { exports: {} };
+  var hasRequiredModeCfb;
+  function requireModeCfb() {
+    if (hasRequiredModeCfb)
+      return modeCfb.exports;
+    hasRequiredModeCfb = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.mode.CFB = function() {
+          var CFB = CryptoJS.lib.BlockCipherMode.extend();
+          CFB.Encryptor = CFB.extend({
+            processBlock: function(words, offset) {
+              var cipher = this._cipher;
+              var blockSize = cipher.blockSize;
+              generateKeystreamAndEncrypt.call(this, words, offset, blockSize, cipher);
+              this._prevBlock = words.slice(offset, offset + blockSize);
+            }
+          });
+          CFB.Decryptor = CFB.extend({
+            processBlock: function(words, offset) {
+              var cipher = this._cipher;
+              var blockSize = cipher.blockSize;
+              var thisBlock = words.slice(offset, offset + blockSize);
+              generateKeystreamAndEncrypt.call(this, words, offset, blockSize, cipher);
+              this._prevBlock = thisBlock;
+            }
+          });
+          function generateKeystreamAndEncrypt(words, offset, blockSize, cipher) {
+            var keystream;
+            var iv = this._iv;
+            if (iv) {
+              keystream = iv.slice(0);
+              this._iv = void 0;
+            } else {
+              keystream = this._prevBlock;
+            }
+            cipher.encryptBlock(keystream, 0);
+            for (var i = 0; i < blockSize; i++) {
+              words[offset + i] ^= keystream[i];
+            }
+          }
+          return CFB;
+        }();
+        return CryptoJS.mode.CFB;
+      });
+    })(modeCfb);
+    return modeCfb.exports;
+  }
+  var modeCtr = { exports: {} };
+  var hasRequiredModeCtr;
+  function requireModeCtr() {
+    if (hasRequiredModeCtr)
+      return modeCtr.exports;
+    hasRequiredModeCtr = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.mode.CTR = function() {
+          var CTR = CryptoJS.lib.BlockCipherMode.extend();
+          var Encryptor = CTR.Encryptor = CTR.extend({
+            processBlock: function(words, offset) {
+              var cipher = this._cipher;
+              var blockSize = cipher.blockSize;
+              var iv = this._iv;
+              var counter = this._counter;
+              if (iv) {
+                counter = this._counter = iv.slice(0);
+                this._iv = void 0;
+              }
+              var keystream = counter.slice(0);
+              cipher.encryptBlock(keystream, 0);
+              counter[blockSize - 1] = counter[blockSize - 1] + 1 | 0;
+              for (var i = 0; i < blockSize; i++) {
+                words[offset + i] ^= keystream[i];
+              }
+            }
+          });
+          CTR.Decryptor = Encryptor;
+          return CTR;
+        }();
+        return CryptoJS.mode.CTR;
+      });
+    })(modeCtr);
+    return modeCtr.exports;
+  }
+  var modeCtrGladman = { exports: {} };
+  var hasRequiredModeCtrGladman;
+  function requireModeCtrGladman() {
+    if (hasRequiredModeCtrGladman)
+      return modeCtrGladman.exports;
+    hasRequiredModeCtrGladman = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        /** @preserve
+         * Counter block mode compatible with  Dr Brian Gladman fileenc.c
+         * derived from CryptoJS.mode.CTR
+         * Jan Hruby jhruby.web@gmail.com
+         */
+        CryptoJS.mode.CTRGladman = function() {
+          var CTRGladman = CryptoJS.lib.BlockCipherMode.extend();
+          function incWord(word) {
+            if ((word >> 24 & 255) === 255) {
+              var b1 = word >> 16 & 255;
+              var b2 = word >> 8 & 255;
+              var b3 = word & 255;
+              if (b1 === 255) {
+                b1 = 0;
+                if (b2 === 255) {
+                  b2 = 0;
+                  if (b3 === 255) {
+                    b3 = 0;
+                  } else {
+                    ++b3;
+                  }
+                } else {
+                  ++b2;
+                }
+              } else {
+                ++b1;
+              }
+              word = 0;
+              word += b1 << 16;
+              word += b2 << 8;
+              word += b3;
+            } else {
+              word += 1 << 24;
+            }
+            return word;
+          }
+          function incCounter(counter) {
+            if ((counter[0] = incWord(counter[0])) === 0) {
+              counter[1] = incWord(counter[1]);
+            }
+            return counter;
+          }
+          var Encryptor = CTRGladman.Encryptor = CTRGladman.extend({
+            processBlock: function(words, offset) {
+              var cipher = this._cipher;
+              var blockSize = cipher.blockSize;
+              var iv = this._iv;
+              var counter = this._counter;
+              if (iv) {
+                counter = this._counter = iv.slice(0);
+                this._iv = void 0;
+              }
+              incCounter(counter);
+              var keystream = counter.slice(0);
+              cipher.encryptBlock(keystream, 0);
+              for (var i = 0; i < blockSize; i++) {
+                words[offset + i] ^= keystream[i];
+              }
+            }
+          });
+          CTRGladman.Decryptor = Encryptor;
+          return CTRGladman;
+        }();
+        return CryptoJS.mode.CTRGladman;
+      });
+    })(modeCtrGladman);
+    return modeCtrGladman.exports;
+  }
+  var modeOfb = { exports: {} };
+  var hasRequiredModeOfb;
+  function requireModeOfb() {
+    if (hasRequiredModeOfb)
+      return modeOfb.exports;
+    hasRequiredModeOfb = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.mode.OFB = function() {
+          var OFB = CryptoJS.lib.BlockCipherMode.extend();
+          var Encryptor = OFB.Encryptor = OFB.extend({
+            processBlock: function(words, offset) {
+              var cipher = this._cipher;
+              var blockSize = cipher.blockSize;
+              var iv = this._iv;
+              var keystream = this._keystream;
+              if (iv) {
+                keystream = this._keystream = iv.slice(0);
+                this._iv = void 0;
+              }
+              cipher.encryptBlock(keystream, 0);
+              for (var i = 0; i < blockSize; i++) {
+                words[offset + i] ^= keystream[i];
+              }
+            }
+          });
+          OFB.Decryptor = Encryptor;
+          return OFB;
+        }();
+        return CryptoJS.mode.OFB;
+      });
+    })(modeOfb);
+    return modeOfb.exports;
+  }
+  var modeEcb = { exports: {} };
+  var hasRequiredModeEcb;
+  function requireModeEcb() {
+    if (hasRequiredModeEcb)
+      return modeEcb.exports;
+    hasRequiredModeEcb = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.mode.ECB = function() {
+          var ECB = CryptoJS.lib.BlockCipherMode.extend();
+          ECB.Encryptor = ECB.extend({
+            processBlock: function(words, offset) {
+              this._cipher.encryptBlock(words, offset);
+            }
+          });
+          ECB.Decryptor = ECB.extend({
+            processBlock: function(words, offset) {
+              this._cipher.decryptBlock(words, offset);
+            }
+          });
+          return ECB;
+        }();
+        return CryptoJS.mode.ECB;
+      });
+    })(modeEcb);
+    return modeEcb.exports;
+  }
+  var padAnsix923 = { exports: {} };
+  var hasRequiredPadAnsix923;
+  function requirePadAnsix923() {
+    if (hasRequiredPadAnsix923)
+      return padAnsix923.exports;
+    hasRequiredPadAnsix923 = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.pad.AnsiX923 = {
+          pad: function(data, blockSize) {
+            var dataSigBytes = data.sigBytes;
+            var blockSizeBytes = blockSize * 4;
+            var nPaddingBytes = blockSizeBytes - dataSigBytes % blockSizeBytes;
+            var lastBytePos = dataSigBytes + nPaddingBytes - 1;
+            data.clamp();
+            data.words[lastBytePos >>> 2] |= nPaddingBytes << 24 - lastBytePos % 4 * 8;
+            data.sigBytes += nPaddingBytes;
+          },
+          unpad: function(data) {
+            var nPaddingBytes = data.words[data.sigBytes - 1 >>> 2] & 255;
+            data.sigBytes -= nPaddingBytes;
+          }
+        };
+        return CryptoJS.pad.Ansix923;
+      });
+    })(padAnsix923);
+    return padAnsix923.exports;
+  }
+  var padIso10126 = { exports: {} };
+  var hasRequiredPadIso10126;
+  function requirePadIso10126() {
+    if (hasRequiredPadIso10126)
+      return padIso10126.exports;
+    hasRequiredPadIso10126 = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.pad.Iso10126 = {
+          pad: function(data, blockSize) {
+            var blockSizeBytes = blockSize * 4;
+            var nPaddingBytes = blockSizeBytes - data.sigBytes % blockSizeBytes;
+            data.concat(CryptoJS.lib.WordArray.random(nPaddingBytes - 1)).concat(CryptoJS.lib.WordArray.create([nPaddingBytes << 24], 1));
+          },
+          unpad: function(data) {
+            var nPaddingBytes = data.words[data.sigBytes - 1 >>> 2] & 255;
+            data.sigBytes -= nPaddingBytes;
+          }
+        };
+        return CryptoJS.pad.Iso10126;
+      });
+    })(padIso10126);
+    return padIso10126.exports;
+  }
+  var padIso97971 = { exports: {} };
+  var hasRequiredPadIso97971;
+  function requirePadIso97971() {
+    if (hasRequiredPadIso97971)
+      return padIso97971.exports;
+    hasRequiredPadIso97971 = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.pad.Iso97971 = {
+          pad: function(data, blockSize) {
+            data.concat(CryptoJS.lib.WordArray.create([2147483648], 1));
+            CryptoJS.pad.ZeroPadding.pad(data, blockSize);
+          },
+          unpad: function(data) {
+            CryptoJS.pad.ZeroPadding.unpad(data);
+            data.sigBytes--;
+          }
+        };
+        return CryptoJS.pad.Iso97971;
+      });
+    })(padIso97971);
+    return padIso97971.exports;
+  }
+  var padZeropadding = { exports: {} };
+  var hasRequiredPadZeropadding;
+  function requirePadZeropadding() {
+    if (hasRequiredPadZeropadding)
+      return padZeropadding.exports;
+    hasRequiredPadZeropadding = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.pad.ZeroPadding = {
+          pad: function(data, blockSize) {
+            var blockSizeBytes = blockSize * 4;
+            data.clamp();
+            data.sigBytes += blockSizeBytes - (data.sigBytes % blockSizeBytes || blockSizeBytes);
+          },
+          unpad: function(data) {
+            var dataWords = data.words;
+            var i = data.sigBytes - 1;
+            for (var i = data.sigBytes - 1; i >= 0; i--) {
+              if (dataWords[i >>> 2] >>> 24 - i % 4 * 8 & 255) {
+                data.sigBytes = i + 1;
+                break;
+              }
+            }
+          }
+        };
+        return CryptoJS.pad.ZeroPadding;
+      });
+    })(padZeropadding);
+    return padZeropadding.exports;
+  }
+  var padNopadding = { exports: {} };
+  var hasRequiredPadNopadding;
+  function requirePadNopadding() {
+    if (hasRequiredPadNopadding)
+      return padNopadding.exports;
+    hasRequiredPadNopadding = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        CryptoJS.pad.NoPadding = {
+          pad: function() {
+          },
+          unpad: function() {
+          }
+        };
+        return CryptoJS.pad.NoPadding;
+      });
+    })(padNopadding);
+    return padNopadding.exports;
+  }
+  var formatHex = { exports: {} };
+  var hasRequiredFormatHex;
+  function requireFormatHex() {
+    if (hasRequiredFormatHex)
+      return formatHex.exports;
+    hasRequiredFormatHex = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function(undefined$1) {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var CipherParams = C_lib.CipherParams;
+          var C_enc = C.enc;
+          var Hex = C_enc.Hex;
+          var C_format = C.format;
+          C_format.Hex = {
+            /**
+             * Converts the ciphertext of a cipher params object to a hexadecimally encoded string.
+             *
+             * @param {CipherParams} cipherParams The cipher params object.
+             *
+             * @return {string} The hexadecimally encoded string.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var hexString = CryptoJS.format.Hex.stringify(cipherParams);
+             */
+            stringify: function(cipherParams) {
+              return cipherParams.ciphertext.toString(Hex);
+            },
+            /**
+             * Converts a hexadecimally encoded ciphertext string to a cipher params object.
+             *
+             * @param {string} input The hexadecimally encoded string.
+             *
+             * @return {CipherParams} The cipher params object.
+             *
+             * @static
+             *
+             * @example
+             *
+             *     var cipherParams = CryptoJS.format.Hex.parse(hexString);
+             */
+            parse: function(input) {
+              var ciphertext = Hex.parse(input);
+              return CipherParams.create({ ciphertext });
+            }
+          };
+        })();
+        return CryptoJS.format.Hex;
+      });
+    })(formatHex);
+    return formatHex.exports;
+  }
+  var aes = { exports: {} };
+  var hasRequiredAes;
+  function requireAes() {
+    if (hasRequiredAes)
+      return aes.exports;
+    hasRequiredAes = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireEncBase64(), requireMd5(), requireEvpkdf(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var BlockCipher = C_lib.BlockCipher;
+          var C_algo = C.algo;
+          var SBOX = [];
+          var INV_SBOX = [];
+          var SUB_MIX_0 = [];
+          var SUB_MIX_1 = [];
+          var SUB_MIX_2 = [];
+          var SUB_MIX_3 = [];
+          var INV_SUB_MIX_0 = [];
+          var INV_SUB_MIX_1 = [];
+          var INV_SUB_MIX_2 = [];
+          var INV_SUB_MIX_3 = [];
+          (function() {
+            var d = [];
+            for (var i = 0; i < 256; i++) {
+              if (i < 128) {
+                d[i] = i << 1;
+              } else {
+                d[i] = i << 1 ^ 283;
+              }
+            }
+            var x = 0;
+            var xi = 0;
+            for (var i = 0; i < 256; i++) {
+              var sx = xi ^ xi << 1 ^ xi << 2 ^ xi << 3 ^ xi << 4;
+              sx = sx >>> 8 ^ sx & 255 ^ 99;
+              SBOX[x] = sx;
+              INV_SBOX[sx] = x;
+              var x2 = d[x];
+              var x4 = d[x2];
+              var x8 = d[x4];
+              var t = d[sx] * 257 ^ sx * 16843008;
+              SUB_MIX_0[x] = t << 24 | t >>> 8;
+              SUB_MIX_1[x] = t << 16 | t >>> 16;
+              SUB_MIX_2[x] = t << 8 | t >>> 24;
+              SUB_MIX_3[x] = t;
+              var t = x8 * 16843009 ^ x4 * 65537 ^ x2 * 257 ^ x * 16843008;
+              INV_SUB_MIX_0[sx] = t << 24 | t >>> 8;
+              INV_SUB_MIX_1[sx] = t << 16 | t >>> 16;
+              INV_SUB_MIX_2[sx] = t << 8 | t >>> 24;
+              INV_SUB_MIX_3[sx] = t;
+              if (!x) {
+                x = xi = 1;
+              } else {
+                x = x2 ^ d[d[d[x8 ^ x2]]];
+                xi ^= d[d[xi]];
+              }
+            }
+          })();
+          var RCON = [0, 1, 2, 4, 8, 16, 32, 64, 128, 27, 54];
+          var AES = C_algo.AES = BlockCipher.extend({
+            _doReset: function() {
+              var t;
+              if (this._nRounds && this._keyPriorReset === this._key) {
+                return;
+              }
+              var key = this._keyPriorReset = this._key;
+              var keyWords = key.words;
+              var keySize = key.sigBytes / 4;
+              var nRounds = this._nRounds = keySize + 6;
+              var ksRows = (nRounds + 1) * 4;
+              var keySchedule = this._keySchedule = [];
+              for (var ksRow = 0; ksRow < ksRows; ksRow++) {
+                if (ksRow < keySize) {
+                  keySchedule[ksRow] = keyWords[ksRow];
+                } else {
+                  t = keySchedule[ksRow - 1];
+                  if (!(ksRow % keySize)) {
+                    t = t << 8 | t >>> 24;
+                    t = SBOX[t >>> 24] << 24 | SBOX[t >>> 16 & 255] << 16 | SBOX[t >>> 8 & 255] << 8 | SBOX[t & 255];
+                    t ^= RCON[ksRow / keySize | 0] << 24;
+                  } else if (keySize > 6 && ksRow % keySize == 4) {
+                    t = SBOX[t >>> 24] << 24 | SBOX[t >>> 16 & 255] << 16 | SBOX[t >>> 8 & 255] << 8 | SBOX[t & 255];
+                  }
+                  keySchedule[ksRow] = keySchedule[ksRow - keySize] ^ t;
+                }
+              }
+              var invKeySchedule = this._invKeySchedule = [];
+              for (var invKsRow = 0; invKsRow < ksRows; invKsRow++) {
+                var ksRow = ksRows - invKsRow;
+                if (invKsRow % 4) {
+                  var t = keySchedule[ksRow];
+                } else {
+                  var t = keySchedule[ksRow - 4];
+                }
+                if (invKsRow < 4 || ksRow <= 4) {
+                  invKeySchedule[invKsRow] = t;
+                } else {
+                  invKeySchedule[invKsRow] = INV_SUB_MIX_0[SBOX[t >>> 24]] ^ INV_SUB_MIX_1[SBOX[t >>> 16 & 255]] ^ INV_SUB_MIX_2[SBOX[t >>> 8 & 255]] ^ INV_SUB_MIX_3[SBOX[t & 255]];
+                }
+              }
+            },
+            encryptBlock: function(M, offset) {
+              this._doCryptBlock(M, offset, this._keySchedule, SUB_MIX_0, SUB_MIX_1, SUB_MIX_2, SUB_MIX_3, SBOX);
+            },
+            decryptBlock: function(M, offset) {
+              var t = M[offset + 1];
+              M[offset + 1] = M[offset + 3];
+              M[offset + 3] = t;
+              this._doCryptBlock(M, offset, this._invKeySchedule, INV_SUB_MIX_0, INV_SUB_MIX_1, INV_SUB_MIX_2, INV_SUB_MIX_3, INV_SBOX);
+              var t = M[offset + 1];
+              M[offset + 1] = M[offset + 3];
+              M[offset + 3] = t;
+            },
+            _doCryptBlock: function(M, offset, keySchedule, SUB_MIX_02, SUB_MIX_12, SUB_MIX_22, SUB_MIX_32, SBOX2) {
+              var nRounds = this._nRounds;
+              var s0 = M[offset] ^ keySchedule[0];
+              var s1 = M[offset + 1] ^ keySchedule[1];
+              var s2 = M[offset + 2] ^ keySchedule[2];
+              var s3 = M[offset + 3] ^ keySchedule[3];
+              var ksRow = 4;
+              for (var round = 1; round < nRounds; round++) {
+                var t0 = SUB_MIX_02[s0 >>> 24] ^ SUB_MIX_12[s1 >>> 16 & 255] ^ SUB_MIX_22[s2 >>> 8 & 255] ^ SUB_MIX_32[s3 & 255] ^ keySchedule[ksRow++];
+                var t1 = SUB_MIX_02[s1 >>> 24] ^ SUB_MIX_12[s2 >>> 16 & 255] ^ SUB_MIX_22[s3 >>> 8 & 255] ^ SUB_MIX_32[s0 & 255] ^ keySchedule[ksRow++];
+                var t2 = SUB_MIX_02[s2 >>> 24] ^ SUB_MIX_12[s3 >>> 16 & 255] ^ SUB_MIX_22[s0 >>> 8 & 255] ^ SUB_MIX_32[s1 & 255] ^ keySchedule[ksRow++];
+                var t3 = SUB_MIX_02[s3 >>> 24] ^ SUB_MIX_12[s0 >>> 16 & 255] ^ SUB_MIX_22[s1 >>> 8 & 255] ^ SUB_MIX_32[s2 & 255] ^ keySchedule[ksRow++];
+                s0 = t0;
+                s1 = t1;
+                s2 = t2;
+                s3 = t3;
+              }
+              var t0 = (SBOX2[s0 >>> 24] << 24 | SBOX2[s1 >>> 16 & 255] << 16 | SBOX2[s2 >>> 8 & 255] << 8 | SBOX2[s3 & 255]) ^ keySchedule[ksRow++];
+              var t1 = (SBOX2[s1 >>> 24] << 24 | SBOX2[s2 >>> 16 & 255] << 16 | SBOX2[s3 >>> 8 & 255] << 8 | SBOX2[s0 & 255]) ^ keySchedule[ksRow++];
+              var t2 = (SBOX2[s2 >>> 24] << 24 | SBOX2[s3 >>> 16 & 255] << 16 | SBOX2[s0 >>> 8 & 255] << 8 | SBOX2[s1 & 255]) ^ keySchedule[ksRow++];
+              var t3 = (SBOX2[s3 >>> 24] << 24 | SBOX2[s0 >>> 16 & 255] << 16 | SBOX2[s1 >>> 8 & 255] << 8 | SBOX2[s2 & 255]) ^ keySchedule[ksRow++];
+              M[offset] = t0;
+              M[offset + 1] = t1;
+              M[offset + 2] = t2;
+              M[offset + 3] = t3;
+            },
+            keySize: 256 / 32
+          });
+          C.AES = BlockCipher._createHelper(AES);
+        })();
+        return CryptoJS.AES;
+      });
+    })(aes);
+    return aes.exports;
+  }
+  var tripledes = { exports: {} };
+  var hasRequiredTripledes;
+  function requireTripledes() {
+    if (hasRequiredTripledes)
+      return tripledes.exports;
+    hasRequiredTripledes = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireEncBase64(), requireMd5(), requireEvpkdf(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var WordArray = C_lib.WordArray;
+          var BlockCipher = C_lib.BlockCipher;
+          var C_algo = C.algo;
+          var PC1 = [
+            57,
+            49,
+            41,
+            33,
+            25,
+            17,
+            9,
+            1,
+            58,
+            50,
+            42,
+            34,
+            26,
+            18,
+            10,
+            2,
+            59,
+            51,
+            43,
+            35,
+            27,
+            19,
+            11,
+            3,
+            60,
+            52,
+            44,
+            36,
+            63,
+            55,
+            47,
+            39,
+            31,
+            23,
+            15,
+            7,
+            62,
+            54,
+            46,
+            38,
+            30,
+            22,
+            14,
+            6,
+            61,
+            53,
+            45,
+            37,
+            29,
+            21,
+            13,
+            5,
+            28,
+            20,
+            12,
+            4
+          ];
+          var PC2 = [
+            14,
+            17,
+            11,
+            24,
+            1,
+            5,
+            3,
+            28,
+            15,
+            6,
+            21,
+            10,
+            23,
+            19,
+            12,
+            4,
+            26,
+            8,
+            16,
+            7,
+            27,
+            20,
+            13,
+            2,
+            41,
+            52,
+            31,
+            37,
+            47,
+            55,
+            30,
+            40,
+            51,
+            45,
+            33,
+            48,
+            44,
+            49,
+            39,
+            56,
+            34,
+            53,
+            46,
+            42,
+            50,
+            36,
+            29,
+            32
+          ];
+          var BIT_SHIFTS = [1, 2, 4, 6, 8, 10, 12, 14, 15, 17, 19, 21, 23, 25, 27, 28];
+          var SBOX_P = [
+            {
+              0: 8421888,
+              268435456: 32768,
+              536870912: 8421378,
+              805306368: 2,
+              1073741824: 512,
+              1342177280: 8421890,
+              1610612736: 8389122,
+              1879048192: 8388608,
+              2147483648: 514,
+              2415919104: 8389120,
+              2684354560: 33280,
+              2952790016: 8421376,
+              3221225472: 32770,
+              3489660928: 8388610,
+              3758096384: 0,
+              4026531840: 33282,
+              134217728: 0,
+              402653184: 8421890,
+              671088640: 33282,
+              939524096: 32768,
+              1207959552: 8421888,
+              1476395008: 512,
+              1744830464: 8421378,
+              2013265920: 2,
+              2281701376: 8389120,
+              2550136832: 33280,
+              2818572288: 8421376,
+              3087007744: 8389122,
+              3355443200: 8388610,
+              3623878656: 32770,
+              3892314112: 514,
+              4160749568: 8388608,
+              1: 32768,
+              268435457: 2,
+              536870913: 8421888,
+              805306369: 8388608,
+              1073741825: 8421378,
+              1342177281: 33280,
+              1610612737: 512,
+              1879048193: 8389122,
+              2147483649: 8421890,
+              2415919105: 8421376,
+              2684354561: 8388610,
+              2952790017: 33282,
+              3221225473: 514,
+              3489660929: 8389120,
+              3758096385: 32770,
+              4026531841: 0,
+              134217729: 8421890,
+              402653185: 8421376,
+              671088641: 8388608,
+              939524097: 512,
+              1207959553: 32768,
+              1476395009: 8388610,
+              1744830465: 2,
+              2013265921: 33282,
+              2281701377: 32770,
+              2550136833: 8389122,
+              2818572289: 514,
+              3087007745: 8421888,
+              3355443201: 8389120,
+              3623878657: 0,
+              3892314113: 33280,
+              4160749569: 8421378
+            },
+            {
+              0: 1074282512,
+              16777216: 16384,
+              33554432: 524288,
+              50331648: 1074266128,
+              67108864: 1073741840,
+              83886080: 1074282496,
+              100663296: 1073758208,
+              117440512: 16,
+              134217728: 540672,
+              150994944: 1073758224,
+              167772160: 1073741824,
+              184549376: 540688,
+              201326592: 524304,
+              218103808: 0,
+              234881024: 16400,
+              251658240: 1074266112,
+              8388608: 1073758208,
+              25165824: 540688,
+              41943040: 16,
+              58720256: 1073758224,
+              75497472: 1074282512,
+              92274688: 1073741824,
+              109051904: 524288,
+              125829120: 1074266128,
+              142606336: 524304,
+              159383552: 0,
+              176160768: 16384,
+              192937984: 1074266112,
+              209715200: 1073741840,
+              226492416: 540672,
+              243269632: 1074282496,
+              260046848: 16400,
+              268435456: 0,
+              285212672: 1074266128,
+              301989888: 1073758224,
+              318767104: 1074282496,
+              335544320: 1074266112,
+              352321536: 16,
+              369098752: 540688,
+              385875968: 16384,
+              402653184: 16400,
+              419430400: 524288,
+              436207616: 524304,
+              452984832: 1073741840,
+              469762048: 540672,
+              486539264: 1073758208,
+              503316480: 1073741824,
+              520093696: 1074282512,
+              276824064: 540688,
+              293601280: 524288,
+              310378496: 1074266112,
+              327155712: 16384,
+              343932928: 1073758208,
+              360710144: 1074282512,
+              377487360: 16,
+              394264576: 1073741824,
+              411041792: 1074282496,
+              427819008: 1073741840,
+              444596224: 1073758224,
+              461373440: 524304,
+              478150656: 0,
+              494927872: 16400,
+              511705088: 1074266128,
+              528482304: 540672
+            },
+            {
+              0: 260,
+              1048576: 0,
+              2097152: 67109120,
+              3145728: 65796,
+              4194304: 65540,
+              5242880: 67108868,
+              6291456: 67174660,
+              7340032: 67174400,
+              8388608: 67108864,
+              9437184: 67174656,
+              10485760: 65792,
+              11534336: 67174404,
+              12582912: 67109124,
+              13631488: 65536,
+              14680064: 4,
+              15728640: 256,
+              524288: 67174656,
+              1572864: 67174404,
+              2621440: 0,
+              3670016: 67109120,
+              4718592: 67108868,
+              5767168: 65536,
+              6815744: 65540,
+              7864320: 260,
+              8912896: 4,
+              9961472: 256,
+              11010048: 67174400,
+              12058624: 65796,
+              13107200: 65792,
+              14155776: 67109124,
+              15204352: 67174660,
+              16252928: 67108864,
+              16777216: 67174656,
+              17825792: 65540,
+              18874368: 65536,
+              19922944: 67109120,
+              20971520: 256,
+              22020096: 67174660,
+              23068672: 67108868,
+              24117248: 0,
+              25165824: 67109124,
+              26214400: 67108864,
+              27262976: 4,
+              28311552: 65792,
+              29360128: 67174400,
+              30408704: 260,
+              31457280: 65796,
+              32505856: 67174404,
+              17301504: 67108864,
+              18350080: 260,
+              19398656: 67174656,
+              20447232: 0,
+              21495808: 65540,
+              22544384: 67109120,
+              23592960: 256,
+              24641536: 67174404,
+              25690112: 65536,
+              26738688: 67174660,
+              27787264: 65796,
+              28835840: 67108868,
+              29884416: 67109124,
+              30932992: 67174400,
+              31981568: 4,
+              33030144: 65792
+            },
+            {
+              0: 2151682048,
+              65536: 2147487808,
+              131072: 4198464,
+              196608: 2151677952,
+              262144: 0,
+              327680: 4198400,
+              393216: 2147483712,
+              458752: 4194368,
+              524288: 2147483648,
+              589824: 4194304,
+              655360: 64,
+              720896: 2147487744,
+              786432: 2151678016,
+              851968: 4160,
+              917504: 4096,
+              983040: 2151682112,
+              32768: 2147487808,
+              98304: 64,
+              163840: 2151678016,
+              229376: 2147487744,
+              294912: 4198400,
+              360448: 2151682112,
+              425984: 0,
+              491520: 2151677952,
+              557056: 4096,
+              622592: 2151682048,
+              688128: 4194304,
+              753664: 4160,
+              819200: 2147483648,
+              884736: 4194368,
+              950272: 4198464,
+              1015808: 2147483712,
+              1048576: 4194368,
+              1114112: 4198400,
+              1179648: 2147483712,
+              1245184: 0,
+              1310720: 4160,
+              1376256: 2151678016,
+              1441792: 2151682048,
+              1507328: 2147487808,
+              1572864: 2151682112,
+              1638400: 2147483648,
+              1703936: 2151677952,
+              1769472: 4198464,
+              1835008: 2147487744,
+              1900544: 4194304,
+              1966080: 64,
+              2031616: 4096,
+              1081344: 2151677952,
+              1146880: 2151682112,
+              1212416: 0,
+              1277952: 4198400,
+              1343488: 4194368,
+              1409024: 2147483648,
+              1474560: 2147487808,
+              1540096: 64,
+              1605632: 2147483712,
+              1671168: 4096,
+              1736704: 2147487744,
+              1802240: 2151678016,
+              1867776: 4160,
+              1933312: 2151682048,
+              1998848: 4194304,
+              2064384: 4198464
+            },
+            {
+              0: 128,
+              4096: 17039360,
+              8192: 262144,
+              12288: 536870912,
+              16384: 537133184,
+              20480: 16777344,
+              24576: 553648256,
+              28672: 262272,
+              32768: 16777216,
+              36864: 537133056,
+              40960: 536871040,
+              45056: 553910400,
+              49152: 553910272,
+              53248: 0,
+              57344: 17039488,
+              61440: 553648128,
+              2048: 17039488,
+              6144: 553648256,
+              10240: 128,
+              14336: 17039360,
+              18432: 262144,
+              22528: 537133184,
+              26624: 553910272,
+              30720: 536870912,
+              34816: 537133056,
+              38912: 0,
+              43008: 553910400,
+              47104: 16777344,
+              51200: 536871040,
+              55296: 553648128,
+              59392: 16777216,
+              63488: 262272,
+              65536: 262144,
+              69632: 128,
+              73728: 536870912,
+              77824: 553648256,
+              81920: 16777344,
+              86016: 553910272,
+              90112: 537133184,
+              94208: 16777216,
+              98304: 553910400,
+              102400: 553648128,
+              106496: 17039360,
+              110592: 537133056,
+              114688: 262272,
+              118784: 536871040,
+              122880: 0,
+              126976: 17039488,
+              67584: 553648256,
+              71680: 16777216,
+              75776: 17039360,
+              79872: 537133184,
+              83968: 536870912,
+              88064: 17039488,
+              92160: 128,
+              96256: 553910272,
+              100352: 262272,
+              104448: 553910400,
+              108544: 0,
+              112640: 553648128,
+              116736: 16777344,
+              120832: 262144,
+              124928: 537133056,
+              129024: 536871040
+            },
+            {
+              0: 268435464,
+              256: 8192,
+              512: 270532608,
+              768: 270540808,
+              1024: 268443648,
+              1280: 2097152,
+              1536: 2097160,
+              1792: 268435456,
+              2048: 0,
+              2304: 268443656,
+              2560: 2105344,
+              2816: 8,
+              3072: 270532616,
+              3328: 2105352,
+              3584: 8200,
+              3840: 270540800,
+              128: 270532608,
+              384: 270540808,
+              640: 8,
+              896: 2097152,
+              1152: 2105352,
+              1408: 268435464,
+              1664: 268443648,
+              1920: 8200,
+              2176: 2097160,
+              2432: 8192,
+              2688: 268443656,
+              2944: 270532616,
+              3200: 0,
+              3456: 270540800,
+              3712: 2105344,
+              3968: 268435456,
+              4096: 268443648,
+              4352: 270532616,
+              4608: 270540808,
+              4864: 8200,
+              5120: 2097152,
+              5376: 268435456,
+              5632: 268435464,
+              5888: 2105344,
+              6144: 2105352,
+              6400: 0,
+              6656: 8,
+              6912: 270532608,
+              7168: 8192,
+              7424: 268443656,
+              7680: 270540800,
+              7936: 2097160,
+              4224: 8,
+              4480: 2105344,
+              4736: 2097152,
+              4992: 268435464,
+              5248: 268443648,
+              5504: 8200,
+              5760: 270540808,
+              6016: 270532608,
+              6272: 270540800,
+              6528: 270532616,
+              6784: 8192,
+              7040: 2105352,
+              7296: 2097160,
+              7552: 0,
+              7808: 268435456,
+              8064: 268443656
+            },
+            {
+              0: 1048576,
+              16: 33555457,
+              32: 1024,
+              48: 1049601,
+              64: 34604033,
+              80: 0,
+              96: 1,
+              112: 34603009,
+              128: 33555456,
+              144: 1048577,
+              160: 33554433,
+              176: 34604032,
+              192: 34603008,
+              208: 1025,
+              224: 1049600,
+              240: 33554432,
+              8: 34603009,
+              24: 0,
+              40: 33555457,
+              56: 34604032,
+              72: 1048576,
+              88: 33554433,
+              104: 33554432,
+              120: 1025,
+              136: 1049601,
+              152: 33555456,
+              168: 34603008,
+              184: 1048577,
+              200: 1024,
+              216: 34604033,
+              232: 1,
+              248: 1049600,
+              256: 33554432,
+              272: 1048576,
+              288: 33555457,
+              304: 34603009,
+              320: 1048577,
+              336: 33555456,
+              352: 34604032,
+              368: 1049601,
+              384: 1025,
+              400: 34604033,
+              416: 1049600,
+              432: 1,
+              448: 0,
+              464: 34603008,
+              480: 33554433,
+              496: 1024,
+              264: 1049600,
+              280: 33555457,
+              296: 34603009,
+              312: 1,
+              328: 33554432,
+              344: 1048576,
+              360: 1025,
+              376: 34604032,
+              392: 33554433,
+              408: 34603008,
+              424: 0,
+              440: 34604033,
+              456: 1049601,
+              472: 1024,
+              488: 33555456,
+              504: 1048577
+            },
+            {
+              0: 134219808,
+              1: 131072,
+              2: 134217728,
+              3: 32,
+              4: 131104,
+              5: 134350880,
+              6: 134350848,
+              7: 2048,
+              8: 134348800,
+              9: 134219776,
+              10: 133120,
+              11: 134348832,
+              12: 2080,
+              13: 0,
+              14: 134217760,
+              15: 133152,
+              2147483648: 2048,
+              2147483649: 134350880,
+              2147483650: 134219808,
+              2147483651: 134217728,
+              2147483652: 134348800,
+              2147483653: 133120,
+              2147483654: 133152,
+              2147483655: 32,
+              2147483656: 134217760,
+              2147483657: 2080,
+              2147483658: 131104,
+              2147483659: 134350848,
+              2147483660: 0,
+              2147483661: 134348832,
+              2147483662: 134219776,
+              2147483663: 131072,
+              16: 133152,
+              17: 134350848,
+              18: 32,
+              19: 2048,
+              20: 134219776,
+              21: 134217760,
+              22: 134348832,
+              23: 131072,
+              24: 0,
+              25: 131104,
+              26: 134348800,
+              27: 134219808,
+              28: 134350880,
+              29: 133120,
+              30: 2080,
+              31: 134217728,
+              2147483664: 131072,
+              2147483665: 2048,
+              2147483666: 134348832,
+              2147483667: 133152,
+              2147483668: 32,
+              2147483669: 134348800,
+              2147483670: 134217728,
+              2147483671: 134219808,
+              2147483672: 134350880,
+              2147483673: 134217760,
+              2147483674: 134219776,
+              2147483675: 0,
+              2147483676: 133120,
+              2147483677: 2080,
+              2147483678: 131104,
+              2147483679: 134350848
+            }
+          ];
+          var SBOX_MASK = [
+            4160749569,
+            528482304,
+            33030144,
+            2064384,
+            129024,
+            8064,
+            504,
+            2147483679
+          ];
+          var DES = C_algo.DES = BlockCipher.extend({
+            _doReset: function() {
+              var key = this._key;
+              var keyWords = key.words;
+              var keyBits = [];
+              for (var i = 0; i < 56; i++) {
+                var keyBitPos = PC1[i] - 1;
+                keyBits[i] = keyWords[keyBitPos >>> 5] >>> 31 - keyBitPos % 32 & 1;
+              }
+              var subKeys = this._subKeys = [];
+              for (var nSubKey = 0; nSubKey < 16; nSubKey++) {
+                var subKey = subKeys[nSubKey] = [];
+                var bitShift = BIT_SHIFTS[nSubKey];
+                for (var i = 0; i < 24; i++) {
+                  subKey[i / 6 | 0] |= keyBits[(PC2[i] - 1 + bitShift) % 28] << 31 - i % 6;
+                  subKey[4 + (i / 6 | 0)] |= keyBits[28 + (PC2[i + 24] - 1 + bitShift) % 28] << 31 - i % 6;
+                }
+                subKey[0] = subKey[0] << 1 | subKey[0] >>> 31;
+                for (var i = 1; i < 7; i++) {
+                  subKey[i] = subKey[i] >>> (i - 1) * 4 + 3;
+                }
+                subKey[7] = subKey[7] << 5 | subKey[7] >>> 27;
+              }
+              var invSubKeys = this._invSubKeys = [];
+              for (var i = 0; i < 16; i++) {
+                invSubKeys[i] = subKeys[15 - i];
+              }
+            },
+            encryptBlock: function(M, offset) {
+              this._doCryptBlock(M, offset, this._subKeys);
+            },
+            decryptBlock: function(M, offset) {
+              this._doCryptBlock(M, offset, this._invSubKeys);
+            },
+            _doCryptBlock: function(M, offset, subKeys) {
+              this._lBlock = M[offset];
+              this._rBlock = M[offset + 1];
+              exchangeLR.call(this, 4, 252645135);
+              exchangeLR.call(this, 16, 65535);
+              exchangeRL.call(this, 2, 858993459);
+              exchangeRL.call(this, 8, 16711935);
+              exchangeLR.call(this, 1, 1431655765);
+              for (var round = 0; round < 16; round++) {
+                var subKey = subKeys[round];
+                var lBlock = this._lBlock;
+                var rBlock = this._rBlock;
+                var f = 0;
+                for (var i = 0; i < 8; i++) {
+                  f |= SBOX_P[i][((rBlock ^ subKey[i]) & SBOX_MASK[i]) >>> 0];
+                }
+                this._lBlock = rBlock;
+                this._rBlock = lBlock ^ f;
+              }
+              var t = this._lBlock;
+              this._lBlock = this._rBlock;
+              this._rBlock = t;
+              exchangeLR.call(this, 1, 1431655765);
+              exchangeRL.call(this, 8, 16711935);
+              exchangeRL.call(this, 2, 858993459);
+              exchangeLR.call(this, 16, 65535);
+              exchangeLR.call(this, 4, 252645135);
+              M[offset] = this._lBlock;
+              M[offset + 1] = this._rBlock;
+            },
+            keySize: 64 / 32,
+            ivSize: 64 / 32,
+            blockSize: 64 / 32
+          });
+          function exchangeLR(offset, mask) {
+            var t = (this._lBlock >>> offset ^ this._rBlock) & mask;
+            this._rBlock ^= t;
+            this._lBlock ^= t << offset;
+          }
+          function exchangeRL(offset, mask) {
+            var t = (this._rBlock >>> offset ^ this._lBlock) & mask;
+            this._lBlock ^= t;
+            this._rBlock ^= t << offset;
+          }
+          C.DES = BlockCipher._createHelper(DES);
+          var TripleDES = C_algo.TripleDES = BlockCipher.extend({
+            _doReset: function() {
+              var key = this._key;
+              var keyWords = key.words;
+              if (keyWords.length !== 2 && keyWords.length !== 4 && keyWords.length < 6) {
+                throw new Error("Invalid key length - 3DES requires the key length to be 64, 128, 192 or >192.");
+              }
+              var key1 = keyWords.slice(0, 2);
+              var key2 = keyWords.length < 4 ? keyWords.slice(0, 2) : keyWords.slice(2, 4);
+              var key3 = keyWords.length < 6 ? keyWords.slice(0, 2) : keyWords.slice(4, 6);
+              this._des1 = DES.createEncryptor(WordArray.create(key1));
+              this._des2 = DES.createEncryptor(WordArray.create(key2));
+              this._des3 = DES.createEncryptor(WordArray.create(key3));
+            },
+            encryptBlock: function(M, offset) {
+              this._des1.encryptBlock(M, offset);
+              this._des2.decryptBlock(M, offset);
+              this._des3.encryptBlock(M, offset);
+            },
+            decryptBlock: function(M, offset) {
+              this._des3.decryptBlock(M, offset);
+              this._des2.encryptBlock(M, offset);
+              this._des1.decryptBlock(M, offset);
+            },
+            keySize: 192 / 32,
+            ivSize: 64 / 32,
+            blockSize: 64 / 32
+          });
+          C.TripleDES = BlockCipher._createHelper(TripleDES);
+        })();
+        return CryptoJS.TripleDES;
+      });
+    })(tripledes);
+    return tripledes.exports;
+  }
+  var rc4 = { exports: {} };
+  var hasRequiredRc4;
+  function requireRc4() {
+    if (hasRequiredRc4)
+      return rc4.exports;
+    hasRequiredRc4 = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireEncBase64(), requireMd5(), requireEvpkdf(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var StreamCipher = C_lib.StreamCipher;
+          var C_algo = C.algo;
+          var RC4 = C_algo.RC4 = StreamCipher.extend({
+            _doReset: function() {
+              var key = this._key;
+              var keyWords = key.words;
+              var keySigBytes = key.sigBytes;
+              var S = this._S = [];
+              for (var i = 0; i < 256; i++) {
+                S[i] = i;
+              }
+              for (var i = 0, j = 0; i < 256; i++) {
+                var keyByteIndex = i % keySigBytes;
+                var keyByte = keyWords[keyByteIndex >>> 2] >>> 24 - keyByteIndex % 4 * 8 & 255;
+                j = (j + S[i] + keyByte) % 256;
+                var t = S[i];
+                S[i] = S[j];
+                S[j] = t;
+              }
+              this._i = this._j = 0;
+            },
+            _doProcessBlock: function(M, offset) {
+              M[offset] ^= generateKeystreamWord.call(this);
+            },
+            keySize: 256 / 32,
+            ivSize: 0
+          });
+          function generateKeystreamWord() {
+            var S = this._S;
+            var i = this._i;
+            var j = this._j;
+            var keystreamWord = 0;
+            for (var n = 0; n < 4; n++) {
+              i = (i + 1) % 256;
+              j = (j + S[i]) % 256;
+              var t = S[i];
+              S[i] = S[j];
+              S[j] = t;
+              keystreamWord |= S[(S[i] + S[j]) % 256] << 24 - n * 8;
+            }
+            this._i = i;
+            this._j = j;
+            return keystreamWord;
+          }
+          C.RC4 = StreamCipher._createHelper(RC4);
+          var RC4Drop = C_algo.RC4Drop = RC4.extend({
+            /**
+             * Configuration options.
+             *
+             * @property {number} drop The number of keystream words to drop. Default 192
+             */
+            cfg: RC4.cfg.extend({
+              drop: 192
+            }),
+            _doReset: function() {
+              RC4._doReset.call(this);
+              for (var i = this.cfg.drop; i > 0; i--) {
+                generateKeystreamWord.call(this);
+              }
+            }
+          });
+          C.RC4Drop = StreamCipher._createHelper(RC4Drop);
+        })();
+        return CryptoJS.RC4;
+      });
+    })(rc4);
+    return rc4.exports;
+  }
+  var rabbit = { exports: {} };
+  var hasRequiredRabbit;
+  function requireRabbit() {
+    if (hasRequiredRabbit)
+      return rabbit.exports;
+    hasRequiredRabbit = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireEncBase64(), requireMd5(), requireEvpkdf(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var StreamCipher = C_lib.StreamCipher;
+          var C_algo = C.algo;
+          var S = [];
+          var C_ = [];
+          var G = [];
+          var Rabbit = C_algo.Rabbit = StreamCipher.extend({
+            _doReset: function() {
+              var K = this._key.words;
+              var iv = this.cfg.iv;
+              for (var i = 0; i < 4; i++) {
+                K[i] = (K[i] << 8 | K[i] >>> 24) & 16711935 | (K[i] << 24 | K[i] >>> 8) & 4278255360;
+              }
+              var X = this._X = [
+                K[0],
+                K[3] << 16 | K[2] >>> 16,
+                K[1],
+                K[0] << 16 | K[3] >>> 16,
+                K[2],
+                K[1] << 16 | K[0] >>> 16,
+                K[3],
+                K[2] << 16 | K[1] >>> 16
+              ];
+              var C2 = this._C = [
+                K[2] << 16 | K[2] >>> 16,
+                K[0] & 4294901760 | K[1] & 65535,
+                K[3] << 16 | K[3] >>> 16,
+                K[1] & 4294901760 | K[2] & 65535,
+                K[0] << 16 | K[0] >>> 16,
+                K[2] & 4294901760 | K[3] & 65535,
+                K[1] << 16 | K[1] >>> 16,
+                K[3] & 4294901760 | K[0] & 65535
+              ];
+              this._b = 0;
+              for (var i = 0; i < 4; i++) {
+                nextState.call(this);
+              }
+              for (var i = 0; i < 8; i++) {
+                C2[i] ^= X[i + 4 & 7];
+              }
+              if (iv) {
+                var IV = iv.words;
+                var IV_0 = IV[0];
+                var IV_1 = IV[1];
+                var i0 = (IV_0 << 8 | IV_0 >>> 24) & 16711935 | (IV_0 << 24 | IV_0 >>> 8) & 4278255360;
+                var i2 = (IV_1 << 8 | IV_1 >>> 24) & 16711935 | (IV_1 << 24 | IV_1 >>> 8) & 4278255360;
+                var i1 = i0 >>> 16 | i2 & 4294901760;
+                var i3 = i2 << 16 | i0 & 65535;
+                C2[0] ^= i0;
+                C2[1] ^= i1;
+                C2[2] ^= i2;
+                C2[3] ^= i3;
+                C2[4] ^= i0;
+                C2[5] ^= i1;
+                C2[6] ^= i2;
+                C2[7] ^= i3;
+                for (var i = 0; i < 4; i++) {
+                  nextState.call(this);
+                }
+              }
+            },
+            _doProcessBlock: function(M, offset) {
+              var X = this._X;
+              nextState.call(this);
+              S[0] = X[0] ^ X[5] >>> 16 ^ X[3] << 16;
+              S[1] = X[2] ^ X[7] >>> 16 ^ X[5] << 16;
+              S[2] = X[4] ^ X[1] >>> 16 ^ X[7] << 16;
+              S[3] = X[6] ^ X[3] >>> 16 ^ X[1] << 16;
+              for (var i = 0; i < 4; i++) {
+                S[i] = (S[i] << 8 | S[i] >>> 24) & 16711935 | (S[i] << 24 | S[i] >>> 8) & 4278255360;
+                M[offset + i] ^= S[i];
+              }
+            },
+            blockSize: 128 / 32,
+            ivSize: 64 / 32
+          });
+          function nextState() {
+            var X = this._X;
+            var C2 = this._C;
+            for (var i = 0; i < 8; i++) {
+              C_[i] = C2[i];
+            }
+            C2[0] = C2[0] + 1295307597 + this._b | 0;
+            C2[1] = C2[1] + 3545052371 + (C2[0] >>> 0 < C_[0] >>> 0 ? 1 : 0) | 0;
+            C2[2] = C2[2] + 886263092 + (C2[1] >>> 0 < C_[1] >>> 0 ? 1 : 0) | 0;
+            C2[3] = C2[3] + 1295307597 + (C2[2] >>> 0 < C_[2] >>> 0 ? 1 : 0) | 0;
+            C2[4] = C2[4] + 3545052371 + (C2[3] >>> 0 < C_[3] >>> 0 ? 1 : 0) | 0;
+            C2[5] = C2[5] + 886263092 + (C2[4] >>> 0 < C_[4] >>> 0 ? 1 : 0) | 0;
+            C2[6] = C2[6] + 1295307597 + (C2[5] >>> 0 < C_[5] >>> 0 ? 1 : 0) | 0;
+            C2[7] = C2[7] + 3545052371 + (C2[6] >>> 0 < C_[6] >>> 0 ? 1 : 0) | 0;
+            this._b = C2[7] >>> 0 < C_[7] >>> 0 ? 1 : 0;
+            for (var i = 0; i < 8; i++) {
+              var gx = X[i] + C2[i];
+              var ga = gx & 65535;
+              var gb = gx >>> 16;
+              var gh = ((ga * ga >>> 17) + ga * gb >>> 15) + gb * gb;
+              var gl = ((gx & 4294901760) * gx | 0) + ((gx & 65535) * gx | 0);
+              G[i] = gh ^ gl;
+            }
+            X[0] = G[0] + (G[7] << 16 | G[7] >>> 16) + (G[6] << 16 | G[6] >>> 16) | 0;
+            X[1] = G[1] + (G[0] << 8 | G[0] >>> 24) + G[7] | 0;
+            X[2] = G[2] + (G[1] << 16 | G[1] >>> 16) + (G[0] << 16 | G[0] >>> 16) | 0;
+            X[3] = G[3] + (G[2] << 8 | G[2] >>> 24) + G[1] | 0;
+            X[4] = G[4] + (G[3] << 16 | G[3] >>> 16) + (G[2] << 16 | G[2] >>> 16) | 0;
+            X[5] = G[5] + (G[4] << 8 | G[4] >>> 24) + G[3] | 0;
+            X[6] = G[6] + (G[5] << 16 | G[5] >>> 16) + (G[4] << 16 | G[4] >>> 16) | 0;
+            X[7] = G[7] + (G[6] << 8 | G[6] >>> 24) + G[5] | 0;
+          }
+          C.Rabbit = StreamCipher._createHelper(Rabbit);
+        })();
+        return CryptoJS.Rabbit;
+      });
+    })(rabbit);
+    return rabbit.exports;
+  }
+  var rabbitLegacy = { exports: {} };
+  var hasRequiredRabbitLegacy;
+  function requireRabbitLegacy() {
+    if (hasRequiredRabbitLegacy)
+      return rabbitLegacy.exports;
+    hasRequiredRabbitLegacy = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireEncBase64(), requireMd5(), requireEvpkdf(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var StreamCipher = C_lib.StreamCipher;
+          var C_algo = C.algo;
+          var S = [];
+          var C_ = [];
+          var G = [];
+          var RabbitLegacy = C_algo.RabbitLegacy = StreamCipher.extend({
+            _doReset: function() {
+              var K = this._key.words;
+              var iv = this.cfg.iv;
+              var X = this._X = [
+                K[0],
+                K[3] << 16 | K[2] >>> 16,
+                K[1],
+                K[0] << 16 | K[3] >>> 16,
+                K[2],
+                K[1] << 16 | K[0] >>> 16,
+                K[3],
+                K[2] << 16 | K[1] >>> 16
+              ];
+              var C2 = this._C = [
+                K[2] << 16 | K[2] >>> 16,
+                K[0] & 4294901760 | K[1] & 65535,
+                K[3] << 16 | K[3] >>> 16,
+                K[1] & 4294901760 | K[2] & 65535,
+                K[0] << 16 | K[0] >>> 16,
+                K[2] & 4294901760 | K[3] & 65535,
+                K[1] << 16 | K[1] >>> 16,
+                K[3] & 4294901760 | K[0] & 65535
+              ];
+              this._b = 0;
+              for (var i = 0; i < 4; i++) {
+                nextState.call(this);
+              }
+              for (var i = 0; i < 8; i++) {
+                C2[i] ^= X[i + 4 & 7];
+              }
+              if (iv) {
+                var IV = iv.words;
+                var IV_0 = IV[0];
+                var IV_1 = IV[1];
+                var i0 = (IV_0 << 8 | IV_0 >>> 24) & 16711935 | (IV_0 << 24 | IV_0 >>> 8) & 4278255360;
+                var i2 = (IV_1 << 8 | IV_1 >>> 24) & 16711935 | (IV_1 << 24 | IV_1 >>> 8) & 4278255360;
+                var i1 = i0 >>> 16 | i2 & 4294901760;
+                var i3 = i2 << 16 | i0 & 65535;
+                C2[0] ^= i0;
+                C2[1] ^= i1;
+                C2[2] ^= i2;
+                C2[3] ^= i3;
+                C2[4] ^= i0;
+                C2[5] ^= i1;
+                C2[6] ^= i2;
+                C2[7] ^= i3;
+                for (var i = 0; i < 4; i++) {
+                  nextState.call(this);
+                }
+              }
+            },
+            _doProcessBlock: function(M, offset) {
+              var X = this._X;
+              nextState.call(this);
+              S[0] = X[0] ^ X[5] >>> 16 ^ X[3] << 16;
+              S[1] = X[2] ^ X[7] >>> 16 ^ X[5] << 16;
+              S[2] = X[4] ^ X[1] >>> 16 ^ X[7] << 16;
+              S[3] = X[6] ^ X[3] >>> 16 ^ X[1] << 16;
+              for (var i = 0; i < 4; i++) {
+                S[i] = (S[i] << 8 | S[i] >>> 24) & 16711935 | (S[i] << 24 | S[i] >>> 8) & 4278255360;
+                M[offset + i] ^= S[i];
+              }
+            },
+            blockSize: 128 / 32,
+            ivSize: 64 / 32
+          });
+          function nextState() {
+            var X = this._X;
+            var C2 = this._C;
+            for (var i = 0; i < 8; i++) {
+              C_[i] = C2[i];
+            }
+            C2[0] = C2[0] + 1295307597 + this._b | 0;
+            C2[1] = C2[1] + 3545052371 + (C2[0] >>> 0 < C_[0] >>> 0 ? 1 : 0) | 0;
+            C2[2] = C2[2] + 886263092 + (C2[1] >>> 0 < C_[1] >>> 0 ? 1 : 0) | 0;
+            C2[3] = C2[3] + 1295307597 + (C2[2] >>> 0 < C_[2] >>> 0 ? 1 : 0) | 0;
+            C2[4] = C2[4] + 3545052371 + (C2[3] >>> 0 < C_[3] >>> 0 ? 1 : 0) | 0;
+            C2[5] = C2[5] + 886263092 + (C2[4] >>> 0 < C_[4] >>> 0 ? 1 : 0) | 0;
+            C2[6] = C2[6] + 1295307597 + (C2[5] >>> 0 < C_[5] >>> 0 ? 1 : 0) | 0;
+            C2[7] = C2[7] + 3545052371 + (C2[6] >>> 0 < C_[6] >>> 0 ? 1 : 0) | 0;
+            this._b = C2[7] >>> 0 < C_[7] >>> 0 ? 1 : 0;
+            for (var i = 0; i < 8; i++) {
+              var gx = X[i] + C2[i];
+              var ga = gx & 65535;
+              var gb = gx >>> 16;
+              var gh = ((ga * ga >>> 17) + ga * gb >>> 15) + gb * gb;
+              var gl = ((gx & 4294901760) * gx | 0) + ((gx & 65535) * gx | 0);
+              G[i] = gh ^ gl;
+            }
+            X[0] = G[0] + (G[7] << 16 | G[7] >>> 16) + (G[6] << 16 | G[6] >>> 16) | 0;
+            X[1] = G[1] + (G[0] << 8 | G[0] >>> 24) + G[7] | 0;
+            X[2] = G[2] + (G[1] << 16 | G[1] >>> 16) + (G[0] << 16 | G[0] >>> 16) | 0;
+            X[3] = G[3] + (G[2] << 8 | G[2] >>> 24) + G[1] | 0;
+            X[4] = G[4] + (G[3] << 16 | G[3] >>> 16) + (G[2] << 16 | G[2] >>> 16) | 0;
+            X[5] = G[5] + (G[4] << 8 | G[4] >>> 24) + G[3] | 0;
+            X[6] = G[6] + (G[5] << 16 | G[5] >>> 16) + (G[4] << 16 | G[4] >>> 16) | 0;
+            X[7] = G[7] + (G[6] << 8 | G[6] >>> 24) + G[5] | 0;
+          }
+          C.RabbitLegacy = StreamCipher._createHelper(RabbitLegacy);
+        })();
+        return CryptoJS.RabbitLegacy;
+      });
+    })(rabbitLegacy);
+    return rabbitLegacy.exports;
+  }
+  var blowfish = { exports: {} };
+  var hasRequiredBlowfish;
+  function requireBlowfish() {
+    if (hasRequiredBlowfish)
+      return blowfish.exports;
+    hasRequiredBlowfish = 1;
+    (function(module, exports) {
+      (function(root, factory, undef) {
+        {
+          module.exports = factory(requireCore(), requireEncBase64(), requireMd5(), requireEvpkdf(), requireCipherCore());
+        }
+      })(commonjsGlobal, function(CryptoJS) {
+        (function() {
+          var C = CryptoJS;
+          var C_lib = C.lib;
+          var BlockCipher = C_lib.BlockCipher;
+          var C_algo = C.algo;
+          const N = 16;
+          const ORIG_P = [
+            608135816,
+            2242054355,
+            320440878,
+            57701188,
+            2752067618,
+            698298832,
+            137296536,
+            3964562569,
+            1160258022,
+            953160567,
+            3193202383,
+            887688300,
+            3232508343,
+            3380367581,
+            1065670069,
+            3041331479,
+            2450970073,
+            2306472731
+          ];
+          const ORIG_S = [
+            [
+              3509652390,
+              2564797868,
+              805139163,
+              3491422135,
+              3101798381,
+              1780907670,
+              3128725573,
+              4046225305,
+              614570311,
+              3012652279,
+              134345442,
+              2240740374,
+              1667834072,
+              1901547113,
+              2757295779,
+              4103290238,
+              227898511,
+              1921955416,
+              1904987480,
+              2182433518,
+              2069144605,
+              3260701109,
+              2620446009,
+              720527379,
+              3318853667,
+              677414384,
+              3393288472,
+              3101374703,
+              2390351024,
+              1614419982,
+              1822297739,
+              2954791486,
+              3608508353,
+              3174124327,
+              2024746970,
+              1432378464,
+              3864339955,
+              2857741204,
+              1464375394,
+              1676153920,
+              1439316330,
+              715854006,
+              3033291828,
+              289532110,
+              2706671279,
+              2087905683,
+              3018724369,
+              1668267050,
+              732546397,
+              1947742710,
+              3462151702,
+              2609353502,
+              2950085171,
+              1814351708,
+              2050118529,
+              680887927,
+              999245976,
+              1800124847,
+              3300911131,
+              1713906067,
+              1641548236,
+              4213287313,
+              1216130144,
+              1575780402,
+              4018429277,
+              3917837745,
+              3693486850,
+              3949271944,
+              596196993,
+              3549867205,
+              258830323,
+              2213823033,
+              772490370,
+              2760122372,
+              1774776394,
+              2652871518,
+              566650946,
+              4142492826,
+              1728879713,
+              2882767088,
+              1783734482,
+              3629395816,
+              2517608232,
+              2874225571,
+              1861159788,
+              326777828,
+              3124490320,
+              2130389656,
+              2716951837,
+              967770486,
+              1724537150,
+              2185432712,
+              2364442137,
+              1164943284,
+              2105845187,
+              998989502,
+              3765401048,
+              2244026483,
+              1075463327,
+              1455516326,
+              1322494562,
+              910128902,
+              469688178,
+              1117454909,
+              936433444,
+              3490320968,
+              3675253459,
+              1240580251,
+              122909385,
+              2157517691,
+              634681816,
+              4142456567,
+              3825094682,
+              3061402683,
+              2540495037,
+              79693498,
+              3249098678,
+              1084186820,
+              1583128258,
+              426386531,
+              1761308591,
+              1047286709,
+              322548459,
+              995290223,
+              1845252383,
+              2603652396,
+              3431023940,
+              2942221577,
+              3202600964,
+              3727903485,
+              1712269319,
+              422464435,
+              3234572375,
+              1170764815,
+              3523960633,
+              3117677531,
+              1434042557,
+              442511882,
+              3600875718,
+              1076654713,
+              1738483198,
+              4213154764,
+              2393238008,
+              3677496056,
+              1014306527,
+              4251020053,
+              793779912,
+              2902807211,
+              842905082,
+              4246964064,
+              1395751752,
+              1040244610,
+              2656851899,
+              3396308128,
+              445077038,
+              3742853595,
+              3577915638,
+              679411651,
+              2892444358,
+              2354009459,
+              1767581616,
+              3150600392,
+              3791627101,
+              3102740896,
+              284835224,
+              4246832056,
+              1258075500,
+              768725851,
+              2589189241,
+              3069724005,
+              3532540348,
+              1274779536,
+              3789419226,
+              2764799539,
+              1660621633,
+              3471099624,
+              4011903706,
+              913787905,
+              3497959166,
+              737222580,
+              2514213453,
+              2928710040,
+              3937242737,
+              1804850592,
+              3499020752,
+              2949064160,
+              2386320175,
+              2390070455,
+              2415321851,
+              4061277028,
+              2290661394,
+              2416832540,
+              1336762016,
+              1754252060,
+              3520065937,
+              3014181293,
+              791618072,
+              3188594551,
+              3933548030,
+              2332172193,
+              3852520463,
+              3043980520,
+              413987798,
+              3465142937,
+              3030929376,
+              4245938359,
+              2093235073,
+              3534596313,
+              375366246,
+              2157278981,
+              2479649556,
+              555357303,
+              3870105701,
+              2008414854,
+              3344188149,
+              4221384143,
+              3956125452,
+              2067696032,
+              3594591187,
+              2921233993,
+              2428461,
+              544322398,
+              577241275,
+              1471733935,
+              610547355,
+              4027169054,
+              1432588573,
+              1507829418,
+              2025931657,
+              3646575487,
+              545086370,
+              48609733,
+              2200306550,
+              1653985193,
+              298326376,
+              1316178497,
+              3007786442,
+              2064951626,
+              458293330,
+              2589141269,
+              3591329599,
+              3164325604,
+              727753846,
+              2179363840,
+              146436021,
+              1461446943,
+              4069977195,
+              705550613,
+              3059967265,
+              3887724982,
+              4281599278,
+              3313849956,
+              1404054877,
+              2845806497,
+              146425753,
+              1854211946
+            ],
+            [
+              1266315497,
+              3048417604,
+              3681880366,
+              3289982499,
+              290971e4,
+              1235738493,
+              2632868024,
+              2414719590,
+              3970600049,
+              1771706367,
+              1449415276,
+              3266420449,
+              422970021,
+              1963543593,
+              2690192192,
+              3826793022,
+              1062508698,
+              1531092325,
+              1804592342,
+              2583117782,
+              2714934279,
+              4024971509,
+              1294809318,
+              4028980673,
+              1289560198,
+              2221992742,
+              1669523910,
+              35572830,
+              157838143,
+              1052438473,
+              1016535060,
+              1802137761,
+              1753167236,
+              1386275462,
+              3080475397,
+              2857371447,
+              1040679964,
+              2145300060,
+              2390574316,
+              1461121720,
+              2956646967,
+              4031777805,
+              4028374788,
+              33600511,
+              2920084762,
+              1018524850,
+              629373528,
+              3691585981,
+              3515945977,
+              2091462646,
+              2486323059,
+              586499841,
+              988145025,
+              935516892,
+              3367335476,
+              2599673255,
+              2839830854,
+              265290510,
+              3972581182,
+              2759138881,
+              3795373465,
+              1005194799,
+              847297441,
+              406762289,
+              1314163512,
+              1332590856,
+              1866599683,
+              4127851711,
+              750260880,
+              613907577,
+              1450815602,
+              3165620655,
+              3734664991,
+              3650291728,
+              3012275730,
+              3704569646,
+              1427272223,
+              778793252,
+              1343938022,
+              2676280711,
+              2052605720,
+              1946737175,
+              3164576444,
+              3914038668,
+              3967478842,
+              3682934266,
+              1661551462,
+              3294938066,
+              4011595847,
+              840292616,
+              3712170807,
+              616741398,
+              312560963,
+              711312465,
+              1351876610,
+              322626781,
+              1910503582,
+              271666773,
+              2175563734,
+              1594956187,
+              70604529,
+              3617834859,
+              1007753275,
+              1495573769,
+              4069517037,
+              2549218298,
+              2663038764,
+              504708206,
+              2263041392,
+              3941167025,
+              2249088522,
+              1514023603,
+              1998579484,
+              1312622330,
+              694541497,
+              2582060303,
+              2151582166,
+              1382467621,
+              776784248,
+              2618340202,
+              3323268794,
+              2497899128,
+              2784771155,
+              503983604,
+              4076293799,
+              907881277,
+              423175695,
+              432175456,
+              1378068232,
+              4145222326,
+              3954048622,
+              3938656102,
+              3820766613,
+              2793130115,
+              2977904593,
+              26017576,
+              3274890735,
+              3194772133,
+              1700274565,
+              1756076034,
+              4006520079,
+              3677328699,
+              720338349,
+              1533947780,
+              354530856,
+              688349552,
+              3973924725,
+              1637815568,
+              332179504,
+              3949051286,
+              53804574,
+              2852348879,
+              3044236432,
+              1282449977,
+              3583942155,
+              3416972820,
+              4006381244,
+              1617046695,
+              2628476075,
+              3002303598,
+              1686838959,
+              431878346,
+              2686675385,
+              1700445008,
+              1080580658,
+              1009431731,
+              832498133,
+              3223435511,
+              2605976345,
+              2271191193,
+              2516031870,
+              1648197032,
+              4164389018,
+              2548247927,
+              300782431,
+              375919233,
+              238389289,
+              3353747414,
+              2531188641,
+              2019080857,
+              1475708069,
+              455242339,
+              2609103871,
+              448939670,
+              3451063019,
+              1395535956,
+              2413381860,
+              1841049896,
+              1491858159,
+              885456874,
+              4264095073,
+              4001119347,
+              1565136089,
+              3898914787,
+              1108368660,
+              540939232,
+              1173283510,
+              2745871338,
+              3681308437,
+              4207628240,
+              3343053890,
+              4016749493,
+              1699691293,
+              1103962373,
+              3625875870,
+              2256883143,
+              3830138730,
+              1031889488,
+              3479347698,
+              1535977030,
+              4236805024,
+              3251091107,
+              2132092099,
+              1774941330,
+              1199868427,
+              1452454533,
+              157007616,
+              2904115357,
+              342012276,
+              595725824,
+              1480756522,
+              206960106,
+              497939518,
+              591360097,
+              863170706,
+              2375253569,
+              3596610801,
+              1814182875,
+              2094937945,
+              3421402208,
+              1082520231,
+              3463918190,
+              2785509508,
+              435703966,
+              3908032597,
+              1641649973,
+              2842273706,
+              3305899714,
+              1510255612,
+              2148256476,
+              2655287854,
+              3276092548,
+              4258621189,
+              236887753,
+              3681803219,
+              274041037,
+              1734335097,
+              3815195456,
+              3317970021,
+              1899903192,
+              1026095262,
+              4050517792,
+              356393447,
+              2410691914,
+              3873677099,
+              3682840055
+            ],
+            [
+              3913112168,
+              2491498743,
+              4132185628,
+              2489919796,
+              1091903735,
+              1979897079,
+              3170134830,
+              3567386728,
+              3557303409,
+              857797738,
+              1136121015,
+              1342202287,
+              507115054,
+              2535736646,
+              337727348,
+              3213592640,
+              1301675037,
+              2528481711,
+              1895095763,
+              1721773893,
+              3216771564,
+              62756741,
+              2142006736,
+              835421444,
+              2531993523,
+              1442658625,
+              3659876326,
+              2882144922,
+              676362277,
+              1392781812,
+              170690266,
+              3921047035,
+              1759253602,
+              3611846912,
+              1745797284,
+              664899054,
+              1329594018,
+              3901205900,
+              3045908486,
+              2062866102,
+              2865634940,
+              3543621612,
+              3464012697,
+              1080764994,
+              553557557,
+              3656615353,
+              3996768171,
+              991055499,
+              499776247,
+              1265440854,
+              648242737,
+              3940784050,
+              980351604,
+              3713745714,
+              1749149687,
+              3396870395,
+              4211799374,
+              3640570775,
+              1161844396,
+              3125318951,
+              1431517754,
+              545492359,
+              4268468663,
+              3499529547,
+              1437099964,
+              2702547544,
+              3433638243,
+              2581715763,
+              2787789398,
+              1060185593,
+              1593081372,
+              2418618748,
+              4260947970,
+              69676912,
+              2159744348,
+              86519011,
+              2512459080,
+              3838209314,
+              1220612927,
+              3339683548,
+              133810670,
+              1090789135,
+              1078426020,
+              1569222167,
+              845107691,
+              3583754449,
+              4072456591,
+              1091646820,
+              628848692,
+              1613405280,
+              3757631651,
+              526609435,
+              236106946,
+              48312990,
+              2942717905,
+              3402727701,
+              1797494240,
+              859738849,
+              992217954,
+              4005476642,
+              2243076622,
+              3870952857,
+              3732016268,
+              765654824,
+              3490871365,
+              2511836413,
+              1685915746,
+              3888969200,
+              1414112111,
+              2273134842,
+              3281911079,
+              4080962846,
+              172450625,
+              2569994100,
+              980381355,
+              4109958455,
+              2819808352,
+              2716589560,
+              2568741196,
+              3681446669,
+              3329971472,
+              1835478071,
+              660984891,
+              3704678404,
+              4045999559,
+              3422617507,
+              3040415634,
+              1762651403,
+              1719377915,
+              3470491036,
+              2693910283,
+              3642056355,
+              3138596744,
+              1364962596,
+              2073328063,
+              1983633131,
+              926494387,
+              3423689081,
+              2150032023,
+              4096667949,
+              1749200295,
+              3328846651,
+              309677260,
+              2016342300,
+              1779581495,
+              3079819751,
+              111262694,
+              1274766160,
+              443224088,
+              298511866,
+              1025883608,
+              3806446537,
+              1145181785,
+              168956806,
+              3641502830,
+              3584813610,
+              1689216846,
+              3666258015,
+              3200248200,
+              1692713982,
+              2646376535,
+              4042768518,
+              1618508792,
+              1610833997,
+              3523052358,
+              4130873264,
+              2001055236,
+              3610705100,
+              2202168115,
+              4028541809,
+              2961195399,
+              1006657119,
+              2006996926,
+              3186142756,
+              1430667929,
+              3210227297,
+              1314452623,
+              4074634658,
+              4101304120,
+              2273951170,
+              1399257539,
+              3367210612,
+              3027628629,
+              1190975929,
+              2062231137,
+              2333990788,
+              2221543033,
+              2438960610,
+              1181637006,
+              548689776,
+              2362791313,
+              3372408396,
+              3104550113,
+              3145860560,
+              296247880,
+              1970579870,
+              3078560182,
+              3769228297,
+              1714227617,
+              3291629107,
+              3898220290,
+              166772364,
+              1251581989,
+              493813264,
+              448347421,
+              195405023,
+              2709975567,
+              677966185,
+              3703036547,
+              1463355134,
+              2715995803,
+              1338867538,
+              1343315457,
+              2802222074,
+              2684532164,
+              233230375,
+              2599980071,
+              2000651841,
+              3277868038,
+              1638401717,
+              4028070440,
+              3237316320,
+              6314154,
+              819756386,
+              300326615,
+              590932579,
+              1405279636,
+              3267499572,
+              3150704214,
+              2428286686,
+              3959192993,
+              3461946742,
+              1862657033,
+              1266418056,
+              963775037,
+              2089974820,
+              2263052895,
+              1917689273,
+              448879540,
+              3550394620,
+              3981727096,
+              150775221,
+              3627908307,
+              1303187396,
+              508620638,
+              2975983352,
+              2726630617,
+              1817252668,
+              1876281319,
+              1457606340,
+              908771278,
+              3720792119,
+              3617206836,
+              2455994898,
+              1729034894,
+              1080033504
+            ],
+            [
+              976866871,
+              3556439503,
+              2881648439,
+              1522871579,
+              1555064734,
+              1336096578,
+              3548522304,
+              2579274686,
+              3574697629,
+              3205460757,
+              3593280638,
+              3338716283,
+              3079412587,
+              564236357,
+              2993598910,
+              1781952180,
+              1464380207,
+              3163844217,
+              3332601554,
+              1699332808,
+              1393555694,
+              1183702653,
+              3581086237,
+              1288719814,
+              691649499,
+              2847557200,
+              2895455976,
+              3193889540,
+              2717570544,
+              1781354906,
+              1676643554,
+              2592534050,
+              3230253752,
+              1126444790,
+              2770207658,
+              2633158820,
+              2210423226,
+              2615765581,
+              2414155088,
+              3127139286,
+              673620729,
+              2805611233,
+              1269405062,
+              4015350505,
+              3341807571,
+              4149409754,
+              1057255273,
+              2012875353,
+              2162469141,
+              2276492801,
+              2601117357,
+              993977747,
+              3918593370,
+              2654263191,
+              753973209,
+              36408145,
+              2530585658,
+              25011837,
+              3520020182,
+              2088578344,
+              530523599,
+              2918365339,
+              1524020338,
+              1518925132,
+              3760827505,
+              3759777254,
+              1202760957,
+              3985898139,
+              3906192525,
+              674977740,
+              4174734889,
+              2031300136,
+              2019492241,
+              3983892565,
+              4153806404,
+              3822280332,
+              352677332,
+              2297720250,
+              60907813,
+              90501309,
+              3286998549,
+              1016092578,
+              2535922412,
+              2839152426,
+              457141659,
+              509813237,
+              4120667899,
+              652014361,
+              1966332200,
+              2975202805,
+              55981186,
+              2327461051,
+              676427537,
+              3255491064,
+              2882294119,
+              3433927263,
+              1307055953,
+              942726286,
+              933058658,
+              2468411793,
+              3933900994,
+              4215176142,
+              1361170020,
+              2001714738,
+              2830558078,
+              3274259782,
+              1222529897,
+              1679025792,
+              2729314320,
+              3714953764,
+              1770335741,
+              151462246,
+              3013232138,
+              1682292957,
+              1483529935,
+              471910574,
+              1539241949,
+              458788160,
+              3436315007,
+              1807016891,
+              3718408830,
+              978976581,
+              1043663428,
+              3165965781,
+              1927990952,
+              4200891579,
+              2372276910,
+              3208408903,
+              3533431907,
+              1412390302,
+              2931980059,
+              4132332400,
+              1947078029,
+              3881505623,
+              4168226417,
+              2941484381,
+              1077988104,
+              1320477388,
+              886195818,
+              18198404,
+              3786409e3,
+              2509781533,
+              112762804,
+              3463356488,
+              1866414978,
+              891333506,
+              18488651,
+              661792760,
+              1628790961,
+              3885187036,
+              3141171499,
+              876946877,
+              2693282273,
+              1372485963,
+              791857591,
+              2686433993,
+              3759982718,
+              3167212022,
+              3472953795,
+              2716379847,
+              445679433,
+              3561995674,
+              3504004811,
+              3574258232,
+              54117162,
+              3331405415,
+              2381918588,
+              3769707343,
+              4154350007,
+              1140177722,
+              4074052095,
+              668550556,
+              3214352940,
+              367459370,
+              261225585,
+              2610173221,
+              4209349473,
+              3468074219,
+              3265815641,
+              314222801,
+              3066103646,
+              3808782860,
+              282218597,
+              3406013506,
+              3773591054,
+              379116347,
+              1285071038,
+              846784868,
+              2669647154,
+              3771962079,
+              3550491691,
+              2305946142,
+              453669953,
+              1268987020,
+              3317592352,
+              3279303384,
+              3744833421,
+              2610507566,
+              3859509063,
+              266596637,
+              3847019092,
+              517658769,
+              3462560207,
+              3443424879,
+              370717030,
+              4247526661,
+              2224018117,
+              4143653529,
+              4112773975,
+              2788324899,
+              2477274417,
+              1456262402,
+              2901442914,
+              1517677493,
+              1846949527,
+              2295493580,
+              3734397586,
+              2176403920,
+              1280348187,
+              1908823572,
+              3871786941,
+              846861322,
+              1172426758,
+              3287448474,
+              3383383037,
+              1655181056,
+              3139813346,
+              901632758,
+              1897031941,
+              2986607138,
+              3066810236,
+              3447102507,
+              1393639104,
+              373351379,
+              950779232,
+              625454576,
+              3124240540,
+              4148612726,
+              2007998917,
+              544563296,
+              2244738638,
+              2330496472,
+              2058025392,
+              1291430526,
+              424198748,
+              50039436,
+              29584100,
+              3605783033,
+              2429876329,
+              2791104160,
+              1057563949,
+              3255363231,
+              3075367218,
+              3463963227,
+              1469046755,
+              985887462
+            ]
+          ];
+          var BLOWFISH_CTX = {
+            pbox: [],
+            sbox: []
+          };
+          function F(ctx, x) {
+            let a = x >> 24 & 255;
+            let b = x >> 16 & 255;
+            let c = x >> 8 & 255;
+            let d = x & 255;
+            let y = ctx.sbox[0][a] + ctx.sbox[1][b];
+            y = y ^ ctx.sbox[2][c];
+            y = y + ctx.sbox[3][d];
+            return y;
+          }
+          function BlowFish_Encrypt(ctx, left, right) {
+            let Xl = left;
+            let Xr = right;
+            let temp;
+            for (let i = 0; i < N; ++i) {
+              Xl = Xl ^ ctx.pbox[i];
+              Xr = F(ctx, Xl) ^ Xr;
+              temp = Xl;
+              Xl = Xr;
+              Xr = temp;
+            }
+            temp = Xl;
+            Xl = Xr;
+            Xr = temp;
+            Xr = Xr ^ ctx.pbox[N];
+            Xl = Xl ^ ctx.pbox[N + 1];
+            return { left: Xl, right: Xr };
+          }
+          function BlowFish_Decrypt(ctx, left, right) {
+            let Xl = left;
+            let Xr = right;
+            let temp;
+            for (let i = N + 1; i > 1; --i) {
+              Xl = Xl ^ ctx.pbox[i];
+              Xr = F(ctx, Xl) ^ Xr;
+              temp = Xl;
+              Xl = Xr;
+              Xr = temp;
+            }
+            temp = Xl;
+            Xl = Xr;
+            Xr = temp;
+            Xr = Xr ^ ctx.pbox[1];
+            Xl = Xl ^ ctx.pbox[0];
+            return { left: Xl, right: Xr };
+          }
+          function BlowFishInit(ctx, key, keysize) {
+            for (let Row = 0; Row < 4; Row++) {
+              ctx.sbox[Row] = [];
+              for (let Col = 0; Col < 256; Col++) {
+                ctx.sbox[Row][Col] = ORIG_S[Row][Col];
+              }
+            }
+            let keyIndex = 0;
+            for (let index = 0; index < N + 2; index++) {
+              ctx.pbox[index] = ORIG_P[index] ^ key[keyIndex];
+              keyIndex++;
+              if (keyIndex >= keysize) {
+                keyIndex = 0;
+              }
+            }
+            let Data1 = 0;
+            let Data2 = 0;
+            let res = 0;
+            for (let i = 0; i < N + 2; i += 2) {
+              res = BlowFish_Encrypt(ctx, Data1, Data2);
+              Data1 = res.left;
+              Data2 = res.right;
+              ctx.pbox[i] = Data1;
+              ctx.pbox[i + 1] = Data2;
+            }
+            for (let i = 0; i < 4; i++) {
+              for (let j = 0; j < 256; j += 2) {
+                res = BlowFish_Encrypt(ctx, Data1, Data2);
+                Data1 = res.left;
+                Data2 = res.right;
+                ctx.sbox[i][j] = Data1;
+                ctx.sbox[i][j + 1] = Data2;
+              }
+            }
+            return true;
+          }
+          var Blowfish = C_algo.Blowfish = BlockCipher.extend({
+            _doReset: function() {
+              if (this._keyPriorReset === this._key) {
+                return;
+              }
+              var key = this._keyPriorReset = this._key;
+              var keyWords = key.words;
+              var keySize = key.sigBytes / 4;
+              BlowFishInit(BLOWFISH_CTX, keyWords, keySize);
+            },
+            encryptBlock: function(M, offset) {
+              var res = BlowFish_Encrypt(BLOWFISH_CTX, M[offset], M[offset + 1]);
+              M[offset] = res.left;
+              M[offset + 1] = res.right;
+            },
+            decryptBlock: function(M, offset) {
+              var res = BlowFish_Decrypt(BLOWFISH_CTX, M[offset], M[offset + 1]);
+              M[offset] = res.left;
+              M[offset + 1] = res.right;
+            },
+            blockSize: 64 / 32,
+            keySize: 128 / 32,
+            ivSize: 64 / 32
+          });
+          C.Blowfish = BlockCipher._createHelper(Blowfish);
+        })();
+        return CryptoJS.Blowfish;
+      });
+    })(blowfish);
+    return blowfish.exports;
+  }
+  (function(module, exports) {
+    (function(root, factory, undef) {
+      {
+        module.exports = factory(requireCore(), requireX64Core(), requireLibTypedarrays(), requireEncUtf16(), requireEncBase64(), requireEncBase64url(), requireMd5(), requireSha1(), requireSha256(), requireSha224(), requireSha512(), requireSha384(), requireSha3(), requireRipemd160(), requireHmac(), requirePbkdf2(), requireEvpkdf(), requireCipherCore(), requireModeCfb(), requireModeCtr(), requireModeCtrGladman(), requireModeOfb(), requireModeEcb(), requirePadAnsix923(), requirePadIso10126(), requirePadIso97971(), requirePadZeropadding(), requirePadNopadding(), requireFormatHex(), requireAes(), requireTripledes(), requireRc4(), requireRabbit(), requireRabbitLegacy(), requireBlowfish());
+      }
+    })(commonjsGlobal, function(CryptoJS) {
+      return CryptoJS;
+    });
+  })(cryptoJs);
   const getModalPosition = (el, ract) => {
     var _a;
     const card = (_a = document.querySelector(ract)) == null ? void 0 : _a.getBoundingClientRect();
@@ -31,7 +6631,7 @@
     return positionAction.top;
   };
   const CARD_POOL = [{ name: "铁匠的赠礼", href: "https://poedb.tw/cn/The_Metalsmiths_Gift", type: "The Metalsmiths Gift", explicitMod: [{ type: "whiteitem", value: "三相戒指" }], flavourText: "仅需一月走险，得抵终年薪资。他走上快捷方式，穿越恐喙鸟巢穴，实在愚蠢至极。最后徒留准新娘哀悼，未婚夫的贵礼从未送到。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheMetalsmithsGift.png" }, { name: "酒醉贵族", href: "https://poedb.tw/cn/The_Drunken_Aristocrat", type: "The Drunken Aristocrat", explicitMod: [{ type: "uniqueitem", value: "宝视精华" }], flavourText: "美酒酿得越是醇香，饮者越是酩酊遗忘。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheDrunkenAristocrat.png" }, { name: "创痕之原", href: "https://poedb.tw/cn/The_Scarred_Meadow", type: "The Scarred Meadow", explicitMod: [{ type: "uniqueitem", value: "覆灭之兆" }], flavourText: "大地让万物滋养茁壮，休养生息，除非上天另有安排。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheScarredMeadow.png" }, { name: "群聚之首", href: "https://poedb.tw/cn/The_Pack_Leader", type: "The Pack Leader", explicitMod: [{ type: "uniqueitem", value: "极地之眼" }], flavourText: "你生来就是领袖，呼应天命吧。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/ThePackLeader.png" }, { name: "德瑞竞之狂", href: "https://poedb.tw/cn/Doedres_Madness", type: "Doedres Madness", explicitMod: [{ type: "uniqueitem", value: "德瑞物品" }], flavourText: "在我夺走你的舌头之前，闭嘴顾好你的舌头- 暗语者德瑞", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/DoedresMadness.png" }, { name: "塔峰", href: "https://poedb.tw/cn/The_Tower", type: "The Tower", explicitMod: [{ type: "uniqueitem", value: "长杖" }], flavourText: "即使使用最坚硬的石材打造了高塔，也无法使其成为永恒。立于塔顶的智慧无法被世界所启蒙。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheTower.png" }, { name: "钱与权", href: "https://poedb.tw/cn/Wealth_and_Power", type: "Wealth and Power", explicitMod: [{ type: "gemitem", value: "等级 4 启蒙" }, { type: "corrupted", value: "已腐化" }], flavourText: "人的伟大之处不在于他所拥有的财富，而是在于他的品性，以及他影响周围事物的能力。", stack: 11, icon: "https://poe.game.qq.com/image/divination-card/WealthAndPower.png" }, { name: "求生专家", href: "https://poedb.tw/cn/The_Survivalist", type: "The Survivalist", explicitMod: [{ type: "currencyitem", value: "7x 点金石" }], flavourText: "一个幸运数字\n从天而降\n带领我们\n突破险境", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheSurvivalist.png" }, { name: "巫妖", href: "https://poedb.tw/cn/The_Lich", type: "The Lich", explicitMod: [{ type: "uniqueitem", value: "冥约" }, { type: "corrupted", value: "已腐化" }], flavourText: "当死亡的躯体复活并得以自立于世，那么这片土地就真正的陷落了。", stack: 12, icon: "https://poe.game.qq.com/image/divination-card/TheLich.png" }, { name: "学者", href: "https://poedb.tw/cn/The_Scholar", type: "The Scholar", explicitMod: [{ type: "currencyitem", value: "知识卷轴 X 40" }], flavourText: "至微话语蕴含至伟真理。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheScholar.png" }, { name: "战火锻造", href: "https://poedb.tw/cn/The_Battle_Born", type: "The Battle Born", explicitMod: [{ type: "uniqueitem", value: "斧" }], flavourText: "凡人恶魔，皆败于我，我斧披靡，所向无敌！ ", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheBattleBorn.png" }, { name: "疯医", href: "https://poedb.tw/cn/The_Doctor", type: "The Doctor", explicitMod: [{ type: "uniqueitem", value: "猎首" }], flavourText: "大家说我脑袋有问题，需要检查一下，但我比较想先砍下你的脑袋检查。- 食人族克洛培克", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheDoctor.png" }, { name: "饥饿", href: "https://poedb.tw/cn/The_Hunger", type: "The Hunger", explicitMod: [{ type: "uniqueitem", value: "恨意" }], flavourText: "【你夺走多少生命?】\n【你已眨眼了几回?】", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheHunger.png" }, { name: "三者之诞", href: "https://poedb.tw/cn/Birth_of_the_Three", type: "Birth of the Three", explicitMod: [{ type: "uniqueitem", value: "女神的灵缚" }], flavourText: "折磨苦难，略见一斑。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/BirthOfTheThree.png" }, { name: "召唤师", href: "https://poedb.tw/cn/The_Summoner", type: "The Summoner", explicitMod: [{ type: "gemitem", value: "召唤生物宝石" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+20%" }], flavourText: "为驾驭恶梦之力，你必须先成为恶梦。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheSummoner.png" }, { name: "宝箱", href: "https://poedb.tw/cn/The_Hoarder", type: "The Hoarder", explicitMod: [{ type: "currencyitem", value: "崇高石" }], flavourText: "还不够！ 我想要更多！ - 贪得无厌的范德利斯", stack: 12, icon: "https://poe.game.qq.com/image/divination-card/TheHoarder.png" }, { name: "巨变", href: "https://poedb.tw/cn/The_Cataclysm", type: "The Cataclysm", explicitMod: [{ type: "gemitem", value: "等级 21 法术宝石" }, { type: "corrupted", value: "已腐化" }], flavourText: "强大战士刀剑相击，敏捷弓手箭海交射，为世人带来浩劫的却是无耻的奇术师。", stack: 13, icon: "https://poe.game.qq.com/image/divination-card/TheCataclysm.png" }, { name: "凝视者", href: "https://poedb.tw/cn/The_Watcher", type: "The Watcher", explicitMod: [{ type: "uniqueitem", value: "邪眼之冠" }], flavourText: "冠刺顶端的诡异眼球\n看穿时空迷蒙\n矿场的地底深处尚有\n绯红的尘封之梦", stack: 12, icon: "https://poe.game.qq.com/image/divination-card/TheWatcher.png" }, { name: "黑暗术者", href: "https://poedb.tw/cn/The_Dark_Mage", type: "The Dark Mage", explicitMod: [{ type: "whiteitem", value: "六连长杖" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "55" }], flavourText: "法杖在手\n怒火在心，\n灵魂身躯\n分离注定。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheDarkMage.png" }, { name: "斗士", href: "https://poedb.tw/cn/The_Gladiator", type: "The Gladiator", explicitMod: [{ type: "uniqueitem", value: "梦魇战盔" }], flavourText: "当那拇指朝下\n观众狂吼轰然，\n全场渴切杀戮。\n唯你流血受难。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheGladiator.png" }, { name: "发明家", href: "https://poedb.tw/cn/The_Inventor", type: "The Inventor", explicitMod: [{ type: "currencyitem", value: "10 X 瓦尔宝珠" }], flavourText: "立刻投身创造吧\n但请务必留意\n毁坏破损之物\n无与伦比之物。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheInventor.png" }, { name: "力量之道", href: "https://poedb.tw/cn/The_Road_to_Power", type: "The Road to Power", explicitMod: [{ type: "magicitem", value: "密文单手武器" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "100" }], flavourText: "海天一线处，强光乍现，或为指引方向，或为发声呼救，或为警告勿回。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheRoadToPower.png" }, { name: "食腐掠鸦", href: "https://poedb.tw/cn/The_Carrion_Crow", type: "The Carrion Crow", explicitMod: [{ type: "magicitem", value: "附有生命词缀的护具" }], flavourText: "从生到死。\n由死至生。\n轮轴转动，\n乌鸦盘旋。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheCarrionCrow.png" }, { name: "希望", href: "https://poedb.tw/cn/Hope", type: "Hope", explicitMod: [{ type: "uniqueitem", value: "三相戒指" }, { type: "corrupted", value: "已腐化" }], flavourText: "尽管他人已疯狂堕落，罗瑞依然奋战不懈。她独处黑暗之中，仍可望见希望的遥远暮光。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/Hope.png" }, { name: "咒语", href: "https://poedb.tw/cn/The_Incantation", type: "The Incantation", explicitMod: [{ type: "uniqueitem", value: "冰点低语" }], flavourText: "别无选择之时，最温和的耳语都能引发最强烈的风暴。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheIncantation.png" }, { name: "饥渴之占", href: "https://poedb.tw/cn/Coveted_Possession", type: "Coveted Possession", explicitMod: [{ type: "currencyitem", value: "5 X 富豪石" }], flavourText: "一尝权力滋味，对其更加饥渴。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/CovetedPossession.png" }, { name: "失落遗骨", href: "https://poedb.tw/cn/Time-Lost_Relic", type: "Time-Lost Relic", explicitMod: [{ type: "uniqueitem", value: "赛季限定物品" }], flavourText: "若为无从忘怀之事，谅时间也无从冲淡。", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TimeLostRelic.png" }, { name: "背叛", href: "https://poedb.tw/cn/The_Betrayal", type: "The Betrayal", explicitMod: [{ type: "uniqueitem", value: "马雷格罗的玫红手套" }], flavourText: "这是个友情需要用钱来购买的可悲时代。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheBetrayal.png" }, { name: "盛宴", href: "https://poedb.tw/cn/The_Feast", type: "The Feast", explicitMod: [{ type: "uniqueitem", value: "罗米拉的潜力之环" }, { type: "corrupted", value: "已腐化" }], flavourText: "夫君的遭遇让人遗憾，他生前很讲究美食的。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheFeast.png" }, { name: "黑暗三面", href: "https://poedb.tw/cn/Three_Faces_in_the_Dark", type: "Three Faces in the Dark", explicitMod: [{ type: "currencyitem", value: "混沌石 X 3" }], flavourText: "威胁在即，暗中刺探，奈何总是察此疏彼。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/ThreeFacesInTheDark.png" }, { name: "隐士", href: "https://poedb.tw/cn/The_Hermit", type: "The Hermit", explicitMod: [{ type: "uniqueitem", value: "生机之记" }], flavourText: "隐士独立于世，唯有绿枝青叶相伴。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheHermit.png" }, { name: "谦逊", href: "https://poedb.tw/cn/Humility", type: "Humility", explicitMod: [{ type: "uniqueitem", value: "无尽之衣" }], flavourText: "人性的力量啊", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/Humility.png" }, { name: "海妖", href: "https://poedb.tw/cn/The_Siren", type: "The Siren", explicitMod: [{ type: "uniqueitem", value: "冰点低语" }, { type: "corrupted", value: "已腐化" }], flavourText: "唯命是从，\n海妖之手，\n寒冬肆虐，\n大地撼动，\n积冰沉重，\n能摧毁最坚强的意志。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheSiren.png" }, { name: "宝石皇后的赠礼", href: "https://poedb.tw/cn/Gift_of_the_Gemling_Queen", type: "Gift of the Gemling Queen", explicitMod: [{ type: "gemitem", value: "等级 20 辅助宝石" }], flavourText: "我们的达拉夫人\n是显示我们进步的标志\n即使是宝石，也不比她的光芒来得耀眼", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/GiftOfTheGemlingQueen.png" }, { name: "典狱长", href: "https://poedb.tw/cn/The_Warden", type: "The Warden", explicitMod: [{ type: "rareitem", value: "项链" }, { type: "corrupted", value: "已腐化" }], flavourText: "布鲁特斯身为典狱长的头号创举，就是在所有囚犯颈部缠上沉重铁链，这样囚犯无时无刻都会向他低头鞠躬。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheWarden.png" }, { name: "明镜", href: "https://poedb.tw/cn/House_of_Mirrors", type: "House of Mirrors", explicitMod: [{ type: "currencyitem", value: "卡兰德的魔镜" }], flavourText: "你在镜中看见什么?", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/HouseOfMirrors.png" }, { name: "骄纵皇子", href: "https://poedb.tw/cn/The_Spoiled_Prince", type: "The Spoiled Prince", explicitMod: [{ type: "magicitem", value: "独裁者预言法杖" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "100" }], flavourText: "一个坐拥一切长大的孩子长大了永远不会心存感激。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheSpoiledPrince.png" }, { name: "远征", href: "https://poedb.tw/cn/The_Trial", type: "The Trial", explicitMod: [{ type: "rareitem", value: "地图" }, { type: "default", value: "地图阶级:" }, { type: "normal", value: "15" }, { type: "corrupted", value: "已腐化" }], flavourText: "直到你提起勇气远离家乡，你才有办法远征异土。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheTrial.png" }, { name: "龙之心", href: "https://poedb.tw/cn/The_Dragons_Heart", type: "The Dragons Heart", explicitMod: [{ type: "gemitem", value: "等级 4 赋予" }, { type: "corrupted", value: "已腐化" }], flavourText: "传说当龙殒命之时，它的血肉将会溶解，只剩下一颗炽热的心脏。", stack: 11, icon: "https://poe.game.qq.com/image/divination-card/TheDragonsHeart.png" }, { name: "风", href: "https://poedb.tw/cn/The_Wind", type: "The Wind", explicitMod: [{ type: "uniqueitem", value: "裂风" }], flavourText: "极速转向，飞穿裂缝，攻其破绽，低声出击，人人皆杀。箭所及处，徒留伤悲。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheWind.png" }, { name: "协约", href: "https://poedb.tw/cn/The_Pact", type: "The Pact", explicitMod: [{ type: "uniqueitem", value: "誓约" }], flavourText: "我今日首度与这块土地与其上居民作出协议。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/ThePact.png" }, { name: "骄者必败", href: "https://poedb.tw/cn/Pride_Before_the_Fall", type: "Pride Before the Fall", explicitMod: [{ type: "uniqueitem", value: "冈姆的壮志" }, { type: "corrupted", value: "已腐化" }], flavourText: "当冈姆手刃了他仅存的族人\n他内心最深处的某些东西也跟着破碎\n从这破碎的裂隙中，开始腐败\n纯粹的黑暗，开始蔓延", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/PrideBeforeTheFall.png" }, { name: "宝石匠的允诺", href: "https://poedb.tw/cn/Gemcutters_Promise", type: "Gemcutters Promise", explicitMod: [{ type: "gemitem", value: "宝石" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+20%" }], flavourText: "【我发誓将以敝职助人。有能力之人若只是让权贵更加强大，那能力有何意义?】-帝国珠宝匠伊拉斯玛斯", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/GemcuttersPromise.png" }, { name: "探险家", href: "https://poedb.tw/cn/The_Explorer", type: "The Explorer", explicitMod: [{ type: "rareitem", value: "地图" }, { type: "corrupted", value: "已腐化" }], flavourText: "仅管手握地图，却只有在知道自己身在何处，才有用处。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheExplorer.png" }, { name: "薇妮雅的信物", href: "https://poedb.tw/cn/Vinias_Token", type: "Vinias Token", explicitMod: [{ type: "currencyitem", value: "后悔石 X 10" }], flavourText: "人名能更替修改，人生却无法重来。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ViniasToken.png" }, { name: "最后希望", href: "https://poedb.tw/cn/Last_Hope", type: "Last Hope", explicitMod: [{ type: "whiteitem", value: "凡人的希望" }], flavourText: "当他们的王朝开始崩坏，瓦尔民族的人民望向他们的女王。在她身上，人民看到了一线希望。在人民身上，她只见到负担。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/LastHope.png" }, { name: "暗影恩惠", href: "https://poedb.tw/cn/Assassins_Favour", type: "Assassins Favour", explicitMod: [{ type: "uniqueitem", value: "匕首" }], flavourText: "当他们的双眼交会时\n黑暗的交易将同时签下\n他的命运也将同时终结", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/AssassinsFavor.png" }, { name: "大奇术师", href: "https://poedb.tw/cn/The_Thaumaturgist", type: "The Thaumaturgist", explicitMod: [{ type: "uniqueitem", value: "薛朗的启示之环" }, { type: "corrupted", value: "已腐化" }], flavourText: "奇术就像世上其他的技艺一样。它必须透过牺牲才能有所专精，有时候甚至是无以计数的牺牲。 - 黑影薛朗", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheThaumaturgist.png" }, { name: "海洋学者", href: "https://poedb.tw/cn/Scholar_of_the_Seas", type: "Scholar of the Seas", explicitMod: [{ type: "uniqueitem", value: "贼窝" }], flavourText: "我从未上过一艘我无法指挥的船舰。然而，我却遇过不愿被带领的水手。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/ScholarOfTheSeas.png" }, { name: "傀儡", href: "https://poedb.tw/cn/The_Doppelganger", type: "The Doppelganger", explicitMod: [{ type: "gemitem", value: "魅影射击" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+20%" }], flavourText: "看见他的脸我真的吓坏了－月光反射出了我真实的面貌。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheDoppelganger.png" }, { name: "帝运", href: "https://poedb.tw/cn/Emperors_Luck", type: "Emperors Luck", explicitMod: [{ type: "currencyitem", value: "5 X 通货物品" }], flavourText: "胜者总为王族。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/EmperorsLuck.png" }, { name: "小丑", href: "https://poedb.tw/cn/The_Jester", type: "The Jester", explicitMod: [{ type: "magicitem", value: "【无情的】单手武器" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "100" }], flavourText: "因王的旨意而被召唤\n宫殿中掌声响起；\n然而，疯狂才是他们真正的王\n因此沉默不语；\n小丑阴险的短匕快如风\n王的皇冠已易主。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheJester.png" }, { name: "黑暗来犯", href: "https://poedb.tw/cn/The_Encroaching_Darkness", type: "The Encroaching Darkness", explicitMod: [{ type: "uniqueitem", value: "地图" }, { type: "corrupted", value: "已腐化" }], flavourText: "无论梦想引你至何处，恶梦总是紧随其后。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheEncroachingDarkness.png" }, { name: "枯骨皇帝", href: "https://poedb.tw/cn/The_Brittle_Emperor", type: "The Brittle Emperor", explicitMod: [{ type: "uniqueitem", value: "福尔的忠诚之符" }, { type: "corrupted", value: "已腐化" }], flavourText: "当福尔饶恕玛拉凯，让他协助进行【净化】，最坚定的信念便已遭受腐化，变得如玻璃般易碎。- 人民诗人维多", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheBrittleEmperor.png" }, { name: "移花接木", href: "https://poedb.tw/cn/The_Inoculated", type: "The Inoculated", explicitMod: [{ type: "magicitem", value: "【六翼天使的】护甲" }], flavourText: "混乱散布，灾难降临。他们说没有人能得到幸免，然而我却还站在此处。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheInoculated.png" }, { name: "猎人的奖赏", href: "https://poedb.tw/cn/Hunters_Reward", type: "Hunters Reward", explicitMod: [{ type: "uniqueitem", value: "元素之章" }], flavourText: "若是要驯服野兽，你必须先使其心归顺。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/HuntersReward.png" }, { name: "好运连连", href: "https://poedb.tw/cn/Lucky_Connections", type: "Lucky Connections", explicitMod: [{ type: "currencyitem", value: "20 X 链结石" }], flavourText: "会赌运气的都是蠢才，而我就认识不少有钱的蠢材。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/LuckyConnections.png" }, { name: "平壤", href: "https://poedb.tw/cn/The_Vast", type: "The Vast", explicitMod: [{ type: "uniqueitem", value: "海妖魅曲" }], flavourText: "你是否听见了那迷人的呼唤\n就在那大海的彼端\n一个深入人心\n掳获所有男人的魅曲\n而我，也已经深深陷入。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheVast.png" }, { name: "珠宝匠", href: "https://poedb.tw/cn/The_Gemcutter", type: "The Gemcutter", explicitMod: [{ type: "currencyitem", value: "珠宝匠的棱镜" }], flavourText: "经过工匠大师巧手，区区卵石也可成为皇冠饰物。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheGemcutter.png" }, { name: "艺者", href: "https://poedb.tw/cn/The_Artist", type: "The Artist", explicitMod: [{ type: "gemitem", value: "等级 4 增幅" }, { type: "corrupted", value: "已腐化" }], flavourText: "颜料，金属，血肉…真正的艺术家不会限制自己使用什么素材。 - 超灵者玛拉凯", stack: 11, icon: "https://poe.game.qq.com/image/divination-card/TheArtist.png" }, { name: "胆识", href: "https://poedb.tw/cn/Audacity", type: "Audacity", explicitMod: [{ type: "uniqueitem", value: "多里亚尼之拳" }, { type: "corrupted", value: "已腐化" }], flavourText: "一瞬跳电，使其亦然震动，或是短路起烟\n一道电流，使其重获生命，或是永远沉眠\n一股涌电，使其向上超越···或者悄然无息\n唯有一种方式才能得到解答", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/Audacity.png" }, { name: "芙劳拉的赠礼", href: "https://poedb.tw/cn/The_Floras_Gift", type: "The Floras Gift", explicitMod: [{ type: "whiteitem", value: "五连长杖" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "66" }], flavourText: "强壮勇猛，\n顺流而来，\n此地之卉，\n吾士之志。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheFlorasGift.png" }, { name: "束缚之炼", href: "https://poedb.tw/cn/The_Chains_that_Bind", type: "The Chains that Bind", explicitMod: [{ type: "whiteitem", value: "六连护具" }], flavourText: "无辜之人身陷囹圄，比任何罪犯入狱还要可怖。因为将来他重获自由之时，他就能名正言顺展开复仇。", stack: 11, icon: "https://poe.game.qq.com/image/divination-card/TheChainsThatBind.png" }, { name: "弓匠的梦想", href: "https://poedb.tw/cn/Bowyers_Dream", type: "Bowyers Dream", explicitMod: [{ type: "whiteitem", value: "六连先驱者之弓" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "91" }], flavourText: "如果这就是我的梦中世界，我盼望永不苏醒。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/BowyersDream.png" }, { name: "诗人", href: "https://poedb.tw/cn/The_Poet", type: "The Poet", explicitMod: [{ type: "uniqueitem", value: "堕落之血" }, { type: "corrupted", value: "已腐化" }], flavourText: "神已遗弃此地\n维多淌泪哀泣\n腐败吞噬大地\n维多纵已泪竭，仍泣血不止。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/ThePoet.png" }, { name: "不稳定的力量", href: "https://poedb.tw/cn/Volatile_Power", type: "Volatile Power", explicitMod: [{ type: "gemitem", value: "瓦尔宝石" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+20%" }, { type: "corrupted", value: "已腐化" }], flavourText: "无穷的力量容易使人的心智堕落。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/VolatilePower.png" }, { name: "屹立不败之人", href: "https://poedb.tw/cn/The_Last_One_Standing", type: "The Last One Standing", explicitMod: [{ type: "uniqueitem", value: "阿兹里的刑刃" }], flavourText: "苦难逆境者意志最坚强。伤疤最多者体魄最强健。唯一幸存者收获最丰硕。", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheLastOneStanding.png" }, { name: "亡灵智慧", href: "https://poedb.tw/cn/Grave_Knowledge", type: "Grave Knowledge", explicitMod: [{ type: "gemitem", value: "召唤愤怒狂灵" }, { type: "default", value: "品质" }, { type: "augmented", value: "+20%" }], flavourText: "那些已故的人教会了我许多事。他们除了一堆坐下思考的时间外，什么都没有。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/GraveKnowledge.png" }, { name: "智慧启蒙", href: "https://poedb.tw/cn/The_Enlightened", type: "The Enlightened", explicitMod: [{ type: "gemitem", value: "等级 3 启蒙" }], flavourText: "蜿蜒诡谲，\n毒蛇直立待发；\n头戴冠冕，\n花瓣成千绽放。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheEnlightened.png" }, { name: "外科医师", href: "https://poedb.tw/cn/The_Surgeon", type: "The Surgeon", explicitMod: [{ type: "magicitem", value: "外科医生的 药剂" }], flavourText: "他或许缺乏远见，但他的眼光确实卓越。\n- 玛拉凯对马雷格罗评语。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheSurgeon.png" }, { name: "劣魔", href: "https://poedb.tw/cn/The_Fiend", type: "The Fiend", explicitMod: [{ type: "uniqueitem", value: "猎首" }, { type: "corrupted", value: "已腐化" }], flavourText: "现今你称霸为王，\n你的力量丝毫未减，\n但我们即将见识到，\n谁才是众神所眷顾之人。", stack: 11, icon: "https://poe.game.qq.com/image/divination-card/TheFiend.png" }, { name: "混乱代价", href: "https://poedb.tw/cn/Anarchys_Price", type: "Anarchys Price", explicitMod: [{ type: "uniqueitem", value: "魔暴之痕" }, { type: "corrupted", value: "已腐化" }], flavourText: "由愤怒及憎恨中出生，于混乱和痛苦中求生，在欲望与邪念中贪生，我只奢求再一次的沐浴在鲜血之中。", stack: 13, icon: "https://poe.game.qq.com/image/divination-card/AnarchysPrice.png" }, { name: "赌徒", href: "https://poedb.tw/cn/The_Gambler", type: "The Gambler", explicitMod: [{ type: "divination", value: "命运卡" }], flavourText: "我不相信报应。若真有报应，恶人如我绝不可能获胜。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheGambler.png" }, { name: "绅士之风", href: "https://poedb.tw/cn/The_Gentleman", type: "The Gentleman", explicitMod: [{ type: "uniqueitem", value: "剑" }, { type: "corrupted", value: "已腐化" }], flavourText: "斧头和锤子?尽是些蛮人的武器… 从脖子干净利落的一刀割下脑袋，这才是萨恩的风格！ ", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheGentleman.png" }, { name: "雷针", href: "https://poedb.tw/cn/The_Conduit", type: "The Conduit", explicitMod: [{ type: "uniqueitem", value: "多里亚尼之拳" }], flavourText: "通往神的境界的路途，是由牺牲所引领的。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheConduit.png" }, { name: "王者之刃", href: "https://poedb.tw/cn/The_Kings_Blade", type: "The Kings Blade", explicitMod: [{ type: "magicitem", value: "【嗜血的】永恒之剑" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "66" }], flavourText: "要了解自己为何而战，要屡败屡战，智取更为迅捷之人，骗过更为聪慧之人，击溃更强大之人。欲得皇冠，便须如此。- 斗剑之王德瑞索", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheKingsBlade.png" }, { name: "死亡", href: "https://poedb.tw/cn/Death", type: "Death", explicitMod: [{ type: "uniqueitem", value: "凋零魔爪" }], flavourText: "历史的终结\n未来的开端\n一个转变的绝佳机会\n只给那些有能力的人\n掌握在手", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/Death.png" }, { name: "孪生", href: "https://poedb.tw/cn/The_Twins", type: "The Twins", explicitMod: [{ type: "magicitem", value: "庆祝之双子战爪" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "83" }], flavourText: "双面铜板；\n人头为友，\n反之为敌；\n双子之掷", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheTwins.png" }, { name: "联姻", href: "https://poedb.tw/cn/The_Union", type: "The Union", explicitMod: [{ type: "currencyitem", value: "10 X 珠宝匠的棱镜" }], flavourText: "恒历二十一日，\n两人合而为一，\n屋中灯光明耀，\n更胜落日余晖。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheUnion.png" }, { name: "佣兵", href: "https://poedb.tw/cn/The_Mercenary", type: "The Mercenary", explicitMod: [{ type: "uniqueitem", value: "盾" }, { type: "corrupted", value: "已腐化" }], flavourText: "忠诚是可以被收买的。唯一需要注意的是，你必须了解买家的背景。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheMercenary.png" }, { name: "忠诚", href: "https://poedb.tw/cn/Loyalty", type: "Loyalty", explicitMod: [{ type: "currencyitem", value: "3x 链结石" }], flavourText: "因命运相系\n因选择相依", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/Loyalty.png" }, { name: "勘查员", href: "https://poedb.tw/cn/The_Surveyor", type: "The Surveyor", explicitMod: [{ type: "whiteitem", value: "地图" }, { type: "default", value: "地图阶级:" }, { type: "normal", value: "14" }], flavourText: "在充满血肉和悲伤的土地中，我们将不顾一切烧杀掳掠。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheSurveyor.png" }, { name: "制箭者", href: "https://poedb.tw/cn/The_Fletcher", type: "The Fletcher", explicitMod: [{ type: "uniqueitem", value: "穿心" }, { type: "corrupted", value: "已腐化" }], flavourText: "让这些精良箭矢成为你最强的武器。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheFletcher.png" }, { name: "惊喜盒", href: "https://poedb.tw/cn/Jack_in_the_Box", type: "Jack in the Box", explicitMod: [{ type: "uniqueitem", value: "物品" }], flavourText: "转动曲柄，\n闭上双眼，\n向众神默祷\n祈求愉悦惊喜。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/JackInTheBox.png" }, { name: "大艺术家", href: "https://poedb.tw/cn/The_Aesthete", type: "The Aesthete", explicitMod: [{ type: "uniqueitem", value: "薛朗物品" }], flavourText: "一般人只把人的肉体视为障碍和界限。我则认为它是朝向伟大进化的机会。 - 黑影薛朗", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheAesthete.png" }, { name: "完人", href: "https://poedb.tw/cn/The_One_With_All", type: "The One With All", explicitMod: [{ type: "uniqueitem", value: "英灵宝环" }, { type: "corrupted", value: "已腐化" }], flavourText: "接受死亡，纪念逝者\n生无畏惧，不计代价。\n我们各为个体，\n我们全都相信，\n过往，现今与未来···正义得以伸张。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheOneWithAll.png" }, { name: "无情军械", href: "https://poedb.tw/cn/Merciless_Armament", type: "Merciless Armament", explicitMod: [{ type: "magicitem", value: "无情的 双手武器" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "100" }], flavourText: "千回战场，\n血骨交织，\n平凡人生，\n是我无法赦免的结。\n- 图克哈玛，战争之父", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/MercilessArmament.png" }, { name: "狂妄", href: "https://poedb.tw/cn/Hubris", type: "Hubris", explicitMod: [{ type: "uniqueitem", value: "戒指" }], flavourText: "这一件吗?这个是非卖品。但我想你总有一天会从我已死亡的双手中抢走。 - 强菲·达隆托斯，戒指锻造师", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/Hubris.png" }, { name: "盲途", href: "https://poedb.tw/cn/Blind_Venture", type: "Blind Venture", explicitMod: [{ type: "uniqueitem", value: "戒指" }, { type: "corrupted", value: "已腐化" }], flavourText: "不清楚自己货物的来源是件相当危险的事情。这就是为什么我总是亲自查验。\n- 克雷佛，古董收藏家", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/BlindVenture.png" }, { name: "制图师", href: "https://poedb.tw/cn/The_Cartographer", type: "The Cartographer", explicitMod: [{ type: "currencyitem", value: "10 x 制图钉" }], flavourText: "{孩子，你在到来前早已迷失了自己的道路。\n为了不再失去你，\n我将开辟内心之路。}", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/TheMapmaker.png" }, { name: "灾变", href: "https://poedb.tw/cn/The_Catalyst", type: "The Catalyst", explicitMod: [{ type: "currencyitem", value: "瓦尔宝珠" }], flavourText: "一个微小的举动也有可能带领世界走向灭亡。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheCatalyst.png" }, { name: "背叛者", href: "https://poedb.tw/cn/The_Traitor", type: "The Traitor", explicitMod: [{ type: "uniqueitem", value: "法杖" }, { type: "corrupted", value: "已腐化" }], flavourText: "有时后见习者透过不断的努力而成为大师。\n有时候是透过强大的力量。 数量越少，你分出去的就更少。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheTraitor.png" }, { name: "失落帝国", href: "https://poedb.tw/cn/Lost_Worlds", type: "Lost Worlds", explicitMod: [{ type: "whiteitem", value: "地图" }, { type: "default", value: "地图阶级:" }, { type: "normal", value: "15" }], flavourText: "在超出我书页的范围，超出我所理解的地方，有着其它的世界。奇妙的世界，恐怖的世界。\n阿拉米尔 - 给切斯特大帝的制图", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/LostWorlds.png" }, { name: "情人", href: "https://poedb.tw/cn/The_Lover", type: "The Lover", explicitMod: [{ type: "rareitem", value: "饰品" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "79" }], flavourText: "我想送你三件事物。我已经给你无穷爱意，更以最优美的歌曲赞颂你，甚至还想把明月献给你，可惜我做不到。所以我以此代替，希望你能悦纳。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheLover.png" }, { name: "母亲的礼物", href: "https://poedb.tw/cn/A_Mothers_Parting_Gift", type: "A Mothers Parting Gift", explicitMod: [{ type: "uniqueitem", value: "丰富心灵" }, { type: "corrupted", value: "腐化" }], flavourText: "自然是她的领域，\n爱情是她的旋律，\n亲情是她的奉献，\n知识是她曾经的赠礼。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/AMothersPartingGift.png" }, { name: "忍辱", href: "https://poedb.tw/cn/Turn_the_Other_Cheek", type: "Turn the Other Cheek", explicitMod: [{ type: "uniqueitem", value: "和平主义" }, { type: "corrupted", value: "已腐化" }], flavourText: "唯有遗忘愤怒，方能获得力量。＂\n- 丝克玛·安赛娜丝", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TurnTheOtherCheek.png" }, { name: "魔符", href: "https://poedb.tw/cn/The_Sigil", type: "The Sigil", explicitMod: [{ type: "magicitem", value: "坚不可摧的 项链" }], flavourText: "三人成行\n穿越拱门\n携手守护\n支派阴谋\n命运相斥\n揭示之剑", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheSigil.png" }, { name: "王者之心", href: "https://poedb.tw/cn/The_Kings_Heart", type: "The Kings Heart", explicitMod: [{ type: "uniqueitem", value: "冈姆的壮志" }], flavourText: "冈姆战斧落下五百回，冈姆之心碎裂五百回，最后仅剩丧心病狂的骇人忿怒。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheKingsHeart.png" }, { name: "女王", href: "https://poedb.tw/cn/The_Queen", type: "The Queen", explicitMod: [{ type: "uniqueitem", value: "阿兹里的捷思" }], flavourText: "世间权力，尽在掌中", stack: 16, icon: "https://poe.game.qq.com/image/divination-card/TheQueen.png" }, { name: "灵魂", href: "https://poedb.tw/cn/The_Soul", type: "The Soul", explicitMod: [{ type: "uniqueitem", value: "开膛斧" }], flavourText: "大部分人有一个就够了。但我有收藏癖。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheSoul.png" }, { name: "雄狮", href: "https://poedb.tw/cn/The_Lion", type: "The Lion", explicitMod: [{ type: "uniqueitem", value: "狮眼 物品" }], flavourText: "永恒帝国赞扬他的英勇。卡鲁族回味他的落败。而这些关于穆希尔斯·狮眼的评价也只是毫无价值的，对他昔日荣耀的哀悼。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheLion.png" }, { name: "疯狂恐喙鸟", href: "https://poedb.tw/cn/The_Rabid_Rhoa", type: "The Rabid Rhoa", explicitMod: [{ type: "magicitem", value: "恶意的 双子战爪" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "83" }], flavourText: "实验 22A： 抽干水分的恐喙鸟会释出一种绝妙的毒素\n- 马雷格罗", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheRabidRhoa.png" }, { name: "巨龙", href: "https://poedb.tw/cn/The_Dragon", type: "The Dragon", explicitMod: [{ type: "uniqueitem", value: "闪耀精华" }], flavourText: "天空中布满鳞片的野兽\n用它金黄的双眼静观四方\n当你进入它影子的范围里\n那就一切都太迟了。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheDragon.png" }, { name: "宁静", href: "https://poedb.tw/cn/Tranquillity", type: "Tranquillity", explicitMod: [{ type: "uniqueitem", value: "魔暴之痕" }], flavourText: "注意突然的宁静。它很可能是暴风来临前的征兆。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/Tranquillity.png" }, { name: "竞技场冠军", href: "https://poedb.tw/cn/The_Arena_Champion", type: "The Arena Champion", explicitMod: [{ type: "whiteitem", value: "地图" }, { type: "default", value: "地图位阶：" }, { type: "normal", value: "12" }], flavourText: "真正的战斗是最简单的\n让人想死的是长年的训练", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheArenaChampion.png" }, { name: "赏金猎手", href: "https://poedb.tw/cn/Treasure_Hunter", type: "Treasure Hunter", explicitMod: [{ type: "uniqueitem", value: "阿兹里的秘宝库" }, { type: "corrupted", value: "已腐化" }], flavourText: "别担心，我知道我在做什么\n- 特格的遗言", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TreasureHunter.png" }, { name: "鼠辈", href: "https://poedb.tw/cn/Rats", type: "Rats", explicitMod: [{ type: "uniqueitem", value: "鼠巢" }], flavourText: "那些说越多越好的人们肯定没见过老鼠。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/Rats.png" }, { name: "生命之树", href: "https://poedb.tw/cn/The_Sephirot", type: "The Sephirot", explicitMod: [{ type: "currencyitem", value: "10x 神圣石" }], flavourText: "如果通往神圣的道路是简单的，那么人人都能成神。", stack: 11, icon: "https://poe.game.qq.com/image/divination-card/TheSephirot.png" }, { name: "蹂躏之王", href: "https://poedb.tw/cn/The_Devastator", type: "The Devastator", explicitMod: [{ type: "uniqueitem", value: "阿兹里的刑刃" }, { type: "corrupted", value: "已腐化" }], flavourText: "只有愚蠢之人才会试着装下无尽的力量。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheDevastator.png" }, { name: "梦想家", href: "https://poedb.tw/cn/The_Visionary", type: "The Visionary", explicitMod: [{ type: "uniqueitem", value: "狮眼的视线" }], flavourText: "狮眼仰头看着胜利的荣耀，却忘了留意面前的泪水。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheVisionary.png" }, { name: "魅魔", href: "https://poedb.tw/cn/The_Demoness", type: "The Demoness", explicitMod: [{ type: "uniqueitem", value: "死神之手" }], flavourText: "她所经之地，必定跟随着死亡。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheDemoness.png" }, { name: "王座", href: "https://poedb.tw/cn/The_Throne", type: "The Throne", explicitMod: [{ type: "uniqueitem", value: "冈姆的稳重之靴" }, { type: "corrupted", value: "已腐化" }], flavourText: "王的每个步伐都是不可动摇的。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheThrone.png" }, { name: "命运之晶", href: "https://poedb.tw/cn/Shard_of_Fate", type: "Shard of Fate", explicitMod: [{ type: "magicitem", value: "生机的 珠宝" }], flavourText: "他们的幻想依然成谜\n他们的性命为他人而牺牲", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/ShardofFate.png" }, { name: "阴阳眼", href: "https://poedb.tw/cn/Heterochromia", type: "Heterochromia", explicitMod: [{ type: "uniqueitem", value: "双玉戒指" }], flavourText: "黑白，金银\n让我们见证世界的真相\n红蓝，黄绿\n让我们再造无人见过之色彩", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/Heterochromia.png" }, { name: "暗黑之王", href: "https://poedb.tw/cn/The_Lord_in_Black", type: "The Lord in Black", explicitMod: [{ type: "magicitem", value: "巴曼斯之 戒指" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "83" }], flavourText: "你的膝为了在黑暗中迅敏的移动而弯曲，\n你的刃为了你而守卫。\n你的誓言将连接你和他的印记，\n你的身躯将注记着他的的魔符。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheLordInBlack.png" }, { name: "命运之网", href: "https://poedb.tw/cn/The_Web", type: "The Web", explicitMod: [{ type: "magicitem", value: "工艺打造武器" }], flavourText: "武器，避难所，监狱。\n蛛网的用途不断改变\n因应着蜘蛛的需要。\n一堂课题\n需要我们用心学习。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheWeb.png" }, { name: "诱惑之雨", href: "https://poedb.tw/cn/Rain_Tempter", type: "Rain Tempter", explicitMod: [{ type: "whiteitem", value: "地图" }, { type: "default", value: "地图位阶：" }, { type: "normal", value: "6" }], flavourText: "像水一样，朋友。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/RainTempter.png" }, { name: "奉献", href: "https://poedb.tw/cn/The_Offering", type: "The Offering", explicitMod: [{ type: "uniqueitem", value: "薛朗的护身长袍" }], flavourText: "内在的优美是有代价的。薛朗愿意以它人的性命换取。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheOffering.png" }, { name: "虚空", href: "https://poedb.tw/cn/The_Void", type: "The Void", explicitMod: [{ type: "magicitem", value: "" }], flavourText: "深入虚空并领取你的奖赏。", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/TheVoid.png" }, { name: "浑沌性情", href: "https://poedb.tw/cn/Chaotic_Disposition", type: "Chaotic Disposition", explicitMod: [{ type: "currencyitem", value: "5 X 混沌石" }], flavourText: "你无从开创人生，一切早有定数。", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/ChaoticDisposition.png" }, { name: "风暴使者", href: "https://poedb.tw/cn/The_Stormcaller", type: "The Stormcaller", explicitMod: [{ type: "uniqueitem", value: "雷霆圣杖" }], flavourText: "若你召唤了\n雷霆之神，\n当你被雷劈时\n也别觉得惊讶。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheStormcaller.png" }, { name: "兰塔朵迷惘之爱", href: "https://poedb.tw/cn/Lantadors_Lost_Love", type: "Lantadors Lost Love", explicitMod: [{ type: "rareitem", value: "双玉戒指" }], flavourText: "他们合而为一抵抗最强大的暴风，直到最漫长的日子结束。\n随着每一次的呼吸气息，他们的爱情变得更加深厚，\n直到死亡将他们分离。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/LantadorsLostLove.png" }, { name: "极致不凡", href: "https://poedb.tw/cn/The_Dapper_Prodigy", type: "The Dapper Prodigy", explicitMod: [{ type: "whiteitem", value: "六连护甲" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "100" }], flavourText: "许多人认为谋杀是邪恶，不人道，另人作恶的罪恶。然而却也有些人视其为艺术。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheDapperProdigy.png" }, { name: "收割者", href: "https://poedb.tw/cn/The_Harvester", type: "The Harvester", explicitMod: [{ type: "uniqueitem", value: "收割者" }], flavourText: "不要尝试\n禁忌果实。\n他们正收割着\n黑暗的一族，\n扭曲，腐败以及\n受到永恒之诅咒。", stack: 11, icon: "https://poe.game.qq.com/image/divination-card/TheHarvester.png" }, { name: "怨忿", href: "https://poedb.tw/cn/The_Wrath", type: "The Wrath", explicitMod: [{ type: "currencyitem", value: "10 X 混沌石" }], flavourText: "她是浩劫之女，苦痛之母，在瓦尔克拉斯的秽物中徘徊。她的岔怒将接踵而来。 - 重生之灵昆顿", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheWrath.png" }, { name: "希望微光", href: "https://poedb.tw/cn/Glimmer_of_Hope", type: "Glimmer of Hope", explicitMod: [{ type: "uniqueitem", value: "金光戒指" }], flavourText: "当你遁入黑暗的深处，最微弱的光也能成为你的引导。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/GlimmerOfHope.png" }, { name: "制图者的青睐", href: "https://poedb.tw/cn/Cartographers_Delight", type: "Cartographers Delight", explicitMod: [{ type: "normal", value: "地图" }, { type: "default", value: "地图阶级:" }, { type: "normal", value: "5" }], flavourText: "地图就像\n一双眼睛，\n若失去它你将\n蹒跚，找不到去路。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/CartographersDelight.png" }, { name: "莉莎之息", href: "https://poedb.tw/cn/Lysahs_Respite", type: "Lysahs Respite", explicitMod: [{ type: "uniqueitem", value: "玛瑙护身符" }, { type: "corrupted", value: "已腐化" }], flavourText: "许多回忆，\n许多苦痛\n充斥着小图腾。\n淹没在血液之中\n才能使你遗忘。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/LysahsRespite.png" }, { name: "命运垂青", href: "https://poedb.tw/cn/Lucky_Deck", type: "Lucky Deck", explicitMod: [{ type: "currencyitem", value: "10x 未知的命运卡" }], flavourText: "戏法或运气，结果一致时，有谁会在意?", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/LuckyDeck.png" }, { name: "忏悔者", href: "https://poedb.tw/cn/The_Penitent", type: "The Penitent", explicitMod: [{ type: "uniqueitem", value: "潜能之戒" }], flavourText: "我付出了财富，我们开始饥饿。\n我付出了土地，我们无家可归。\n我付出了家人，我变的孤独。\n我付出了双眼，获得梦寐的渴望", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ThePenitent.png" }, { name: "狼的影子", href: "https://poedb.tw/cn/The_Wolfs_Shadow", type: "The Wolfs Shadow", explicitMod: [{ type: "uniqueitem", value: "海昂的狂怒" }], flavourText: "如果我死了\n你会在我身边，还有刺入你咽喉的我的利爪", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheWolfsShadow.png" }, { name: "危机", href: "https://poedb.tw/cn/The_Risk", type: "The Risk", explicitMod: [{ type: "uniqueitem", value: "赌神芬多" }], flavourText: "没有选择是正确或错误的，也没有最好或最坏的。只有选择，和结果而已。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheRisk.png" }, { name: "狡狐", href: "https://poedb.tw/cn/The_Fox", type: "The Fox", explicitMod: [{ type: "gemitem", value: "等级 20 技能宝石" }], flavourText: "要在寒冷的冬天求生，你必须有像狐狸般的智慧，狡猾以及力量。\n- 艾兹麦族方言", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheFox.png" }, { name: "兴盛", href: "https://poedb.tw/cn/Prosperity", type: "Prosperity", explicitMod: [{ type: "magicitem", value: "普兰德斯的 金光戒指" }], flavourText: "累积财富也是有代价的", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/Prosperity.png" }, { name: "空灵", href: "https://poedb.tw/cn/The_Ethereal", type: "The Ethereal", explicitMod: [{ type: "whiteitem", value: "六连 瓦尔法衣" }], flavourText: "很久以前，人们仰望群星，相信着它们正影响着我们。很快的，我们将会成为影响群星的人们。\n- 多里亚尼，女王的奇术师", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheEthereal.png" }, { name: "永恒不朽", href: "https://poedb.tw/cn/The_Immortal", type: "The Immortal", explicitMod: [{ type: "divination", value: "明镜" }], flavourText: "你好！ 你以为我是个贪婪的人不代表我就不愿意分享。你只要先把我干掉就可以了。 - 元帅·死王", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheImmortal.png" }, { name: "烈日", href: "https://poedb.tw/cn/The_Sun", type: "The Sun", explicitMod: [{ type: "uniqueitem", value: "烈炎之翼" }], flavourText: "光明夜夜死去，日日重生，以金色羽翼拥抱大地。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheSun.png" }, { name: "拾荒者", href: "https://poedb.tw/cn/The_Scavenger", type: "The Scavenger", explicitMod: [{ type: "uniqueitem", value: "致命之体" }], flavourText: "一点一滴，拾取每一件小小的物品，最终将它们组合成杰出的艺术品·", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheScavenger.png" }, { name: "怒雷之空", href: "https://poedb.tw/cn/Thunderous_Skies", type: "Thunderous Skies", explicitMod: [{ type: "uniqueitem", value: "暴雨之弦" }], flavourText: "许多操纵着雷电力量的人说过被电击而死的受害者都看起来更加地有活力。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ThunderousSkies.png" }, { name: "大地吞食者", href: "https://poedb.tw/cn/Earth_Drinker", type: "Earth Drinker", explicitMod: [{ type: "uniqueitem", value: "坚岩药剂" }], flavourText: "浅尝能成长\n饮尽则下葬", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/EarthDrinker.png" }, { name: "暴虐之灵", href: "https://poedb.tw/cn/The_Tyrant", type: "The Tyrant", explicitMod: [{ type: "magicitem", value: "无情的武器" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "100" }], flavourText: "恐惧支配众人\n- 拉兹罗，灾祸之源", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheTyrant.png" }, { name: "复仇者", href: "https://poedb.tw/cn/The_Avenger", type: "The Avenger", explicitMod: [{ type: "uniqueitem", value: "沉默之雷" }, { type: "corrupted", value: "已腐化" }], flavourText: "正义迅得伸张\n新罪接踵而至\n复仇雪恨，如获至宝\n以命偿命，以眼还眼", stack: 12, icon: "https://poe.game.qq.com/image/divination-card/TheAvenger.png" }, { name: "她的面具", href: "https://poedb.tw/cn/Her_Mask", type: "Her Mask", explicitMod: [{ type: "whiteitem", value: "奉献碎片" }], flavourText: "臣服在女王的美丽之下\n至少你还能献出颈项让她划破", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/HerMask.png" }, { name: "消逝之怒", href: "https://poedb.tw/cn/Dying_Anguish", type: "Dying Anguish", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "他垂死的凝视着走过的旅程，血液缓缓流到了下巴。他看着永远不会称做家的城市，缓缓地闭起了双眼。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/DyingAnguish.png" }, { name: "殒落的命运", href: "https://poedb.tw/cn/Destined_to_Crumble", type: "Destined to Crumble", explicitMod: [{ type: "rareitem", value: "身体护具" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "100" }], flavourText: "我们不能忘记瓦尔教过我们最重要的一课：\n没有任何事物是永恒的。\n- 萨欧赛·佛耶葛，皇家学者", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/DestinedtoCrumble.png" }, { name: "无尽之域", href: "https://poedb.tw/cn/Boundless_Realms", type: "Boundless Realms", explicitMod: [{ type: "whiteitem", value: "地图" }], flavourText: "无尽的距离就是从我们启程到我们再次启程的距离。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/BoundlessRealms.png" }, { name: "天堂执法官", href: "https://poedb.tw/cn/The_Celestial_Justicar", type: "The Celestial Justicar", explicitMod: [{ type: "whiteitem", value: "六连星芒战铠" }], flavourText: "她有天庭荣光护体，为阵亡将士伸张正义。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheCelestialJusticar.png" }, { name: "死灵遗物", href: "https://poedb.tw/cn/The_Wretched", type: "The Wretched", explicitMod: [{ type: "uniqueitem", value: "腰带" }], flavourText: "相信我，通灵师比他们的手下更加令人毛骨悚然。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheWretched.png" }, { name: "正气", href: "https://poedb.tw/cn/Might_is_Right", type: "Might is Right", explicitMod: [{ type: "uniqueitem", value: "裂颅" }], flavourText: "即使在奇术出现前，人心也有许多顾虑。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/MightIsRight.png" }, { name: "射成筛子", href: "https://poedb.tw/cn/The_Porcupine", type: "The Porcupine", explicitMod: [{ type: "whiteitem", value: "六连短弓" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "50" }], flavourText: "第一支带羽毛的箭把人分成两类： 学以致用的，以及等死的·", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/ThePorcupine.png" }, { name: "女之武神", href: "https://poedb.tw/cn/The_Valkyrie", type: "The Valkyrie", explicitMod: [{ type: "uniqueitem", value: "复仇词缀物品" }], flavourText: "邪恶侵袭，撕毁了大地。\n战争四起，造就了英雄，\n复仇之火点燃夜空。\n英勇奉献将永熄业火。\n- 德雷克之墓", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheValkyrie.png" }, { name: "风暴来袭", href: "https://poedb.tw/cn/The_Coming_Storm", type: "The Coming Storm", explicitMod: [{ type: "uniqueitem", value: "雷语" }], flavourText: "没有人希望风暴再临。你能做的只是默默祈祷你不会无意激怒它·", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheComingStorm.png" }, { name: "猎者之愿", href: "https://poedb.tw/cn/Hunters_Resolve", type: "Hunters Resolve", explicitMod: [{ type: "uniqueitem", value: "弓" }], flavourText: "蓄势待发的，极致的圆滑\n毅然决然的，笃定的瞬间\n既是恶意，既是正义\n唯有一条，解决之道", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/HuntersResolve.png" }, { name: "光与真实", href: "https://poedb.tw/cn/Light_and_Truth", type: "Light and Truth", explicitMod: [{ type: "uniqueitem", value: "水晶短杖" }], flavourText: "即使光阴的变迁\n也将无法黯淡\n真理清澈的光芒", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/LigthAndTruth.png" }, { name: "月影女祭司", href: "https://poedb.tw/cn/The_Lunaris_Priestess", type: "The Lunaris Priestess", explicitMod: [{ type: "uniqueitem", value: "破碎传承者" }], flavourText: "拥抱光明，\n等待明日，\n不再怨恨，\n并不再悲伤。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheLunarisPriestess.png" }, { name: "狼王之弦", href: "https://poedb.tw/cn/The_Wolven_Kings_Bite", type: "The Wolven Kings Bite", explicitMod: [{ type: "uniqueitem", value: "瑞佛之羽" }], flavourText: "虽有尖牙，狼会撕咬它的猎物而不是同伴。知道你自己是谁，明白撕咬的意义。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheWolvenKingsBite.png" }, { name: "露指手套", href: "https://poedb.tw/cn/Mitts", type: "Mitts", explicitMod: [{ type: "uniqueitem", value: "手套" }], flavourText: "用双手劳动和生存的人知道如何珍惜那双生活的来源·", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/Mitts.png" }, { name: "雷劈", href: "https://poedb.tw/cn/Struck_by_Lightning", type: "Struck by Lightning", explicitMod: [{ type: "magicitem", value: "电切宝石" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "76" }], flavourText: "“闪电绝不会命中相同的地方两次”\n这不过是凡人的一厢情愿罢了。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/StruckbyLightning.png" }, { name: "圣人之礼", href: "https://poedb.tw/cn/The_Saints_Treasure", type: "The Saints Treasure", explicitMod: [{ type: "currencyitem", value: "2x 崇高石" }], flavourText: "在众人面前，他是负有盛名的诗人，一生追求诗甫。在他的内心之中，他渴望的是最平静的生活·", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheSaintsTreasure.png" }, { name: "耐久者", href: "https://poedb.tw/cn/The_Endurance", type: "The Endurance", explicitMod: [{ type: "magicitem", value: "生机的 赤红珠宝" }], flavourText: "艳红珠宝，有如血气，\n畅流于吾脉，\n身体有如媒矿，尝试碾碎我，\n残留的便是坚钻", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheEndurance.png" }, { name: "残酷之环", href: "https://poedb.tw/cn/The_Ruthless_Ceinture", type: "The Ruthless Ceinture", explicitMod: [{ type: "uniqueitem", value: "梅吉诺德的力量泉源" }, { type: "corrupted", value: "已腐化" }], flavourText: "在战斗中，真正的勇士首先要足智多谋，\n而后就是坚决果断。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheRuthlessCeinture.png" }, { name: "阿兹里的武器库", href: "https://poedb.tw/cn/Atziris_Arsenal", type: "Atziris Arsenal", explicitMod: [{ type: "uniqueitem", value: "武器" }, { type: "corrupted", value: "已腐化" }], flavourText: "在罪恶的监牢中,\n是升天成神还是悲痛坠地.\n暗影之下, 唯有希望.", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/AtzirisArmory.png" }, { name: "越界的呼唤", href: "https://poedb.tw/cn/The_Calling", type: "The Calling", explicitMod: [{ type: "uniqueitem", value: "超越词缀物品" }], flavourText: "鲜血不仅流动于血脉，它畅流任何大地。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheCalling.png" }, { name: "无迹之海", href: "https://poedb.tw/cn/The_Formless_Sea", type: "The Formless Sea", explicitMod: [{ type: "uniqueitem", value: "黑鲨" }], flavourText: "无形的力量，\n驯服狂野之美，\n神祇的海水，\n拘束八方海域。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheFormlessSea.png" }, { name: "力之誓言", href: "https://poedb.tw/cn/The_Oath", type: "The Oath", explicitMod: [{ type: "uniqueitem", value: "冥使之体" }], flavourText: "所谓誓言，就是改变的约定。绝不为了达成目标而延期，这只是愚弄傻瓜的把戏·", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheOath.png" }, { name: "无迹可寻", href: "https://poedb.tw/cn/No_Traces", type: "No Traces", explicitMod: [{ type: "currencyitem", value: "30x 重铸石" }], flavourText: "这个世界上没有错误会巨大到无法弥补。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/NoTraces.png" }, { name: "群狼之王", href: "https://poedb.tw/cn/The_Wolf", type: "The Wolf", explicitMod: [{ type: "uniqueitem", value: "瑞佛物品" }], flavourText: "巨兽无法靠蛮力压制。彪狼教导我们使用诡计替代力量，刺探要害，深切重击。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheWolf.png" }, { name: "远古召唤", href: "https://poedb.tw/cn/Call_to_the_First_Ones", type: "Call to the First Ones", explicitMod: [{ type: "rareitem", value: "1阶魔符" }, { type: "corrupted", value: "已腐化" }], flavourText: "艾兹麦人绝望无助之际，神灵是他们最后的救赎·", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/CallToTheFirstOnes.png" }, { name: "稍纵即逝", href: "https://poedb.tw/cn/Lingering_Remnants", type: "Lingering Remnants", explicitMod: [{ type: "rareitem", value: "瓦尔密殿" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "83" }, { type: "corrupted", value: "已腐化" }], flavourText: "死不去也活不了，他们在凄惨的月光下没有目的，没有尽头地漫游着。", stack: 16, icon: "https://poe.game.qq.com/image/divination-card/LingeringRemnants.png" }, { name: "净白", href: "https://poedb.tw/cn/The_Opulent", type: "The Opulent", explicitMod: [{ type: "rareitem", value: "戒指" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }], flavourText: "事实上，财富真的能买到幸福。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheOpulecent.png" }, { name: "遗弃之物", href: "https://poedb.tw/cn/The_Forsaken", type: "The Forsaken", explicitMod: [{ type: "uniqueitem", value: "不朽系命" }], flavourText: "你曾无私地给予我们生命和博爱。现在你的离去让我们的存在孤独又毫无意义。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheForsaken.png" }, { name: "闪光与火焰", href: "https://poedb.tw/cn/The_Spark_and_the_Flame", type: "The Spark and the Flame", explicitMod: [{ type: "uniqueitem", value: "贝雷克的火与雷之乐" }], flavourText: "当天空与地面相撞，碰撞的火花美丽动人，但却无人能够征服他们。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheSparkAndTheFlame.png" }, { name: "博学者", href: "https://poedb.tw/cn/The_Polymath", type: "The Polymath", explicitMod: [{ type: "uniqueitem", value: "均衡之符" }], flavourText: "天赋没有界限·", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/ThePolymath.png" }, { name: "金刚狼", href: "https://poedb.tw/cn/The_Wolverine", type: "The Wolverine", explicitMod: [{ type: "uniqueitem", value: "爪" }, { type: "corrupted", value: "已腐化" }], flavourText: "从底下撕裂他们，你会为你的杀戮满意；从顶上撕裂他们，你会上瘾着迷。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheWolverine.png" }, { name: "家的捷径", href: "https://poedb.tw/cn/The_Realm", type: "The Realm", explicitMod: [{ type: "gemitem", value: "时空之门" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+1-20%" }], flavourText: "如果你急着想冲进陌生的地方，\n就要准备好面对稀奇古怪的事情。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheRealm.png" }, { name: "冷淡", href: "https://poedb.tw/cn/The_Standoff", type: "The Standoff", explicitMod: [{ type: "uniqueitem", value: "素布腰带" }], flavourText: "一个所谓的宿命之敌，最后可能会成为你活下去的唯一理由。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheStandOff.png" }, { name: "听天由命", href: "https://poedb.tw/cn/Left_to_Fate", type: "Left to Fate", explicitMod: [{ type: "rareitem", value: "地图" }, { type: "default", value: "地图阶级:" }, { type: "normal", value: "16" }, { type: "corrupted", value: "未鉴定 已腐化" }], flavourText: "无\n{数人为了成就伟大而奋斗，\n但挑战和机遇\n成就了正真的伟大。}", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/LeftToFate.png" }, { name: "金属盒子", href: "https://poedb.tw/cn/The_Valley_of_Steel_Boxes", type: "The Valley of Steel Boxes", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "最珍贵的宝物，更应当藏在意想不到的平凡之处·", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheValleyOfSteelBoxes.png" }, { name: "混沌之雨", href: "https://poedb.tw/cn/Rain_of_Chaos", type: "Rain of Chaos", explicitMod: [{ type: "currencyitem", value: "混沌石" }], flavourText: "当夜烈焰弥天，一片混乱\n碎片掉落之处，全数毁灭殆尽\n-乔森卡西吉，重述巨变的都市传奇", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/RainOfChaos.png" }, { name: "锈铁诗人", href: "https://poedb.tw/cn/The_Rusted_Bard", type: "The Rusted Bard", explicitMod: [{ type: "currencyitem", value: "4x 污秽神秘石" }], flavourText: "{四重高歌，欢呼雀跃\n一百银钱，棺柩不存。\n高歌往复，空空如也。\n希望破灭，一无所获。}", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheRustedBard.png" }, { name: "纯净帝王", href: "https://poedb.tw/cn/Emperor_of_Purity", type: "Emperor of Purity", explicitMod: [{ type: "whiteitem", value: "六连的圣语锁甲" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "60" }], flavourText: "与其头衔名符其实，\n新登基者，福尔\n摧毁许多\n永恒帝国著名的\n奢侈与浮华。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/EmperorOfPurity.png" }, { name: "狼之信物", href: "https://poedb.tw/cn/Mawr_Blaidd", type: "Mawr Blaidd", explicitMod: [{ type: "uniqueitem", value: "巨狼之眼" }], flavourText: "狼王瑞佛以为他获得了力量，其实只不是过是力量又多了一个仆从·", stack: 16, icon: "https://poe.game.qq.com/image/divination-card/RussiaDivinationCard.png" }, { name: "谜团", href: "https://poedb.tw/cn/The_Puzzle", type: "The Puzzle", explicitMod: [{ type: "currencyitem", value: "5 x 裂隙碎片" }], flavourText: "无数的打击只会让人更加强硬，\n不断的噩梦只会悄悄远离。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ThePuzzle.png" }, { name: "追梦者", href: "https://poedb.tw/cn/The_Dreamer", type: "The Dreamer", explicitMod: [{ type: "uniqueitem", value: "裂隙物品" }], flavourText: "一个黑暗的音符从梦想家的唇角滴下，\n成为一个亲昵的旋律。\n我们站着，听命于他，\n因为在他的梦里，我们是自由的。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheDreamer.png" }, { name: "瓦尔的眷顾", href: "https://poedb.tw/cn/Luck_of_the_Vaal", type: "Luck of the Vaal", explicitMod: [{ type: "uniqueitem", value: "瓦尔护手" }, { type: "corrupted", value: "已腐化" }], flavourText: "真没那么幸运，否则他们现在可还在呢！", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/LuckOfTheVaal.png" }, { name: "灼热之火", href: "https://poedb.tw/cn/The_Blazing_Fire", type: "The Blazing Fire", explicitMod: [{ type: "uniqueitem", value: "乱矢之弦" }], flavourText: "致命, 不可触摸,\n热情, 兴奋跃动。\n这就是我所寻找的。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheBlazingFire.png" }, { name: "达拉夫人的宝石", href: "https://poedb.tw/cn/Diallas_Subjugation", type: "Diallas Subjugation", explicitMod: [{ type: "gemitem", value: "辅助宝石" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+23%" }, { type: "corrupted", value: "已腐化" }], flavourText: "美丽与纯净的象征\n宝石污染了她的神智\n玛拉凯腐败了她的宝石\n疯狂吞噬了仅存的荣耀。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/DiallasSubjugation.png" }, { name: "噬界者", href: "https://poedb.tw/cn/The_World_Eater", type: "The World Eater", explicitMod: [{ type: "uniqueitem", value: "塑星者" }], flavourText: "它的身体是无限的。\n它的胃口是无穷的。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheWorldEater.png" }, { name: "神佑", href: "https://poedb.tw/cn/Blessing_of_God", type: "Blessing of God", explicitMod: [{ type: "magicitem", value: "艾尔雷恩的饰品" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "85" }], flavourText: "当黑暗压在你身上时，\n光明将从你的内心成长。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/BlessingOfGod.png" }, { name: "炫耀之力", href: "https://poedb.tw/cn/The_Garish_Power", type: "The Garish Power", explicitMod: [{ type: "uniqueitem", value: "珠宝" }], flavourText: "马雷格罗可能注重内在忽视外表，但这不能掩盖他对夸张创造的狂热。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/GarishPower.png" }, { name: "不朽决心", href: "https://poedb.tw/cn/Immortal_Resolve", type: "Immortal Resolve", explicitMod: [{ type: "whiteitem", value: "六连身体护甲" }, { type: "default", value: "影响效果物品" }], flavourText: "命运缠成解不开的结。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/ImmortalResolve.png" }, { name: "仰慕者", href: "https://poedb.tw/cn/The_Admirer", type: "The Admirer", explicitMod: [{ type: "uniqueitem", value: "阿兹里物品" }], flavourText: "路西安醉心于翻阅上古的卷轴，发现曾有一份爱连接了千年。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheAdmirer.png" }, { name: "龙之眼", href: "https://poedb.tw/cn/The_Eye_of_the_Dragon", type: "The Eye of the Dragon", explicitMod: [{ type: "uniqueitem", value: "珠宝" }, { type: "corrupted", value: "已腐化" }], flavourText: "这是对于远古神灵来说也过于强大的力量。", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheEyeOfTheDragon.png" }, { name: "珠宝匠的福祉", href: "https://poedb.tw/cn/The_Jewellers_Boon", type: "The Jewellers Boon", explicitMod: [{ type: "whiteitem", value: "五连身体护甲" }, { type: "default", value: "影响效果物品" }], flavourText: "辨玉于石中，乃珠宝匠之真境界。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheJewellersBoon.png" }, { name: "深深黑梦", href: "https://poedb.tw/cn/The_Darkest_Dream", type: "The Darkest Dream", explicitMod: [{ type: "uniqueitem", value: "离异梦寐" }, { type: "corrupted", value: "已腐化" }], flavourText: "让你无法挣脱的梦境，是为梦魇。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheDarkestDream.png" }, { name: "弃财求生", href: "https://poedb.tw/cn/Abandoned_Wealth", type: "Abandoned Wealth", explicitMod: [{ type: "currencyitem", value: "3 X 崇高石" }], flavourText: "全世界熊熊焚烧，贪婪之徒葬身火海，幸存的灵巧之辈落魄潦倒。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/AbandonedWealth.png" }, { name: "梦境", href: "https://poedb.tw/cn/The_Dreamland", type: "The Dreamland", explicitMod: [{ type: "uniqueitem", value: "沉沦之间" }], flavourText: "苏醒之时，梦去之时。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheDreamland.png" }, { name: "鲜血大军", href: "https://poedb.tw/cn/The_Army_of_Blood", type: "The Army of Blood", explicitMod: [{ type: "uniqueitem", value: "血脉相连" }], flavourText: "{我将身心尽数交付，\n第十二个小时自身难控。\n白昼转夜仍有光在，\n那是血红的眼让人心怵。}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheArmyOfBlood.png" }, { name: "魂之和谐", href: "https://poedb.tw/cn/Harmony_of_Souls", type: "Harmony of Souls", explicitMod: [{ type: "currencyitem", value: "9x 尖啸精华" }], flavourText: "{尖啸之魂被沉枷重锁\n怨恨则将冰封的牢笼打破\n腐化的绳结\n最终得以解开}", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/HarmonyOfSouls.png" }, { name: "至臻完美", href: "https://poedb.tw/cn/Perfection", type: "Perfection", explicitMod: [{ type: "rareitem", value: "饰品" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "塑界之器" }], flavourText: "世界万千，但只有无限潜力者才能至臻完美。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/Perfection.png" }, { name: "壮心不已", href: "https://poedb.tw/cn/The_Hale_Heart", type: "The Hale Heart", explicitMod: [{ type: "rareitem", value: "物品" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "裂界之器" }], flavourText: "岁月衰老了他的心，但肉身依旧致命如初。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheHaleHeart.png" }, { name: "武士之眼", href: "https://poedb.tw/cn/The_Samurais_Eye", type: "The Samurais Eye", explicitMod: [{ type: "uniqueitem", value: "守望之眼" }], flavourText: "他能看穿夜里寂静的海，幽暗的天。而无形的恶魔夺走了他的眼，粉碎了他的心。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheSamuraisEye.png" }, { name: "狂兽", href: "https://poedb.tw/cn/The_Beast", type: "The Beast", explicitMod: [{ type: "uniqueitem", value: "兽腹" }], flavourText: "己欲除魔，必先成魔。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheBeast.png" }, { name: "教授", href: "https://poedb.tw/cn/The_Professor", type: "The Professor", explicitMod: [{ type: "uniqueitem", value: "幽秘博物馆" }], flavourText: "学院之路引你前往知识之洲； 但只有无师自通者方能移山填海。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheProfessor.png" }, { name: "枯萎玫瑰", href: "https://poedb.tw/cn/The_Wilted_Rose", type: "The Wilted Rose", explicitMod: [{ type: "gemitem", value: "21 级光环宝石" }, { type: "corrupted", value: "已腐化" }], flavourText: "升神之路艰险遍地，希望却在心中萌发。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheWiltedRose.png" }, { name: "巫婆", href: "https://poedb.tw/cn/The_Witch", type: "The Witch", explicitMod: [{ type: "uniqueitem", value: "奇亚拉的决心" }], flavourText: "{游荡荒野，孤身无助\n逃出生天，斩敌无数\n明知崎岖，愚心不改\n巫术傍身，神灵庇护}", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheWitch.png" }, { name: "保护的代价", href: "https://poedb.tw/cn/The_Price_of_Protection", type: "The Price of Protection", explicitMod: [{ type: "rareitem", value: "裂界守卫占据地图" }, { type: "default", value: "地图位阶：" }, { type: "normal", value: "14到16" }, { type: "default", value: "词缀：" }, { type: "normal", value: "8" }, { type: "corrupted", value: "已腐化" }], flavourText: "为了保护自己的庄园，她会同任何人、任何事物做交易。\n\n然后有东西回应了。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ThePriceofProtection.png" }, { name: "墨水点滴", href: "https://poedb.tw/cn/A_Dab_of_Ink", type: "A Dab of Ink", explicitMod: [{ type: "uniqueitem", value: "诗人的笔" }], flavourText: "帝国的诗篇用诗人的鲜血书写而成。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/ADabOfInk.png" }, { name: "先祖赐福", href: "https://poedb.tw/cn/Boon_of_the_First_Ones", type: "Boon of the First Ones", explicitMod: [{ type: "uniqueitem", value: "猎魔笔记物品" }], flavourText: "{伴随着她屠杀的怪兽\n皮囊和骨髓的枯萎，\n她从自己丧失之物那里获得了馈赠，\n她丧失了人性。}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/BoonoftheFirstOnes.png" }, { name: "工匠大师", href: "https://poedb.tw/cn/The_Master_Artisan", type: "The Master Artisan", explicitMod: [{ type: "currencyitem", value: "20x 品质通货" }], flavourText: "完美只是起点，每件作品都该有独特的光芒。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheMasterArtisan.png" }, { name: "不协之音", href: "https://poedb.tw/cn/The_Cacophony", type: "The Cacophony", explicitMod: [{ type: "currencyitem", value: "3x 破空精华" }], flavourText: "无人能在喧嚣中聆听，无人能在混乱中看清方向。感官已经无用。一切只能依托命运。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheCacophony.png" }, { name: "照料者", href: "https://poedb.tw/cn/The_Nurse", type: "The Nurse", explicitMod: [{ type: "divination", value: "疯医" }], flavourText: "我们曾试图劝说他做个头部检查。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheNurse.png" }, { name: "司法的恩赐", href: "https://poedb.tw/cn/Boon_of_Justice", type: "Boon of Justice", explicitMod: [{ type: "whiteitem", value: "女神祭品" }], flavourText: "有些天赋是责任，而有些只是给你的机会。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/BoonofJustice.png" }, { name: "旅程", href: "https://poedb.tw/cn/The_Journey", type: "The Journey", explicitMod: [{ type: "currencyitem", value: "先驱石" }], flavourText: "你要去向的地方，你要看到的风景，你要遭遇的人和事。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheJourney.png" }, { name: "狂王", href: "https://poedb.tw/cn/The_Mad_King", type: "The Mad King", explicitMod: [{ type: "uniqueitem", value: "致命贪婪之相" }], flavourText: "请对渴望权力的人心生敬畏，因为他会不惜一切。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheMadKing.png" }, { name: "信使", href: "https://poedb.tw/cn/The_Messenger", type: "The Messenger", explicitMod: [{ type: "uniqueitem", value: "先驱者碎片" }], flavourText: "<\n><\n><\n><\n><\n><\n><\n><\n><\n>\n<\n><\n><\n><\n><\n>\n<\n><\n><\n><\n><\n>\n<\n><\n><\n><\n><\n><\n><\n>", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheMessenger.png" }, { name: "七年厄运", href: "https://poedb.tw/cn/Seven_Years_Bad_Luck", type: "Seven Years Bad Luck", explicitMod: [{ type: "currencyitem", value: "镜之残片" }], flavourText: "只要相信的人多了，是否合理都无关紧要了。", stack: 13, icon: "https://poe.game.qq.com/image/divination-card/SevenYearsBadLuck.png" }, { name: "降临", href: "https://poedb.tw/cn/The_Landing", type: "The Landing", explicitMod: [{ type: "uniqueitem", value: "降临之地" }, { type: "default", value: "地图等阶：" }, { type: "normal", value: "15" }, { type: "corrupted", value: "腐化" }], flavourText: "远方之地的战士，你将踏上可能一去不返的旅程，但却会为我们带来福祉。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheLanding.png" }, { name: "寻觅者", href: "https://poedb.tw/cn/The_Seeker", type: "The Seeker", explicitMod: [{ type: "currencyitem", value: "3x 剥离石" }], flavourText: "任何有瑕疵的东西都一文不值；完美的世界不允许任何微小的错误，。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheSeeker.png" }, { name: "无畏者", href: "https://poedb.tw/cn/The_Undaunted", type: "The Undaunted", explicitMod: [{ type: "uniqueitem", value: "复仇词缀物品" }, { type: "corrupted", value: "已腐化" }], flavourText: "{“命运曾是我的天罚……\n但它过去阻挡不了我，现在也不能。”\n— 无畏者杰特尔布兰}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheUndaunted.png" }, { name: "山脉", href: "https://poedb.tw/cn/The_Mountain", type: "The Mountain", explicitMod: [{ type: "magicitem", value: "强力之珠宝" }], flavourText: "{被宝石蒙蔽双眼\n一心只求圆满\n不惜深入黑暗}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheMountain.png" }, { name: "黑暗的引诱", href: "https://poedb.tw/cn/Dark_Temptation", type: "Dark Temptation", explicitMod: [{ type: "uniqueitem", value: "抹灭" }], flavourText: "“只有蠢货才会向教派寻求权力，并奢望能从它的烈焰中活命。\n- 帝王福尔", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/DarkTemptation.png" }, { name: "黑白世界", href: "https://poedb.tw/cn/Monochrome", type: "Monochrome", explicitMod: [{ type: "currencyitem", value: "2X 尊崇六分仪" }], flavourText: "{“一种颜色怎能描绘世界。你和我一起，我们会共同画出完美的天地。”\n- 奇拉，变节的奇术师}", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/Monochrome.png" }, { name: "三魔音", href: "https://poedb.tw/cn/Three_Voices", type: "Three Voices", explicitMod: [{ type: "currencyitem", value: "3x 精华" }], flavourText: "村里的老人们有个规矩：如果听到三个声音在哭喊求救，那么别回头，赶紧逃命。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/ThreeVoices.png" }, { name: "重生", href: "https://poedb.tw/cn/Rebirth", type: "Rebirth", explicitMod: [{ type: "uniqueitem", value: "查兰之剑" }], flavourText: "他告诉了我什么是微笑，\n而又夺走了我的一切。", stack: 27, icon: "https://poe.game.qq.com/image/divination-card/BirthOfTheThree.png" }, { name: "黄金纪元", href: "https://poedb.tw/cn/The_Golden_Era", type: "The Golden Era", explicitMod: [{ type: "magicitem", value: "迸出的月蚀长杖" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }], flavourText: "在古灵使徒之前，在奇术之前，一个普通的宫廷魔术师就能迷惑大多数人。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheGoldenEra.png" }, { name: "主宰", href: "https://poedb.tw/cn/The_Master", type: "The Master", explicitMod: [{ type: "uniqueitem", value: "比斯克的项圈" }], flavourText: "在混乱的世界，他总能在主宰的手中得到慰藉。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheMaster.png" }, { name: "虚荣", href: "https://poedb.tw/cn/Vanity", type: "Vanity", explicitMod: [{ type: "uniqueitem", value: "无尽之衣" }, { type: "corrupted", value: "已腐化" }], flavourText: "", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/Vanity.png" }, { name: "欢庆领主", href: "https://poedb.tw/cn/The_Lord_of_Celebration", type: "The Lord of Celebration", explicitMod: [{ type: "magicitem", value: "庆祝节杖" }, { type: "default", value: "塑界者物品" }], flavourText: "尽管曾是一群精英斗士，但帝王的皇家护卫仍不敢参加他举办的任何一次胡天胡地的宴会。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheLordofCelebration.png" }, { name: "无尽黑暗", href: "https://poedb.tw/cn/The_Endless_Darkness", type: "The Endless Darkness", explicitMod: [{ type: "uniqueitem", value: "裂空者" }], flavourText: "凝视星辰，警惕星辰凝视着你。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheEndlessDarkness.png" }, { name: "帝国的遗产", href: "https://poedb.tw/cn/Imperial_Legacy", type: "Imperial Legacy", explicitMod: [{ type: "whiteitem", value: "六连帝国弓" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }], flavourText: "人生迷失，遗产浮现。", stack: 22, icon: "https://poe.game.qq.com/image/divination-card/ImperialLegacy.png" }, { name: "爱的回音", href: "https://poedb.tw/cn/Echoes_of_Love", type: "Echoes of Love", explicitMod: [{ type: "uniqueitem", value: "费德利塔斯的尖刺" }, { type: "corrupted", value: "双基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "我为你放弃了身体。我为你放弃了名讳。而总有一天，我必将为你放弃生命。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/EchoesOfLove.png" }, { name: "燃烧之血", href: "https://poedb.tw/cn/Burning_Blood", type: "Burning Blood", explicitMod: [{ type: "uniqueitem", value: "索伏之血" }, { type: "corrupted", value: "已腐化" }], flavourText: "{有一个地方上下颠倒，\n善恶不分，\n苦乐交融，\n那里的人们只求一死。}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/BurningBlood.png" }, { name: "诱人的奖赏", href: "https://poedb.tw/cn/Alluring_Bounty", type: "Alluring Bounty", explicitMod: [{ type: "currencyitem", value: "10x 崇高石" }], flavourText: "{人为财死\n鸟为食亡。}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/AlluringBounty.png" }, { name: "起源", href: "https://poedb.tw/cn/The_Primordial", type: "The Primordial", explicitMod: [{ type: "uniqueitem", value: "珠宝" }, { type: "magicitem", value: "远古" }], flavourText: "我们用亡灵巫术扮演神灵，\n但威力过于有效\n在石堆下安息吧。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ThePrimordial.png" }, { name: "牺牲", href: "https://poedb.tw/cn/The_Sacrifice", type: "The Sacrifice", explicitMod: [{ type: "whiteitem", value: "六连祭礼束衣" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }], flavourText: "总有人愿为力量支付任何代价。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheSacrifice.png" }, { name: "无辜者", href: "https://poedb.tw/cn/The_Innocent", type: "The Innocent", explicitMod: [{ type: "currencyitem", value: "40x 后悔石" }], flavourText: "他的兄弟无意赎罪，于是他带走了兄弟的生命，这成为了他的原罪。", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheInnocent.png" }, { name: "元素祭祀", href: "https://poedb.tw/cn/The_Rite_of_Elements", type: "The Rite of Elements", explicitMod: [{ type: "gemitem", value: "等级 21 魔像宝石" }, { type: "corrupted", value: "已腐化" }], flavourText: "{念如闪电，\n拳似磐石，\n心中有怒，\n眼露寒芒。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheRiteofElements.png" }, { name: "半神的赌局", href: "https://poedb.tw/cn/Demigods_Wager", type: "Demigods Wager", explicitMod: [{ type: "currencyitem", value: "剥离石" }], flavourText: "偶尔你得靠自己找到运气。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/DemigodsWagergives.png" }, { name: "暮光之月", href: "https://poedb.tw/cn/The_Twilight_Moon", type: "The Twilight Moon", explicitMod: [{ type: "uniqueitem", value: "暮光古庙" }], flavourText: "白日将尽，黑夜初升，寒风骤起，天空破碎。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheTwilightMoon.png" }, { name: "生命窃贼", href: "https://poedb.tw/cn/The_Life_Thief", type: "The Life Thief", explicitMod: [{ type: "uniqueitem", value: "泽佛伊之心" }], flavourText: "“长生不老也是一种交换。你送给人们死亡，交换他们的青春。”\n——瓦尔的泽佛依", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheLifeThief.png" }, { name: "英勇打击", href: "https://poedb.tw/cn/The_Heroic_Shot", type: "The Heroic Shot", explicitMod: [{ type: "currencyitem", value: "17x 幻色石" }], flavourText: "千百遍的尝试，终将换来放弃。", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/TheHeroicShot.png" }, { name: "埋葬的宝藏", href: "https://poedb.tw/cn/Buried_Treasure", type: "Buried Treasure", explicitMod: [{ type: "whiteitem", value: "亚硫酸圣甲虫" }], flavourText: "{两手干净不可能发家致富。}", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/BuriedTreasure.png" }, { name: "瓦尔的傲慢", href: "https://poedb.tw/cn/Arrogance_of_the_Vaal", type: "Arrogance of the Vaal", explicitMod: [{ type: "uniqueitem", value: "物品" }, { type: "corrupted", value: "双基底" }, { type: "corrupted", value: "腐化" }], flavourText: "探索之旅可以带来美景，也可能是废墟。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/ArroganceoftheVaal.png" }, { name: "黑暗中独行", href: "https://poedb.tw/cn/Alone_in_the_Darkness", type: "Alone in the Darkness", explicitMod: [{ type: "uniqueitem", value: "地心探索物品" }], flavourText: "“有时候，你得不到的，才是世间最美丽的瑰宝……”\n- 白若，蓝晶矿洞的幸存者", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/AloneintheDarkness.png" }, { name: "永不知足", href: "https://poedb.tw/cn/More_is_Never_Enough", type: "More is Never Enough", explicitMod: [{ type: "whiteitem", value: "镀金圣甲虫" }], flavourText: "欲壑难填皆因填", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/MoreIsNeverEnough.png" }, { name: "诺克之冠", href: "https://poedb.tw/cn/Nooks_Crown", type: "Nooks Crown", explicitMod: [{ type: "rareitem", value: "唤骨头盔" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "裂界者物品" }], flavourText: "{每个头颅都曾有自己的主人，\n虽然少有人问津。\n朋友们，戴着诺克之冠的头颅\n却无需询问。\n他们早已铭记在心。}", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/NooksCrown.png" }, { name: "忠诚的代价", href: "https://poedb.tw/cn/The_Price_of_Loyalty", type: "The Price of Loyalty", explicitMod: [{ type: "span class=", value: "忠诚的皮囊" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "25" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "“用他们的皮囊为我铸甲，用他们的灵魂淬化，再把他们的血肉丢给猎狗。”", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/ThePriceOfLoyalty.png" }, { name: "交易", href: "https://poedb.tw/cn/The_Bargain", type: "The Bargain", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "追逐权力，正如追求财富，到头两手空空。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheBargain.png" }, { name: "恶毒的权力", href: "https://poedb.tw/cn/Vile_Power", type: "Vile Power", explicitMod: [{ type: "uniqueitem", value: "灭世" }], flavourText: "{危机遍野，寒意席卷大地。\n权力蛰伏，不停撩拨命运。\n贪婪无度，片刻不得停息。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/VilePower.png" }, { name: "萨博辛的誓言", href: "https://poedb.tw/cn/Sambodhis_Vow", type: "Sambodhis Vow", explicitMod: [{ type: "whiteitem", value: "凡人碎片" }], flavourText: "{他一生驱离黑暗\n直到凡人不堪重负\n恳求希望之光的饶恕。}", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/SambodhisVow.png" }, { name: "恶魔", href: "https://poedb.tw/cn/The_Demon", type: "The Demon", explicitMod: [{ type: "uniqueitem", value: "猎首" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "谜音入脑，未必发狂。", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheDemon.png" }, { name: "阿祖兰的奖赏", href: "https://poedb.tw/cn/Azyrans_Reward", type: "Azyrans Reward", explicitMod: [{ type: "uniqueitem", value: "三相珠宝" }, { type: "corrupted", value: "已腐化" }], flavourText: "方法胜于苦功，历久弥坚，灵光必然乍现。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/AzyransReward.png" }, { name: "咒诅之灵", href: "https://poedb.tw/cn/The_Damned", type: "The Damned", explicitMod: [{ type: "uniqueitem", value: "裂魂者" }], flavourText: "{鲜血裹挟着灵魂，\n逃向新的栖身之地。}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheDamned.png" }, { name: "恐怖之眼", href: "https://poedb.tw/cn/The_Eye_of_Terror", type: "The Eye of Terror", explicitMod: [{ type: "whiteitem", value: "夏乌拉的无暇裂隙石" }], flavourText: "混乱之主睁眼做梦，目不转睛地望着他的奖赏。很快，一切都将在他醒来之前颤抖。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheEyeOfTerror.png" }, { name: "魔侍", href: "https://poedb.tw/cn/The_Skeleton", type: "The Skeleton", explicitMod: [{ type: "gemitem", value: "1 级召唤魔侍" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+23%" }, { type: "corrupted", value: "已腐化" }], flavourText: "它们与我等同行，也是我等的归宿。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheSkeleton.png" }, { name: "无可争议者", href: "https://poedb.tw/cn/The_Undisputed", type: "The Undisputed", explicitMod: [{ type: "magicitem", value: "无情的瓦尔巨斧" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "裂界之器" }], flavourText: "想要真的与众不同，就必须冒天塌之险。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheUndisputed.png" }, { name: "支线任务", href: "https://poedb.tw/cn/The_Side_Quest", type: "The Side Quest", explicitMod: [{ type: "currencyitem", value: "20x 侦察报告" }], flavourText: "紧闭双眼，你将永远无法理解错失的一切", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheSideQuest.png" }, { name: "元素虚空", href: "https://poedb.tw/cn/Void_of_the_Elements", type: "Void of the Elements", explicitMod: [{ type: "magicitem", value: "强盛的蛋白石戒指" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "裂界者物品" }], flavourText: "诚然，自然之力深不可测，可当它们消失后才叫人毛骨悚然。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/VoidOfTheElements.png" }, { name: "黑暗之梦", href: "https://poedb.tw/cn/Dark_Dreams", type: "Dark Dreams", explicitMod: [{ type: "rareitem", value: "唤骨头盔" }, { type: "default", value: "裂界者物品" }], flavourText: "当她说要养家糊口的时候，没人搞清楚那到底意味着什么。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/DarkDreams.png" }, { name: "愚人", href: "https://poedb.tw/cn/The_Fool", type: "The Fool", explicitMod: [{ type: "currencyitem", value: "20x 机会石" }], flavourText: "哪怕最博学的人面对自己的命运也只是个愚人。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheFool.png" }, { name: "深渊之子", href: "https://poedb.tw/cn/The_Deep_Ones", type: "The Deep Ones", explicitMod: [{ type: "uniqueitem", value: "局势逆转者" }], flavourText: "{“大海在召唤，疯狂在回应”}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheDeepOnes.png" }, { name: "诅咒之王", href: "https://poedb.tw/cn/The_Cursed_King", type: "The Cursed King", explicitMod: [{ type: "uniqueitem", value: "瑞佛诅咒" }], flavourText: "初代们\n或许是种亵渎，\n但他们是\n强大的亵渎。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheCursedKing.png" }, { name: "买卖", href: "https://poedb.tw/cn/The_Deal", type: "The Deal", explicitMod: [{ type: "whiteitem", value: "制图者圣甲虫" }], flavourText: "追逐权力，正如追求财富，到头两手空空。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheDeal.png" }, { name: "永不满足", href: "https://poedb.tw/cn/The_Insatiable", type: "The Insatiable", explicitMod: [{ type: "uniqueitem", value: "收割者" }, { type: "corrupted", value: "已腐化" }], flavourText: "灵魂的欲望，\n是一种为了满足渴望而不顾一切的冲动，\n是一种难以承受的负担，\n是即使是最纯洁的心也会随着时间的流逝而改变的真相。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheInsatiable.png" }, { name: "黑暗缭绕", href: "https://poedb.tw/cn/The_Obscured", type: "The Obscured", explicitMod: [{ type: "normal", value: "裂隙石" }], flavourText: "我们的国度虽然危险，\n但远比我们看不到的地方安全得多。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheObscured.png" }, { name: "无罪之援", href: "https://poedb.tw/cn/Succor_of_the_Sinless", type: "Succor of the Sinless", explicitMod: [{ type: "uniqueitem", value: "瓶中信仰" }], flavourText: "蒙恩圣徒以血为福，踏遍千山步履赐祝，弘法除恶众苦皆除。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/SuccorOfTheSinless.png" }, { name: "来生之美", href: "https://poedb.tw/cn/Beauty_Through_Death", type: "Beauty Through Death", explicitMod: [{ type: "uniqueitem", value: "阿兹里的反击" }], flavourText: "她的美丽并未消退，\n但她的人性却并未幸存。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/BeautyThroughDeath.png" }, { name: "地下森林", href: "https://poedb.tw/cn/Underground_Forest", type: "Underground Forest", explicitMod: [{ type: "currencyitem", value: "10x 觉醒六分仪" }], flavourText: "“又见森林……至少我不再两手空空。”", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/UndergroundForest.png" }, { name: "逃亡", href: "https://poedb.tw/cn/The_Escape", type: "The Escape", explicitMod: [{ type: "uniqueitem", value: "神行靴" }], flavourText: "感受真实，你将步入疯狂之境。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheEscape.png" }, { name: "前程的诱惑", href: "https://poedb.tw/cn/Baited_Expectations", type: "Baited Expectations", explicitMod: [{ type: "uniqueitem", value: "渔具" }], flavourText: "渔线的要领就是不长不短刚刚好。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/BaitedExpectations.png" }, { name: "铭记", href: "https://poedb.tw/cn/Remembrance", type: "Remembrance", explicitMod: [{ type: "uniqueitem", value: "先驱的纹章" }, { type: "corrupted", value: "已腐化" }], flavourText: "{“因为你的一切奋斗，一切成就都将远超我辈，千古名留。因此务必谨慎。”\n\n——尤利乌斯·普兰德斯，切特斯之父}", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/Remembrance.png" }, { name: "鱼贩", href: "https://poedb.tw/cn/The_Fishmonger", type: "The Fishmonger", explicitMod: [{ type: "whiteitem", value: "白化的羽毛" }], flavourText: "再狠的恐喙鸟，都有适合的棍子叫它们听话。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheFishmonger.png" }, { name: "天选", href: "https://poedb.tw/cn/The_Chosen", type: "The Chosen", explicitMod: [{ type: "uniqueitem", value: "君主之肤" }, { type: "corrupted", value: "已腐化" }], flavourText: "他们的生命被献给了黑暗梦者……他们真走运。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheChosen.png" }, { name: "致命谋划", href: "https://poedb.tw/cn/Deathly_Designs", type: "Deathly Designs", explicitMod: [{ type: "gemitem", value: "21 级陷阱宝石" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+23%" }, { type: "corrupted", value: "已腐化" }], flavourText: "“卡拉说得对，这必将让我光宗耀祖。”", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/DeathlyDesigns.png" }, { name: "神圣的正义", href: "https://poedb.tw/cn/Divine_Justice", type: "Divine Justice", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "寻求女神赐福者众，通过迷宫幸存者寡。", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/DivineJustice.png" }, { name: "大军阀", href: "https://poedb.tw/cn/The_Warlord", type: "The Warlord", explicitMod: [{ type: "whiteitem", value: "六连 花冠重锤" }, { type: "default", value: "物品等级:" }, { type: "normal", value: "83" }], flavourText: " 要治愈女神，\n断开腐败的连接，\n你必须击碎世界。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheWarlord.png" }, { name: "渴求", href: "https://poedb.tw/cn/The_Craving", type: "The Craving", explicitMod: [{ type: "uniqueitem", value: "无尽渴望" }], flavourText: "为何一时突发奇想会变成瘙痒难耐的渴望。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheCraving.png" }, { name: "剑圣的致敬", href: "https://poedb.tw/cn/The_Sword_Kings_Salute", type: "The Sword Kings Salute", explicitMod: [{ type: "uniqueitem", value: "德瑞索的战礼" }], flavourText: "{剑圣的剑下亡魂众多\n剑圣的戒指鲜血染红\n后退者只配被屠戮\n奋战者方能得到敬意}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheSwordKingsSalute.png" }, { name: "友谊", href: "https://poedb.tw/cn/Friendship", type: "Friendship", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "“点燃你的生命，寻求为你添柴之人。”\n\n- 瓦尔人鲁米", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/Friendship.png" }, { name: "阿凯的预言", href: "https://poedb.tw/cn/Akils_Prophecy", type: "Akils Prophecy", explicitMod: [{ type: "uniqueitem", value: "权贵圆盾" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "腐化" }], flavourText: "{那位哈图纳格斯所学包罗万象，\n因为时间本身就繁如巨网。}", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/AkilsProphecy.png" }, { name: "求知若渴", href: "https://poedb.tw/cn/Thirst_for_Knowledge", type: "Thirst for Knowledge", explicitMod: [{ type: "uniqueitem", value: "暴食" }], flavourText: "思想的宝库不断拓宽觉醒，星辰也随之点燃。 {贪婪的头脑饥不择食。\n其他学者真幸运，因为他终于学到了什么叫永恒。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ThirstForKnowledge.png" }, { name: "月影的子嗣", href: "https://poedb.tw/cn/The_Progeny_of_Lunaris", type: "The Progeny of Lunaris", explicitMod: [{ type: "uniqueitem", value: "逝日" }], flavourText: "生沐银芒，佩月之光，\n倾其全力，颠覆阴阳。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheProgenyofLunaris.png" }, { name: "猫咪议会", href: "https://poedb.tw/cn/Council_of_Cats", type: "Council of Cats", explicitMod: [{ type: "uniqueitem", value: "法瑞尔物品" }], flavourText: "{万众瞩目，\n静候日暮，\n呼啸如影，\n守株待兔}", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/CounciloOfCats.png" }, { name: "风滚草", href: "https://poedb.tw/cn/The_Tumbleweed", type: "The Tumbleweed", explicitMod: [{ type: "magicitem", value: "救赎钻戒" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "救赎者物品" }], flavourText: "屈服于这片废土之后，爱是唯一的一丝救赎。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheTumbleWeed.png" }, { name: "知识之巢", href: "https://poedb.tw/cn/The_Hive_of_Knowledge", type: "The Hive of Knowledge", explicitMod: [{ type: "uniqueitem", value: "马奇纳护手" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "经年累月，精益求精，力量方成。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheHiveOfKnowledge.png" }, { name: "白衣骑士", href: "https://poedb.tw/cn/The_White_Knight", type: "The White Knight", explicitMod: [{ type: "whiteitem", value: "六连星芒战铠" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "圣战者物品" }], flavourText: "腐坏所至，我必随行，铸其丰碑，耀我功绩。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheWhiteKnight.png" }, { name: "安赛娜丝的馈赠", href: "https://poedb.tw/cn/Gift_of_Asenath", type: "Gift of Asenath", explicitMod: [{ type: "uniqueitem", value: "安赛娜丝的安抚之语" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "金色丝克玛的话语能化解累世仇怨。然而之后却又添新愁。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/GiftOfAsenath.png" }, { name: "卡梅莉亚的回报", href: "https://poedb.tw/cn/Camerias_Cut", type: "Camerias Cut", explicitMod: [{ type: "whiteitem", value: "圣甲虫" }], flavourText: "“酬劳有两种，金子和鲜血。而我两者都要。”\n\n- 冷血的卡梅莉亚", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/CameriasCut.png" }, { name: "风中之语", href: "https://poedb.tw/cn/A_Note_in_the_Wind", type: "A Note in the Wind", explicitMod: [{ type: "uniqueitem", value: "安赛娜丝的迅敏之冠" }], flavourText: "{作者早已死亡，\n旋律早被遗忘，\n然而这首战歌势必再次唱响。}", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/ANoteInTheWind.png" }, { name: "普罗米修斯之备", href: "https://poedb.tw/cn/Prometheus_Armoury", type: "Prometheus Armoury", explicitMod: [{ type: "rareitem", value: "单手武器" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "双重影响物品" }], flavourText: "追求不可理解的力量正是凡人的悲哀。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/PrometheusArmory.png" }, { name: "天堂之石", href: "https://poedb.tw/cn/The_Celestial_Stone", type: "The Celestial Stone", explicitMod: [{ type: "whiteitem", value: "蛋白石戒指" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "塑界之器" }], flavourText: "不要久久凝视它的深邃，否则你可能会彻底失去自我。", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheCelestialStone.png" }, { name: "熟悉的呼唤", href: "https://poedb.tw/cn/A_Familiar_Call", type: "A Familiar Call", explicitMod: [{ type: "magicitem", value: "法瑞尔珠宝" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "塑界者和狩猎者物品" }], flavourText: "强大的女猎人总想要她的钱，\n但这个钱得拿一辈子来换。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/AFamiliarCall.png" }, { name: "骸骨", href: "https://poedb.tw/cn/The_Bones", type: "The Bones", explicitMod: [{ type: "gemitem", value: "21 瓦尔召唤魔侍" }, { type: "corrupted", value: "已腐化" }], flavourText: "肉体是监牢，我等终自由。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheBones.png" }, { name: "觉醒", href: "https://poedb.tw/cn/The_Awakened", type: "The Awakened", explicitMod: [{ type: "rareitem", value: "珠宝" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "86" }, { type: "default", value: "双重影响物品" }], flavourText: "有些人一辈子都想改变世界，然而有些人在探寻途中就改变了世界。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheAwakened.png" }, { name: "安宁之时", href: "https://poedb.tw/cn/Peaceful_Moments", type: "Peaceful Moments", explicitMod: [{ type: "uniqueitem", value: "永恒珠宝" }], flavourText: "品味这一刻吧，它将不复再来。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/PeacefulMoments.png" }, { name: "密藏", href: "https://poedb.tw/cn/The_Cache", type: "The Cache", explicitMod: [{ type: "uniqueitem", value: "饰品" }], flavourText: "{精美古董闪闪发亮\n拭去尘腐显露金光\n大小宝贝尽藏一箱\n勘探千里皆我辛劳\n故我所获无需献牢！\n左思右考为何苦恼\n哪件宝贝迎我心坳？\n这件珠宝让我显高\n可它能否配我发梢？}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheCache.png" }, { name: "天人永隔", href: "https://poedb.tw/cn/The_Gulf", type: "The Gulf", explicitMod: [{ type: "uniqueitem", value: "希望之线" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "{我以为真爱强过一切，\n可时间和孤独却远胜疯狂。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheGulf.png" }, { name: "一厢情愿", href: "https://poedb.tw/cn/Unrequited_Love", type: "Unrequited Love", explicitMod: [{ type: "currencyitem", value: "19x 镜子碎片" }], flavourText: "{他心中惨白的火焰在蔚蓝色的映衬中消失了。\n那是他的毕生心血，雄心勃勃，\n却无法完成。}", stack: 16, icon: "https://poe.game.qq.com/image/divination-card/UnrequitedLove.png" }, { name: "猛烈绽放", href: "https://poedb.tw/cn/The_Bitter_Blossom", type: "The Bitter Blossom", explicitMod: [{ type: "gemitem", value: "21 级混沌宝石" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+23%" }, { type: "corrupted", value: "已腐化" }], flavourText: "这并非是为了让你痛苦，而是为了进化，为了让你成为伟大的一份子。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheBitterBlossom.png" }, { name: "狼王的遗产", href: "https://poedb.tw/cn/The_Wolfs_Legacy", type: "The Wolfs Legacy", explicitMod: [{ type: "uniqueitem", value: "阿兹里的秘宝库" }], flavourText: "狂啸与轻笑均无法掩饰悲伤。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheWolfsLegacy.png" }, { name: "禁忌之力", href: "https://poedb.tw/cn/Forbidden_Power", type: "Forbidden Power", explicitMod: [{ type: "uniqueitem", value: "苍白烈火" }, { type: "corrupted", value: "已腐化" }], flavourText: "一些东西永远不该被使用，\n一些力量同样带着太大的风险。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/ForbiddenPower.png" }, { name: "被亵渎的美德", href: "https://poedb.tw/cn/Desecrated_Virtue", type: "Desecrated Virtue", explicitMod: [{ type: "gemitem", value: "6 级强化辅助宝石" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+23%" }, { type: "corrupted", value: "已腐化" }], flavourText: "{空洞的美德将被肢解，\n它们被贪婪玷污，\n被残暴攫取。}", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/DesecratedVirtue.png" }, { name: "修补匠之桌", href: "https://poedb.tw/cn/The_Tinkerers_Table", type: "The Tinkerers Table", explicitMod: [{ type: "currencyitem", value: "5x 化石" }], flavourText: "将幻象融入现实，足以让人发狂。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheTinkerersTable.png" }, { name: "消逝的光芒", href: "https://poedb.tw/cn/Dying_Light", type: "Dying Light", explicitMod: [{ type: "rareitem", value: "宝钻戒指" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "塑界者+裂界者物品" }], flavourText: "无上光明也将沦入黑暗。", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/DyingLight.png" }, { name: "轻松漫步", href: "https://poedb.tw/cn/The_Easy_Stroll", type: "The Easy Stroll", explicitMod: [{ type: "rareitem", value: "地图" }, { type: "default", value: "地图位阶：" }, { type: "normal", value: "15" }, { type: "default", value: "词缀：" }, { type: "normal", value: "8" }, { type: "corrupted", value: "已腐化" }], flavourText: "“我出去散散步，很快就回来。”\n\n——布兰卡的遗言", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheEasyStroll.png" }, { name: "幽影纠缠", href: "https://poedb.tw/cn/Haunting_Shadows", type: "Haunting Shadows", explicitMod: [{ type: "uniqueitem", value: "灾变物品" }], flavourText: "夜幕让你逃避阴影，\n清晨它将再次上门。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/HauntingShadows.png" }, { name: "气候适应", href: "https://poedb.tw/cn/Acclimatisation", type: "Acclimatisation", explicitMod: [{ type: "currencyitem", value: "20x 改造石" }], flavourText: "世界永远在变。\n茂林陷入黄沙，\n城池沉入波涛。\n不变即亡。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/Acclimatisation.png" }, { name: "狗仔队", href: "https://poedb.tw/cn/The_Journalist", type: "The Journalist", explicitMod: [{ type: "rareitem", value: "头盔" }, { type: "default", value: "双重解密物品" }], flavourText: "优秀的间谍都懂得悄无声息。", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheJournalist.png" }, { name: "雪盲", href: "https://poedb.tw/cn/The_Whiteout", type: "The Whiteout", explicitMod: [{ type: "uniqueitem", value: "卡斯普里怨恨" }], flavourText: "{他们觉得冬天来得太早，\n冰雪笼罩大地，\n但事实上，他们的鸡群\n早已回家休憩。}", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheWhiteout.png" }, { name: "命中注定", href: "https://poedb.tw/cn/Fateful_Meeting", type: "Fateful Meeting", explicitMod: [{ type: "uniqueitem", value: "赛季专属物品" }, { type: "default", value: "双重影响效果物品" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "97" }, { type: "corrupted", value: "已腐化" }], flavourText: "{有人如灯塔般照亮世界，我有幸遇见了其中一人。\n\n——安东至曾雅的信}", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/FatefulMeeting.png" }, { name: "莽撞的野心", href: "https://poedb.tw/cn/Reckless_Ambition", type: "Reckless Ambition", explicitMod: [{ type: "uniqueitem", value: "至高天堂" }], flavourText: "既然永不满足，何必停留。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/RecklessAmbition.png" }, { name: "社团之悔", href: "https://poedb.tw/cn/Societys_Remorse", type: "Societys Remorse", explicitMod: [{ type: "currencyitem", value: "10x 改造石" }], flavourText: "{我们生活在不属于我们的梦里，\n用虚假的故事填补灵魂的空虚，\n我们心有疑惑，\n这世界如此美丽，\n何需再造梦境。}", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/SocietysRemorse.png" }, { name: "给养", href: "https://poedb.tw/cn/The_Sustenance", type: "The Sustenance", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "她取走自己的一切，只为追求自己的渴望。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheSustenance.png" }, { name: "血肉之躯", href: "https://poedb.tw/cn/The_Body", type: "The Body", explicitMod: [{ type: "uniqueitem", value: "护甲" }], flavourText: "人们说头是身体的主导，但身体中所有一切最终还是要在体内流动一轮。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheBody.png" }, { name: "狡徒", href: "https://poedb.tw/cn/The_Deceiver", type: "The Deceiver", explicitMod: [{ type: "uniqueitem", value: "狡徒束腰" }, { type: "corrupted", value: "已腐化" }], flavourText: "小心那些失去信念的战士，\n他们仍然愿意跨进异界，\n一定是因为他们藏着什么不为人知的目的。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheDeceiver.png" }, { name: "跨冰之恋", href: "https://poedb.tw/cn/Love_Through_Ice", type: "Love Through Ice", explicitMod: [{ type: "uniqueitem", value: "超自然本能" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "“我认识一位女士，情愿为她掏心”\n\n——寻梦者德拉克", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/LoveThroughIce.png" }, { name: "老人", href: "https://poedb.tw/cn/The_Old_Man", type: "The Old Man", explicitMod: [{ type: "rareitem", value: "鱼竿" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "鱼儿啊，请听我一言！我爱你敬你，可日落之前，我必戮你享你。", stack: 12, icon: "https://poe.game.qq.com/image/divination-card/TheOldMan.png" }, { name: "流放兄弟会", href: "https://poedb.tw/cn/Brotherhood_in_Exile", type: "Brotherhood in Exile", explicitMod: [{ type: "uniqueitem", value: "徒手空拳" }, { type: "corrupted", value: "已腐化" }], flavourText: "{为避冷夜寻庐庵，\n草肆虽残酒却暖，\n往日冤仇皆作罢，\n交杯换盏俱尽欢。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/BrotherhoodInExile.png" }, { name: "梦之涟漪", href: "https://poedb.tw/cn/Draped_in_Dreams", type: "Draped in Dreams", explicitMod: [{ type: "whiteitem", value: "六连星芒战铠" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "影响效果物品" }], flavourText: "我的衣服又沉又重。\n它就似一面帆，以生命为风，送我如梦。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/DrapedInDreams.png" }, { name: "漫长守望", href: "https://poedb.tw/cn/The_Long_Watch", type: "The Long Watch", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "{暴雨滂沱，足陷深泥，思其牵挂，信念弥坚。}", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheLongWatch.png" }, { name: "熊女", href: "https://poedb.tw/cn/The_Bear_Woman", type: "The Bear Woman", explicitMod: [{ type: "magicitem", value: "丰饶的熊首皮盔" }, { type: "default", value: "督军物品" }], flavourText: "{赐福之熊，睡于洞中，\n百日寂静，黑暗为伴，\n待月盈凸，去其毛皮\n熊获重生，再造为人。}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheBearWoman.png" }, { name: "古道热肠", href: "https://poedb.tw/cn/The_Enthusiasts", type: "The Enthusiasts", explicitMod: [{ type: "uniqueitem", value: "维多里奥之绝响" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "{“慈悲的光芒，\n掩盖了追逐权力的欲望，\n却潜移默化被它影响。”}", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheEnthusiasts.png" }, { name: "长线钓鱼", href: "https://poedb.tw/cn/The_Long_Con", type: "The Long Con", explicitMod: [{ type: "currencyitem", value: "裂界毁灭者的崇高石" }], flavourText: "“这是我人生中引以为傲的时刻。”\n\n“……过了这么久。”", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheLongCon.png" }, { name: "挥霍无度", href: "https://poedb.tw/cn/Squandered_Prosperity", type: "Squandered Prosperity", explicitMod: [{ type: "uniqueitem", value: "普兰德斯庄园" }, { type: "default", value: "虚空石数量：" }, { type: "normal", value: "4" }, { type: "corrupted", value: "已腐化" }], flavourText: "“君王着魔，百姓遭殃。”", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/BaronCat.png" }, { name: "学院派", href: "https://poedb.tw/cn/The_Academic", type: "The Academic", explicitMod: [{ type: "uniqueitem", value: "求知的热情" }], flavourText: "{“毕生奉献，\n换来的只有签名前的几行附注。”}", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheAcademic.png" }, { name: "冒险精神", href: "https://poedb.tw/cn/The_Adventuring_Spirit", type: "The Adventuring Spirit", explicitMod: [{ type: "uniqueitem", value: "维多里奥之绝响" }], flavourText: "孩子，是你领导我的人取胜的吗？", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheAdventuringSpirit.png" }, { name: "致命之愉", href: "https://poedb.tw/cn/Deadly_Joy", type: "Deadly Joy", explicitMod: [{ type: "uniqueitem", value: "沧海桑田" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "{“天下之道，唯快不破。”\n——收容所的瑞塔}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/DeadlyJoy.png" }, { name: "庄园主", href: "https://poedb.tw/cn/The_Mayor", type: "The Mayor", explicitMod: [{ type: "uniqueitem", value: "普兰德斯庄园" }, { type: "default", value: "虚空石数量：" }, { type: "normal", value: "4" }], flavourText: "拥有财富，可以拥有权力。\n掌控经济，可以掌控国力。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheMayor.png" }, { name: "守护者之腐", href: "https://poedb.tw/cn/Keepers_Corruption", type: "Keepers Corruption", explicitMod: [{ type: "magicitem", value: "古神的唤骨头盔 (集中效应效果)" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "89" }, { type: "default", value: "裂界者物品" }], flavourText: "伟大的力量之后...\n\n...还有更伟大的力量。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/KeepersCorruption.png" }, { name: "永恒之战", href: "https://poedb.tw/cn/The_Eternal_War", type: "The Eternal War", explicitMod: [{ type: "uniqueitem", value: "永恒珠宝" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "他们迅速坚信，只要有最强大的将领，便可不惧永世腐败。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheEternalWar.png" }, { name: "捷径", href: "https://poedb.tw/cn/The_Shortcut", type: "The Shortcut", explicitMod: [{ type: "magicitem", value: "猎豹之水银药剂" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }], flavourText: "如果时间最值钱，那你怎么挣时间？", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/TheShortcut.png" }, { name: "钩子", href: "https://poedb.tw/cn/The_Hook", type: "The Hook", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "每一次沉迷都从懵懂的尝试开始。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheHook.png" }, { name: "成见", href: "https://poedb.tw/cn/Prejudice", type: "Prejudice", explicitMod: [{ type: "uniqueitem", value: "物品" }, { type: "default", value: "影响效果物品" }], flavourText: "被过去蒙蔽双眼，就只能管中窥探当今。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/Prejudice.png" }, { name: "神恩之赐", href: "https://poedb.tw/cn/The_Card_Sharp", type: "The Card Sharp", explicitMod: [{ type: "whiteitem", value: "神恩圣甲虫" }], flavourText: "“这一家总赢……直到我下场。”", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheCardSharp.png" }, { name: "万事皆空", href: "https://poedb.tw/cn/The_Emptiness", type: "The Emptiness", explicitMod: [{ type: "gemitem", value: "瓦尔裂隙" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+6%" }, { type: "corrupted", value: "已腐化" }], flavourText: "他一来到光明吞噬者面前，就立刻发现自己大难临头。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheEmptiness.png" }, { name: "洪荒秘辛", href: "https://poedb.tw/cn/Terrible_Secret_of_Space", type: "Terrible Secret of Space", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "听说他们是来保护我们的。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TerribleSecretOfSpace.png" }, { name: "穆希保佑", href: "https://poedb.tw/cn/The_Blessing_of_Moosh", type: "The Blessing of Moosh", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "虽说迷宫困住了无数冒险者，可他们在设计的时候明显忘了猫儿。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheBlessingOfMoosh.png" }, { name: "裂隙", href: "https://poedb.tw/cn/The_Breach", type: "The Breach", explicitMod: [{ type: "uniqueitem", value: "裂隙物品" }], flavourText: "你有感到过被人暗中监视的感受吗？", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheBreach.png" }, { name: "大法师的右手", href: "https://poedb.tw/cn/The_Archmages_Right_Hand", type: "The Archmages Right Hand", explicitMod: [{ type: "magicitem", value: "雕纹箴言法杖" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }], flavourText: "”哪怕普通的木棍握在他的手上，也能让天堂在恐惧中颤抖。“", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheArchmagesRightHand.png" }, { name: "笔墨横姿", href: "https://poedb.tw/cn/Brush%2C_Paint_and_Palette", type: "Brush%2C Paint and Palette", explicitMod: [{ type: "divination", value: "艺者" }], flavourText: "“世界由人塑造，而这里则塑造人。”——审判者马利伽罗", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/BrushPaintAndPalette.png" }, { name: "恐魔症", href: "https://poedb.tw/cn/Dementophobia", type: "Dementophobia", explicitMod: [{ type: "currencyitem", value: "10x 雾魇宝珠" }], flavourText: "{我从不知道自己有多疯，\n直到有一天听到一个声音招呼我走进深渊，\n那里只有我一个。}", stack: 11, icon: "https://poe.game.qq.com/image/divination-card/Dementophobia.png" }, { name: "萨博辛之智", href: "https://poedb.tw/cn/Sambodhis_Wisdom", type: "Sambodhis Wisdom", explicitMod: [{ type: "uniqueitem", value: "护甲" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+30%" }], flavourText: "{没有剑刃可以战胜罪恶；\n引导一个罪人走向美德，\n揭开他遗失的视野——\n你的眼睛也将看到\n所有人心中的孩童，\n无论他们多么强大。}", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/SambodhisWisdom.png" }, { name: "兄弟的秘藏", href: "https://poedb.tw/cn/Brothers_Stash", type: "Brothers Stash", explicitMod: [{ type: "currencyitem", value: "5x 崇高石" }], flavourText: "即使他及时找到这批秘藏，他也宁愿用它们全部来换他生还。", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/BrothersStash.png" }, { name: "完美之石", href: "https://poedb.tw/cn/A_Stone_Perfected", type: "A Stone Perfected", explicitMod: [{ type: "uniqueitem", value: "珠宝" }, { type: "magicitem", value: "起源" }, { type: "corrupted", value: "1-2 个基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "{他们赋予顽石生命。在腐坏中浸淫千载之后，生命得到了进化。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/AStonePerfected.png" }, { name: "瓦尔宝藏", href: "https://poedb.tw/cn/Treasures_of_the_Vaal", type: "Treasures of the Vaal", explicitMod: [{ type: "uniqueitem", value: "瓦尔珠宝" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "{帝国的城市都遭到了后来人洗劫……\n只有一个例外。}", stack: 12, icon: "https://poe.game.qq.com/image/divination-card/TreasuresOfTheVaal.png" }, { name: "黑暗君王", href: "https://poedb.tw/cn/The_Prince_of_Darkness", type: "The Prince of Darkness", explicitMod: [{ type: "uniqueitem", value: "优雅的狂妄" }], flavourText: "{为了力量不择手段的人值得人惧怕。}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/ThePrinceOfDarkness.png" }, { name: "绝望圣战", href: "https://poedb.tw/cn/Desperate_Crusade", type: "Desperate Crusade", explicitMod: [{ type: "uniqueitem", value: "元素的庇护" }], flavourText: "顽强的毅力经受过逆境的磨难，方能获得无上奖赏。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/DesperateCrusade.png" }, { name: "幸运兔脚", href: "https://poedb.tw/cn/The_Rabbits_Foot", type: "The Rabbits Foot", explicitMod: [{ type: "currencyitem", value: "10x 穿越魔瓶" }], flavourText: "大家都说，佩戴这种饰品的流放者是瓦尔克拉斯最幸运的。众神对此很不乐意，于是给胆敢抛弃它的人降下永恒的诅咒。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheRabbitsFoot.png" }, { name: "永恒羁绊", href: "https://poedb.tw/cn/Eternal_Bonds", type: "Eternal Bonds", explicitMod: [{ type: "uniqueitem", value: "脑层" }], flavourText: "一盘散沙，事不成。\n精诚团结，事竟成。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/EternalBonds.png" }, { name: "蔑视", href: "https://poedb.tw/cn/Disdain", type: "Disdain", explicitMod: [{ type: "currencyitem", value: "雾魇宝珠" }], flavourText: "{没人知道一切，但你这辈子知道的一定比别人多。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/Disdain.png" }, { name: "微末的请求", href: "https://poedb.tw/cn/A_Modest_Request", type: "A Modest Request", explicitMod: [{ type: "uniqueitem", value: "妄想症" }, { type: "corrupted", value: "已腐化" }], flavourText: "{放弃所有权力和财富，永世向我效忠。\n我保证这个代价微不足道。}", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/AModestRequest.png" }, { name: "隐情", href: "https://poedb.tw/cn/The_Catch", type: "The Catch", explicitMod: [{ type: "whiteitem", value: "鱼竿" }, { type: "enchanted", value: "已孕育" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "99" }], flavourText: "最大的鱼钩能钓起最大的鱼儿，可他们往往得到的只有鱼钩。", stack: 18, icon: "https://poe.game.qq.com/image/divination-card/TheCatch.png" }, { name: "荆林之狐", href: "https://poedb.tw/cn/The_Fox_in_the_Brambles", type: "The Fox in the Brambles", explicitMod: [{ type: "uniqueitem", value: "刺棘宝甲" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "{海明沃斯第六章第十节- “狐狸从荆棘中探出脑袋，为没人够得着它而发笑。”}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheFoxInTheBrambles.png" }, { name: "守卫的挑战", href: "https://poedb.tw/cn/Guardians_Challenge", type: "Guardians Challenge", explicitMod: [{ type: "whiteitem", value: "塑界守卫地图" }], flavourText: "毫无准备挑战虚空便等于自寻死路。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/GuardiansChallenge.png" }, { name: "最后的晚餐", href: "https://poedb.tw/cn/The_Last_Supper", type: "The Last Supper", explicitMod: [{ type: "uniqueitem", value: "比诺的厨刀" }], flavourText: "“比诺短暂的厨师生涯给刽子手们节约了大量工作。”", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheLastSupper.png" }, { name: "被遗忘的宝藏", href: "https://poedb.tw/cn/The_Forgotten_Treasure", type: "The Forgotten Treasure", explicitMod: [{ type: "uniqueitem", value: "皮革腰带" }, { type: "default", value: "双重影响物品" }], flavourText: "{别让愚人金给骗了。}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheForgottenTreasure.png" }, { name: "蔚蓝之海", href: "https://poedb.tw/cn/A_Sea_of_Blue", type: "A Sea of Blue", explicitMod: [{ type: "currencyitem", value: "13x 改造石" }], flavourText: "收割结束，洪水开始。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/ASeaOfBlue.png" }, { name: "锃亮的宝箱", href: "https://poedb.tw/cn/Luminous_Trove", type: "Luminous Trove", explicitMod: [{ type: "uniqueitem", value: "天神之音" }, { type: "corrupted", value: "已腐化" }], flavourText: "{许多人进来寻觅梦中宝藏\n有二十人负伤，在奔逃中命丧\n暗影滋生，剩余的必亡\n有五人没了眼睛，在黑暗中惨叫\n一对粗心的兄弟，进了巫妖的罗网\n国王略施小计，人人皆入圈套\n葛海尼克斯在低语中举觞}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/LuminousTrove.png" }, { name: "雄心", href: "https://poedb.tw/cn/The_Aspirant", type: "The Aspirant", explicitMod: [{ type: "magicitem", value: "物品" }, { type: "default", value: "尊崇物品" }, { type: "default", value: "影响效果物品" }], flavourText: "{在瓦尔克拉斯活下来的流放者\n想要的不是家园，而是力量。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/Dream.png" }, { name: "心灵之眼", href: "https://poedb.tw/cn/The_Minds_Eyes", type: "The Minds Eyes", explicitMod: [{ type: "uniqueitem", value: "星界投影" }], flavourText: "{通过人的眼睛可以直视灵魂\n通过珠宝的眼睛可以看到整个宇宙}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheMindsEyes.png" }, { name: "审判之音", href: "https://poedb.tw/cn/Judging_Voices", type: "Judging Voices", explicitMod: [{ type: "uniqueitem", value: "禁断的军帽" }], flavourText: "他想要理智之道，却败给了心魔。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/JudgingVoices.png" }, { name: "无尽深渊", href: "https://poedb.tw/cn/The_Fathomless_Depths", type: "The Fathomless Depths", explicitMod: [{ type: "uniqueitem", value: "光明偷猎者" }], flavourText: "堕入无尽的夜；驶向湮灭的海。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheFathomlessDepths.png" }, { name: "死寂严冬", href: "https://poedb.tw/cn/Silence_and_Frost", type: "Silence and Frost", explicitMod: [{ type: "uniqueitem", value: "群魔殿" }], flavourText: "哭吼吧！\n施放混沌！", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/SilenceAndFrost.png" }, { name: "预见的代价", href: "https://poedb.tw/cn/The_Price_of_Prescience", type: "The Price of Prescience", explicitMod: [{ type: "rareitem", value: "瓦尔密殿地图" }, { type: "default", value: "地图位阶：" }, { type: "normal", value: "16" }, { type: "default", value: "惊悸迷雾：" }, { type: "normal", value: "100%" }, { type: "corrupted", value: "已腐化" }], flavourText: "{陌生的声音向奥尔展示了一个未来，在那里他所有遗产都统统遭到遗忘，在奥尔的世界化为废墟之后，诞生了一种全新的文化。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ThePriceOfPrescience.png" }, { name: "先祖的代价", href: "https://poedb.tw/cn/Pride_of_the_First_Ones", type: "Pride of the First Ones", explicitMod: [{ type: "uniqueitem", value: "大地之护" }], flavourText: "利爪无声，芦苇遁形，日光渐隐，\n法瑞尔猎行。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/PrideOfTheFirstOnes.png" }, { name: "寄生客", href: "https://poedb.tw/cn/Parasitic_Passengers", type: "Parasitic Passengers", explicitMod: [{ type: "currencyitem", value: "10x 孕育石" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "84" }], flavourText: "死亡的滋养让它们日益强壮，终于等到了孵化的时刻……", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/ParasiticPassengers.png" }, { name: "泪腺坏死", href: "https://poedb.tw/cn/Lachrymal_Necrosis", type: "Lachrymal Necrosis", explicitMod: [{ type: "rareitem", value: "珠宝" }, { type: "enchanted", value: "基底词缀：" }, { type: "magicitem", value: "腐化之血影响不了你" }, { type: "corrupted", value: "已腐化" }], flavourText: "心若不会哭泣，就会既反对纯洁，也反对腐坏。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/LachrymalNecrosis.png" }, { name: "执着的野心", href: "https://poedb.tw/cn/Ambitious_Obsession", type: "Ambitious Obsession", explicitMod: [{ type: "currencyitem", value: "迷踪的雾魇宝珠" }], flavourText: "世界上最可怜的人就是有眼无珠之辈。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/AmbitiousObsession.png" }, { name: "志向高远", href: "https://poedb.tw/cn/Justified_Ambition", type: "Justified Ambition", explicitMod: [{ type: "uniqueitem", value: "忆境地图" }], flavourText: "“我做的一切都是为了瓦尔克拉斯。如果你经历过我的遭遇也会做出同样的选择。而且那很快就会到来。”\n——神主维纳留斯", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/JustifiedAmbition.png" }, { name: "二刀流", href: "https://poedb.tw/cn/Duality", type: "Duality", explicitMod: [{ type: "whiteitem", value: "身体护甲" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "双重影响效果物品" }], flavourText: "善恶交织在一起可以化为更伟大的东西。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/Duality.png" }, { name: "凛冬之拥", href: "https://poedb.tw/cn/Winters_Embrace", type: "Winters Embrace", explicitMod: [{ type: "uniqueitem", value: "恐惧之环" }, { type: "enchanted", value: "三重基底" }], flavourText: "{快回家吧，宝贝。\n原来你已经回来！\n快跟我在黑暗中躺下。\n我就会原谅你。\n恐惧将离你远去。}", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/WintersEmbrace.png" }, { name: "黑暗之苦", href: "https://poedb.tw/cn/Misery_in_Darkness", type: "Misery in Darkness", explicitMod: [{ type: "uniqueitem", value: "泯光寿衣" }], flavourText: "{他在遍地骸骨的深渊里游荡，期望每一个角落都是最后一次探索。\n最后，他找到了光。}", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/MiseryInDarkness.png" }, { name: "变身", href: "https://poedb.tw/cn/The_Transformation", type: "The Transformation", explicitMod: [{ type: "currencyitem", value: "污秽神秘石" }], flavourText: "哪怕最美丽的蜕变也有其黑暗面。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheTransformation.png" }, { name: "熔岩蟹", href: "https://poedb.tw/cn/The_Magma_Crab", type: "The Magma Crab", explicitMod: [{ type: "gemitem", value: "21 级瓦尔熔岩护盾" }, { type: "corrupted", value: "已腐化" }], flavourText: "饮下活石，血脉喷张。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheMagmaCrab.png" }, { name: "改变知觉", href: "https://poedb.tw/cn/Altered_Perception", type: "Altered Perception", explicitMod: [{ type: "currencyitem", value: "梦魇拟像" }], flavourText: "你可不能忘记：你无法离开这里。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/AlteredPerception.png" }, { name: "更新发明", href: "https://poedb.tw/cn/Further_Invention", type: "Further Invention", explicitMod: [{ type: "magicitem", value: "头部" }, { type: "default", value: "双重影响物品" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }], flavourText: "不可兼得？", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/FurtherInvention.png" }, { name: "比死亡更悲惨的命运", href: "https://poedb.tw/cn/A_Fate_Worse_Than_Death", type: "A Fate Worse Than Death", explicitMod: [{ type: "uniqueitem", value: "脑层" }, { type: "corrupted", value: "已腐化" }], flavourText: "“就好像我的思想全都分崩析离……它们碎裂成微粒，随风而散。”", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/AFateWorseThanDeath.png" }, { name: "目的地", href: "https://poedb.tw/cn/The_Destination", type: "The Destination", explicitMod: [{ type: "uniqueitem", value: "守望之眼" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "你也许在众人眼里不值一提，但在有些人眼里你就是一切。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheDestination.png" }, { name: "放远目光", href: "https://poedb.tw/cn/The_Forward_Gaze", type: "The Forward Gaze", explicitMod: [{ type: "uniqueitem", value: "仿品" }], flavourText: "“当他们意识到我们的真正意图时，他们会谴责我们，攻击我们，并试图摧毁我们建立的一切。我们必须傲然屹立，科塔拉，我们要创造自己的未来。”", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheForwardGaze.png" }, { name: "强壮的战斗法师", href: "https://poedb.tw/cn/The_Brawny_Battle_Mage", type: "The Brawny Battle Mage", explicitMod: [{ type: "magicitem", value: "无情狂风法杖" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }], flavourText: "一块不起眼的木头，可以为生活中遇到的问题提供最简单的解决方案:那是狠狠地揍它们。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheBrawnyBattleMage.png" }, { name: "地下城大师", href: "https://poedb.tw/cn/The_Dungeon_Master", type: "The Dungeon Master", explicitMod: [{ type: "uniqueitem", value: "腰带" }, { type: "default", value: "双重影响物品" }], flavourText: "“我的控制欲如此强烈，我把我的整个世界都变成了一座监狱。现在你将来分担我的痛苦。”", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheDungeonMaster.png" }, { name: "家园", href: "https://poedb.tw/cn/Home", type: "Home", explicitMod: [{ type: "gemitem", value: "卓越宝石" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+1-20%" }], flavourText: "世上有数不清的众生、故事和时代，但曾经有一个地方，人人都可以爱与被爱。这很重要，我们也重要。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/Home.png" }, { name: "黑暗半面", href: "https://poedb.tw/cn/Darker_Half", type: "Darker Half", explicitMod: [{ type: "currencyitem", value: "5x古灵混沌石" }], flavourText: "当找到你要找的东西时，它永远不会完全正确。当拥有想要的，你还想要更多。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheDarkerHalf.png" }, { name: "破碎休战", href: "https://poedb.tw/cn/Broken_Truce", type: "Broken Truce", explicitMod: [{ type: "uniqueitem", value: "寒铁刃" }], flavourText: "仅仅一个举动，多年的和平付之东流。一个不知名的刺客给我们带来了战争。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/BrokenTruce.png" }, { name: "重生与新生", href: "https://poedb.tw/cn/Rebirth_and_Renewal", type: "Rebirth and Renewal", explicitMod: [{ type: "currencyitem", value: "有翼的圣甲虫" }], flavourText: "生命终有尽头，但那之后又会开始。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/RebirthAndRenewal.png" }, { name: "多里亚尼的启蒙", href: "https://poedb.tw/cn/Doryanis_Epiphany", type: "Doryanis Epiphany", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "“美德宝石具有肉眼看不到的层面。让我们更深入观察...”", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/DoryanisEpiphany.png" }, { name: "从骨到灰", href: "https://poedb.tw/cn/From_Bone_to_Ashes", type: "From Bone to Ashes", explicitMod: [{ type: "uniqueitem", value: "努葛玛呼之耀" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "数百年来，他们一直秘密守护着沉睡的女神，即使堕落的瓦尔帝国还在遍布污染。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/FromBonesToAshes.png" }, { name: "星象学家", href: "https://poedb.tw/cn/The_Astromancer", type: "The Astromancer", explicitMod: [{ type: "uniqueitem", value: "永恒幽影" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "{有人说他很危险，\n毫无道德禁忌，\n但这有什么，\n难道他不爱全人类，\n他的成果不会惠及所有人吗？}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheAstromancer.png" }, { name: "十三大忌", href: "https://poedb.tw/cn/Triskaidekaphobia", type: "Triskaidekaphobia", explicitMod: [{ type: "rareitem", value: "地图" }, { type: "default", value: "地图位阶：" }, { type: "normal", value: "13" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+13%" }, { type: "default", value: "惊悸迷雾：" }, { type: "normal", value: "100%" }, { type: "default", value: "词缀：" }, { type: "normal", value: "8" }, { type: "corrupted", value: "已腐化" }], flavourText: "疯狂的迷雾追寻着那些在深埋恐惧中的猎物。", stack: 13, icon: "https://poe.game.qq.com/image/divination-card/Triskaidekaphobia.png" }, { name: "宝石匠的仁慈", href: "https://poedb.tw/cn/Gemcutters_Mercy", type: "Gemcutters Mercy", explicitMod: [{ type: "gemitem", value: "卓越宝石" }], flavourText: "当你只能拥有一个的时候，你会选择哪个？红色？蓝色？可能是绿色。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/GemcuttersMercy.png" }, { name: "执行官", href: "https://poedb.tw/cn/The_Enforcer", type: "The Enforcer", explicitMod: [{ type: "magicitem", value: "征服尖刺手部护甲（终结）" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "86" }, { type: "default", value: "大军阀物品" }], flavourText: "{“首领说让他滚蛋，没说不要弄得一团糟。”-呆子符文}", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheEnforcer.png" }, { name: "黑暗之物", href: "https://poedb.tw/cn/Something_Dark", type: "Something Dark", explicitMod: [{ type: "whiteitem", value: "蓝图" }, { type: "default", value: "区域等级：" }, { type: "normal", value: "83" }, { type: "default", value: "完全显示" }], flavourText: "即使在黑暗中，你也能找到朋友。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/SomethingDark.png" }, { name: "天蓝之怒", href: "https://poedb.tw/cn/Azure_Rage", type: "Azure Rage", explicitMod: [{ type: "magicitem", value: "惩罚地图" }, { type: "default", value: "地图等级：" }, { type: "normal", value: "16" }], flavourText: "{面具隐藏了他的身份，但也让人难以辨认...}", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/AzureRage.png" }, { name: "人熊合一", href: "https://poedb.tw/cn/Man_With_Bear", type: "Man With Bear", explicitMod: [{ type: "whiteitem", value: "魔圣甲虫" }], flavourText: "老掉牙的玩笑中也能蕴藏着最深厚的情谊。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/ManWithBear.png" }, { name: "病患", href: "https://poedb.tw/cn/The_Patient", type: "The Patient", explicitMod: [{ type: "divination", value: "照料者" }], flavourText: "我头疼欲裂，谁能为我请个护士？", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/ThePatient.png" }, { name: "星界防护", href: "https://poedb.tw/cn/Astral_Protection", type: "Astral Protection", explicitMod: [{ type: "whiteitem", value: "护盾" }, { type: "default", value: "塑界者物品" }], flavourText: "一段时间内，我们有比邪术更强大的东西。我们拥有彼此。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/AstralProtection.png" }, { name: "破除枷锁", href: "https://poedb.tw/cn/Unchained", type: "Unchained", explicitMod: [{ type: "uniqueitem", value: "毁面者" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "赤手空拳去创造世界吧。当心，你的行为可能会导致败亡。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/Unchained.png" }, { name: "挫败", href: "https://poedb.tw/cn/Checkmate", type: "Checkmate", explicitMod: [{ type: "currencyitem", value: "76x 梦魇拟像碎片" }], flavourText: "当无法取胜时，我们每个人所做的只是为了拖延结局。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/Checkmate.png" }, { name: "新婚赠礼", href: "https://poedb.tw/cn/The_Wedding_Gift", type: "The Wedding Gift", explicitMod: [{ type: "uniqueitem", value: "阿拉卡力之牙" }], flavourText: "侍僧们恭贺幸运的新郎与女神成为一体。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheWeddingGift.png" }, { name: "恒久榨取", href: "https://poedb.tw/cn/The_Tireless_Extractor", type: "The Tireless Extractor", explicitMod: [{ type: "currencyitem", value: "10x 圣油" }], flavourText: "{我并非孤军奋战。神明与我同在！而且你也肯定会帮我的。\n——卡西娅修女}", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheTirelessExtractor.png" }, { name: "艾莉薇娅之雅", href: "https://poedb.tw/cn/Alivias_Grace", type: "Alivias Grace", explicitMod: [{ type: "uniqueitem", value: "森林之后" }], flavourText: "连最粗野的兽物也要拜倒在她的纯洁与优雅之下。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/AliviasGrace.png" }, { name: "持盾人", href: "https://poedb.tw/cn/The_Shieldbearer", type: "The Shieldbearer", explicitMod: [{ type: "uniqueitem", value: "侍从" }], flavourText: "你成长时，我是你的骑士，你是我的扈从。总有一天，你会成为家园的捍卫者。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheShieldbearer.png" }, { name: "至美圣容", href: "https://poedb.tw/cn/Divine_Beauty", type: "Divine Beauty", explicitMod: [{ type: "currencyitem", value: "7x 神圣石" }], flavourText: "{遥遥不知何处\n有一绝代佳人。\n她的微笑如春风化雨，\n她的歌声令万物动容，\n她的美貌乃举世无双；\n圣哉伊人。}", stack: 12, icon: "https://poe.game.qq.com/image/divination-card/DivineBeauty.png" }, { name: "失智猫咪", href: "https://poedb.tw/cn/The_Insane_Cat", type: "The Insane Cat", explicitMod: [{ type: "uniqueitem", value: "法师之血" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "84" }, { type: "corrupted", value: "腐化" }], flavourText: "一人之疯狂，他人之现实。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheInsaneCat.png" }, { name: "尘封记忆", href: "https://poedb.tw/cn/A_Dusty_Memory", type: "A Dusty Memory", explicitMod: [{ type: "rareitem", value: "物品" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "fractured", value: "分裂" }], flavourText: "{在我记忆的最深处，在那罕有人至的小径之彼侧，有着我最珍贵的宝藏：那是一刹那的幸福与天真；如此纯洁，而又难以企及。}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ADustyMemory.png" }, { name: "兄弟赐福", href: "https://poedb.tw/cn/Brothers_Gift", type: "Brothers Gift", explicitMod: [{ type: "currencyitem", value: "5x 神圣石" }], flavourText: "{尽管他的烈焰已经燃尽，\n但他永远不会消逝。}", stack: 1, icon: "https://poe.game.qq.com/image/divination-card/BrotherGift.png" }, { name: "变幻无定", href: "https://poedb.tw/cn/Ever-Changing", type: "Ever-Changing", explicitMod: [{ type: "currencyitem", value: "10x 粉碎石" }], flavourText: "异界乃是我们的牢笼，也是我们最后的堡垒。她乃是我们仅存的希望，也是我们命定的终焉。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/EverChanging.png" }, { name: "毒浸信仰", href: "https://poedb.tw/cn/Poisoned_Faith", type: "Poisoned Faith", explicitMod: [{ type: "uniqueitem", value: "阿拉卡力之牙" }, { type: "corrupted", value: "腐化" }], flavourText: "即便我们的信仰无比坚定，黑暗的欲望也会潜移默化地影响我们。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/PoisonedFaith.png" }, { name: "一股寒风", href: "https://poedb.tw/cn/A_Chilling_Wind", type: "A Chilling Wind", explicitMod: [{ type: "gemitem", value: "21级瓦尔：霜暴" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+20%" }, { type: "corrupted", value: "腐化" }], flavourText: "{凶猛地寒冬\n拖慢了万物——甚至是生命本身。}", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/AChillingWind.png" }, { name: "兵法家", href: "https://poedb.tw/cn/The_Strategist", type: "The Strategist", explicitMod: [{ type: "uniqueitem", value: "求知的热情" }, { type: "corrupted", value: "已腐化" }], flavourText: "知己知彼，百战不殆。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/TheStrategist.png" }, { name: "灵魂淬火", href: "https://poedb.tw/cn/Soul_Quenched", type: "Soul Quenched", explicitMod: [{ type: "default", value: "物品等级：" }, { type: "normal", value: "86" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+30%" }], flavourText: "{如此利器需要更为黑暗的锻造方式……}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/SoulQuenched.png" }, { name: "虔诚的代价", href: "https://poedb.tw/cn/The_Price_of_Devotion", type: "The Price of Devotion", explicitMod: [{ type: "uniqueitem", value: "法师之血" }, { type: "default", value: "质量：" }, { type: "augmented", value: "+20%" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "腐化" }], flavourText: "{Atziri最优秀的奇术师并不知道，他们的忠诚需要做到比单纯的研究工作更多的奉献。}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/ThePriceOfDevotion.png" }, { name: "裂界之殇", href: "https://poedb.tw/cn/The_Eldritch_Decay", type: "The Eldritch Decay", explicitMod: [{ type: "whiteitem", value: "至高裂界者碎片" }], flavourText: "时间终将摧毁一切，但有人渴望将其加速。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/TheEldritchDecay.png" }, { name: "海怪", href: "https://poedb.tw/cn/The_Leviathan", type: "The Leviathan", explicitMod: [{ type: "uniqueitem", value: "贤主物品" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "腐化" }], flavourText: "{早在人类踏上这片土地之前，远古巨兽就在海洋深处游动。}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheLeviathan.png" }, { name: "遗忘诱惑", href: "https://poedb.tw/cn/Lethean_Temptation", type: "Lethean Temptation", explicitMod: [{ type: "uniqueitem", value: "内布利斯" }], flavourText: "我的记忆无休止地折磨着我。为了逃避，我拥抱虚无，但遗忘只是带来了另一种痛苦...", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/LetheanTemptation.png" }, { name: "兄弟之容", href: "https://poedb.tw/cn/I_See_Brothers", type: "I See Brothers", explicitMod: [{ type: "currencyitem", value: "2x 破溃宝珠" }], flavourText: "{“在一片黑暗之时\n光明会身在何方？”}", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/ISeeBrothers.png" }, { name: "刺客的馈赠", href: "https://poedb.tw/cn/Assassins_Gift", type: "Assassins Gift", explicitMod: [{ type: "uniqueitem", value: "戒律之影" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化d" }], flavourText: "{所谓生命真谛\n不在寿命长短，\n而在所留痕迹。}", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/AssassinsGift.png" }, { name: "斥候", href: "https://poedb.tw/cn/The_Scout", type: "The Scout", explicitMod: [{ type: "currencyitem", value: "7x 崇高石" }], flavourText: "头一批敢下海的人往往得到了丰厚的回报，可再多财富也救不活淹死的人。", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/TheScout.png" }, { name: "他的裁定", href: "https://poedb.tw/cn/His_Judgement", type: "His Judgement", explicitMod: [{ type: "magicitem", value: "禁用" }], flavourText: "{禁用}", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/HisJudgement.png" }, { name: "无根之火", href: "https://poedb.tw/cn/Fire_Of_Unknown_Origin", type: "Fire Of Unknown Origin", explicitMod: [{ type: "uniqueitem", value: "尼米斯" }], flavourText: "{信仰点燃了烈焰，\n在风中播撒狂热；\n以热忱促我们奋勇向前。}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/FireOfUnknownOrigin.png" }, { name: "终结一触", href: "https://poedb.tw/cn/The_Finishing_Touch", type: "The Finishing Touch", explicitMod: [{ type: "currencyitem", value: "1x 丰沃催化剂" }], flavourText: "{奇才天成，多不压身。}", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheFinishingTouch.png" }, { name: "无价之宝", href: "https://poedb.tw/cn/Costly_Curio", type: "Costly Curio", explicitMod: [{ type: "uniqueitem", value: "物品" }, { type: "default", value: "二重基底" }], flavourText: "“唉，我可买不起这么好的艺术品，我只是……看看。”", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/CostlyCurio.png" }, { name: "套娃", href: "https://poedb.tw/cn/Matryoshka", type: "Matryoshka", explicitMod: [{ type: "rareitem", value: "{黑曜护身符}" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "85" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+20%" }, { type: "default", value: "受影响物品" }, { type: "enchanted", value: "4圣油" }, { type: "enchanted", value: "魔符孕育物品" }, { type: "corrupted", value: "腐化" }], flavourText: "{我无法控制自己，\n只能发出几声吱叫，\n有那么多话想对你说，\n我要能说话就好了！}", stack: 8, icon: "https://poe.game.qq.com/image/divination-card/Matryoshka.png" }, { name: "出老千", href: "https://poedb.tw/cn/The_Cheater", type: "The Cheater", explicitMod: [{ type: "gemitem", value: "6 级强化辅助宝石" }, { type: "default", value: "品质：" }, { type: "augmented", value: "+20%" }, { type: "corrupted", value: "已腐化" }], flavourText: "有时候为了成功免不了走点捷径。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheCheater.png" }, { name: "意外收获", href: "https://poedb.tw/cn/The_Unexpected_Prize", type: "The Unexpected Prize", explicitMod: [{ type: "uniqueitem", value: "属性变化珠宝" }, { type: "corrupted", value: "腐化" }], flavourText: "{他们远道而来，扛着共同的大旗。\n他们寻求友谊和竞赛，\n却找到了意外的宝藏。}", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/TheUnexpectedPrize.png" }, { name: "古灵完满", href: "https://poedb.tw/cn/Eldritch_Perfection", type: "Eldritch Perfection", explicitMod: [{ type: "whiteitem", value: "物品" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "enchanted", value: "完美古灵基底词缀" }], flavourText: "拥抱那份恐怖，\n它美丽的恩泽。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/EldritchPerfection.png" }, { name: "离开的人是你", href: "https://poedb.tw/cn/The_One_That_Got_Away", type: "The One That Got Away", explicitMod: [{ type: "uniqueitem", value: "凝息【仿品】" }], flavourText: "{品味生活中缺失的东西吧。\n人生的最终目标\n就是咽下最后一口气。}", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/TheOneThatGotAway.png" }, { name: "破灭之诺", href: "https://poedb.tw/cn/Broken_Promises", type: "Broken Promises", explicitMod: [{ type: "whiteitem", value: "宝钻戒指" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "87" }, { type: "enchanted", value: "二重基底" }], flavourText: "寒冷不等于没有温暖，这是经验之谈。", stack: 2, icon: "https://poe.game.qq.com/image/divination-card/BrokenPromises.png" }, { name: "药剂师", href: "https://poedb.tw/cn/The_Apothecary", type: "The Apothecary", explicitMod: [{ type: "uniqueitem", value: "法师之血" }], flavourText: "“你想要我最强药剂提供的力量，但代价恐怕远超你的想象。”", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/TheApothecary.png" }, { name: "牧羊人的凉鞋", href: "https://poedb.tw/cn/The_Shepherds_Sandals", type: "The Shepherds Sandals", explicitMod: [{ type: "uniqueitem", value: "靴子" }, { type: "default", value: "物品等级" }, { type: "normal", value: "100" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "腐化" }], flavourText: "{看着羊群的人自己也被那些无比忠诚的人看着。}", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheShepherdsSandals.png" }, { name: "代表作", href: "https://poedb.tw/cn/Magnum_Opus", type: "Magnum Opus", explicitMod: [{ type: "whiteitem", value: "物品" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "enchanted", value: "三重基底" }, { type: "enchanted", value: "忆境" }], flavourText: "瓦尔克拉斯必将统一。我将完成如此伟业，将万众凝聚一心。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/MagnumOpus.png" }, { name: "地摊货", href: "https://poedb.tw/cn/Bijoux", type: "Bijoux", explicitMod: [{ type: "rareitem", value: "星团珠宝" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "84" }], flavourText: "这些小玩意儿在危机来临时才能彰显价值。——唐玛祖", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/Bijoux.png" }, { name: "不完美的回忆", href: "https://poedb.tw/cn/Imperfect_Memories", type: "Imperfect Memories", explicitMod: [{ type: "rareitem", value: "饰品" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "enchanted", value: "三重基底" }, { type: "enchanted", value: "忆境" }], flavourText: "一切都会被时间侵蚀，然而消磨的棱角偶尔会化为无比美妙的回忆。", stack: 5, icon: "https://poe.game.qq.com/image/divination-card/ImperfectMemories.png" }, { name: "垂青之运", href: "https://poedb.tw/cn/The_Fortunate", type: "The Fortunate", explicitMod: [{ type: "currencyitem", value: "2x 神圣石" }], flavourText: "{占卜所示，\n命运慷慨。}", stack: 12, icon: "https://poe.game.qq.com/image/divination-card/TheFortunate.png" }, { name: "风险追逐", href: "https://poedb.tw/cn/Chasing_Risk", type: "Chasing Risk", explicitMod: [{ type: "uniqueitem", value: "忆境物品" }], flavourText: "美好的回忆勾起了我的乡愁。有些人会感到内疚，可我从不因为惧怕自己的野心而懊悔。", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/ChasingRisk.png" }, { name: "苗裔", href: "https://poedb.tw/cn/The_Offspring", type: "The Offspring", explicitMod: [{ type: "uniqueitem", value: "瑞斯拉萨的线圈" }], flavourText: "蜂群一开始只有几个孩子，如今已经是她的一切生命。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/TheOffspring.png" }, { name: "吉庆雄心", href: "https://poedb.tw/cn/Auspicious_Ambitions", type: "Auspicious Ambitions", explicitMod: [{ type: "whiteitem", value: "实验物品" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "100" }, { type: "default", value: "双重影响物品" }], flavourText: "{“凝视明镜，可知未来；然后退入无穷境界。”\n- 奇术升华者戴克希翁}", stack: 4, icon: "https://poe.game.qq.com/image/divination-card/AuspiciousAmbitions.png" }, { name: "硕鼠归来", href: "https://poedb.tw/cn/The_Return_of_the_Rat", type: "The Return of the Rat", explicitMod: [{ type: "uniqueitem", value: "圣令" }], flavourText: "受巫咒之人的尖啸将昭告他的降临。", stack: 3, icon: "https://poe.game.qq.com/image/divination-card/TheReturnOfTheRat.png" }, { name: "窒息愧疚", href: "https://poedb.tw/cn/Choking_Guilt", type: "Choking Guilt", explicitMod: [{ type: "uniqueitem", value: "黑曜护身符" }], flavourText: "随着死亡的临近，他变得难以捉摸。痛苦包围了他，把他拖进了黑暗。", stack: 6, icon: "https://poe.game.qq.com/image/divination-card/ChokingGuilt.png" }, { name: "求取之人", href: "https://poedb.tw/cn/Who_Asked", type: "Who Asked", explicitMod: [{ type: "magicitem", value: "独裁者的武器" }, { type: "default", value: "物品等级：" }, { type: "normal", value: "83" }, { type: "fractured", value: "分裂" }], flavourText: "{人来人往之间\n索取声络绎不绝，\n熔炉火光冲天\n锤锻出变化万千。\n百舌千喉，所欲所念——\n无数神兵利器\n皆诞自求取之言。}", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/WhoAsked.png" }, { name: "无尽夜晚", href: "https://poedb.tw/cn/Endless_Night", type: "Endless Night", explicitMod: [{ type: "uniqueitem", value: "马洛尼的技巧" }], flavourText: "阳光不为我照耀。我在黑暗中行走，从未自由。当你们都死在我怀里时，时间停止了。", stack: 7, icon: "https://poe.game.qq.com/image/divination-card/EndlessNight.png" }, { name: "以血镌刻", href: "https://poedb.tw/cn/Etched_in_Blood", type: "Etched in Blood", explicitMod: [{ type: "uniqueitem", value: "瑞弗之羽" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "为了在历史上留下浓重的一笔，必须有人作出牺牲。", stack: 9, icon: "https://poe.game.qq.com/image/divination-card/EtchedInBlood.png" }, { name: "至高之愿", href: "https://poedb.tw/cn/The_Greatest_Intentions", type: "The Greatest Intentions", explicitMod: [{ type: "uniqueitem", value: "救世者" }, { type: "corrupted", value: "二重基底" }, { type: "corrupted", value: "已腐化" }], flavourText: "朝光明追求纯净如同面对灵魂的黑暗。", stack: 10, icon: "https://poe.game.qq.com/image/divination-card/TheGreatestIntentions.png" }, { name: "恶言诅咒", href: "https://poedb.tw/cn/Cursed_Words", type: "Cursed Words", explicitMod: [{ type: "uniqueitem", value: "害人之口" }], flavourText: "如果你足够努力地寻找隐藏的含义，就会发现它。", stack: 13, icon: "https://poe.game.qq.com/image/divination-card/CursedWords.png" }];
-  const _withScopeId$1 = (n) => (vue.pushScopeId("data-v-0bec371b"), n = n(), vue.popScopeId(), n);
+  const _withScopeId = (n) => (vue.pushScopeId("data-v-d711aa2b"), n = n(), vue.popScopeId(), n);
   const _hoisted_1$1 = {
     key: 0,
     class: "divination-card--background"
@@ -43,7 +6643,7 @@
   const _hoisted_6$1 = { class: "divination-card--wrap" };
   const _hoisted_7$1 = { class: "divination-card--reward" };
   const _hoisted_8$1 = { key: 0 };
-  const _hoisted_9 = /* @__PURE__ */ _withScopeId$1(() => /* @__PURE__ */ vue.createElementVNode("div", { class: "divination-card--line" }, null, -1));
+  const _hoisted_9 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ vue.createElementVNode("div", { class: "divination-card--line" }, null, -1));
   const _hoisted_10 = { class: "divination-card--flavour" };
   const _sfc_main$3 = /* @__PURE__ */ vue.defineComponent({
     __name: "DivinationCard",
@@ -115,16 +6715,18 @@
     }
     return target;
   };
-  const DivinationCard = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-0bec371b"]]);
+  const DivinationCard = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__scopeId", "data-v-d711aa2b"]]);
   const UNIQUE_POOL = [{ name: "艾普之怒 灵兆法杖", href: "https://poedb.tw/cn/Apeps_Rage", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9BcGVwc1JhZ2UiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/074c66dadc/ApepsRage.png", baseType: "灵兆法杖" }, { name: "冥约 符文法杖", href: "https://poedb.tw/cn/Midnight_Bargain", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kVW5pcXVlMyIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/1db4fb5dbf/WandUnique3.png", baseType: "符文法杖" }, { name: "峡湾之星 贤者法杖", href: "https://poedb.tw/cn/Twyzel", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kMVVuaXF1ZSIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/086aeb214c/Wand1Unique.png", baseType: "贤者法杖" }, { name: "日耀之影 贤者法杖", href: "https://poedb.tw/cn/Shade_of_Solaris", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9Tb2xhcmlzV2FuZCIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/8f2f75ad2e/SolarisWand.png", baseType: "贤者法杖" }, { name: "无尽愤怒 富贵之斧", href: "https://poedb.tw/cn/Relentless_Fury", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9SZWxlbnRsZXNzRnVyeSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/8013c33f55/RelentlessFury.png", baseType: "富贵之斧" }, { name: "一文字 海贼长刀", href: "https://poedb.tw/cn/Ichimonji", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0JsYWRlT2ZWYXN0cmkiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/a01d200e74/BladeOfVastri.png", baseType: "海贼长刀" }, { name: "希比尔的冰爪 撕裂尖爪", href: "https://poedb.tw/cn/Cybils_Paw", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9DeWJpbHNDbGF3IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/6da52a7519/CybilsClaw.png", baseType: "撕裂尖爪" }, { name: "暴风之钢 征战之剑", href: "https://poedb.tw/cn/The_Tempestuous_Steel", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1RlbXBlc3R1b3VzU3RlZWwiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/72078201f9/TempestuousSteel.png", baseType: "征战之剑" }, { name: "迷茫幻符 白金波刃", href: "https://poedb.tw/cn/Mark_of_the_Doubting_Knight", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0RvdWJ0aW5nS25pZ2h0IiwidyI6MSwiaCI6Mywic2NhbGUiOjF9XQ/a71d0de38e/DoubtingKnight.png", baseType: "白金波刃" }, { name: "伊沃幻像 古代细剑", href: "https://poedb.tw/cn/Ewars_Mirage", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9SYXBpZXJzL0V3YXJzTWlyYWdlIiwidyI6MSwiaCI6NCwic2NhbGUiOjF9XQ/c7b916c7f4/EwarsMirage.png", baseType: "古代细剑" }, { name: "钢铁质量 斗士长剑", href: "https://poedb.tw/cn/The_Iron_Mass", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1NrZWxldG9uU3dvcmQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/f3b8e5c988/SkeletonSword.png", limit: "「夺宝奇兵」联盟限定", baseType: "斗士长剑" }, { name: "精华收割器 瓦尔战爪", href: "https://poedb.tw/cn/Essentia_Sanguis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9DbGF3NVVuaXF1ZTIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/8041876a9e/Claw5Unique2.png", baseType: "瓦尔战爪" }, { name: "荒野之律 魔爪刃", href: "https://poedb.tw/cn/Law_of_the_Wilds", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9Xb2xmQ2xhdyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/8dd39cb98e/WolfClaw.png", limit: "「庄园化身欧莱娜」限定掉落\n「庄园」联盟限定", baseType: "魔爪刃" }, { name: "生机之记 朽木法杖", href: "https://poedb.tw/cn/Lifesprig", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9MaWZlU3ByaWciLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/8e97a1d808/LifeSprig.png", baseType: "朽木法杖" }, { name: "诗人之笔 粗纹法杖", href: "https://poedb.tw/cn/The_Poets_Pen", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9Qb2V0c1BlbiIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/f6f0645739/PoetsPen.png", baseType: "粗纹法杖" }, { name: "潜能魔棒 箴言法杖", href: "https://poedb.tw/cn/Void_Battery", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9Wb2lkQmF0dGVyeSIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/71a0fdc8db/VoidBattery.png", baseType: "箴言法杖" }, { name: "禁锢暴风 螺纹法杖", href: "https://poedb.tw/cn/Storm_Prison", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9TdG9ybVByaXNvbiIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/0fc4811c94/StormPrison.png", baseType: "螺纹法杖" }, { name: "恩吉尔的叉刃【仿品】 窃者短刃", href: "https://poedb.tw/cn/Replica_Ungils_Gauche", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0RhZ2dlcjN1bmlxdWUiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/ec0e6a82fb/Dagger3unique.png", baseType: "窃者短刃" }, { name: "峡湾之星【仿品】 贤者法杖", href: "https://poedb.tw/cn/Replica_Twyzel", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kMVVuaXF1ZSIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/086aeb214c/Wand1Unique.png", baseType: "贤者法杖" }, { name: "灰烬行者 粗纹法杖", href: "https://poedb.tw/cn/Ashcaller", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9Bc2h3YWtlciIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/a36e60acf6/Ashwaker.png", baseType: "粗纹法杖" }, { name: "皮斯卡托的慧眼 魔性法杖", href: "https://poedb.tw/cn/Piscators_Vigil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9QaXNjYXRvcnNWaWdpbCIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/332f80f7ac/PiscatorsVigil.png", baseType: "魔性法杖" }, { name: "血谑【仿品】 锐利刺匕", href: "https://poedb.tw/cn/Replica_Bloodplay", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0Jsb29kUGxheSIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/3c8258f393/BloodPlay.png", baseType: "锐利刺匕" }, { name: "低伏暗光 狂风法杖", href: "https://poedb.tw/cn/Shimmeron", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9FbGRlcldhbmQiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MSwiZWxkZXIiOnRydWV9XQ/cfca0aa1f1/ElderWand.png", limit: "「裂界者」限定掉落", baseType: "狂风法杖" }, { name: "裂心刃【仿品】 皇家短匕", href: "https://poedb.tw/cn/Replica_Heartbreaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0hlYXJ0YnJlYWtlciIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/fa73c4d5b4/Heartbreaker.png", baseType: "皇家短匕" }, { name: "血凿 剥皮刀", href: "https://poedb.tw/cn/Goredrill", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0dvcmVkcmlsbCIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/e61d6f038e/Goredrill.png", baseType: "剥皮刀" }, { name: "协约的遗物 贤者法杖", href: "https://poedb.tw/cn/Relic_of_the_Pact", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9JcG9jaG90bFdhbmQiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/015c140e10/IpochotlWand.png", limit: "「致命贪婪」联盟限定", baseType: "贤者法杖" }, { name: "艾贝拉斯之角 羊角法杖", href: "https://poedb.tw/cn/Abberaths_Horn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XeWNodmVyZ2UiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/ea4dd8a801/Wychverge.png", baseType: "羊角法杖" }, { name: "恩吉尔的叉刃 窃者短刃", href: "https://poedb.tw/cn/Ungils_Gauche", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0RhZ2dlcjN1bmlxdWUiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/ec0e6a82fb/Dagger3unique.png", baseType: "窃者短刃" }, { name: "力量猎刃 残体利刃", href: "https://poedb.tw/cn/Mightflay", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0RhZ2dlcjJ1bmlxdWUiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/831b56800f/Dagger2unique.png", baseType: "残体利刃" }, { name: "刽子手.杰克 瓦尔战斧", href: "https://poedb.tw/cn/Jack%2C_the_Axe", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9KYWNrdGhlYXhlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/f1f813fe9f/Jacktheaxe.png", baseType: "瓦尔战斧" }, { name: "鬣犬之牙 远古战爪", href: "https://poedb.tw/cn/Al_Dhih", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9BbGRoaWgiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/5af625fdd1/Aldhih.png", baseType: "远古战爪" }, { name: "冥犬残肢 血色短杖", href: "https://poedb.tw/cn/Cerberus_Limb", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9DZXJlYnVzIExpbWIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/abffc5b395/Cerebus%20Limb.png", limit: "「盲目者亚华托提利」限定掉落\n「地心」联盟限定", baseType: "血色短杖" }, { name: "戒律之影 帝国短匕", href: "https://poedb.tw/cn/Divinarius", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0RhZ2dlcjd1bmlxdWUiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/3deec3773b/Dagger7unique.png", baseType: "帝国短匕" }, { name: "历史公理 铜锻短杖", href: "https://poedb.tw/cn/Axiom_Perpetuum", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9BeGlvbVBlcnBldHV1bSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/da686b937b/AxiomPerpetuum.png", baseType: "铜锻短杖" }, { name: "宇蚀 符文法杖", href: "https://poedb.tw/cn/Eclipse_Solaris", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kVW5pcXVlMSIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/e1734b812d/WandUnique1.png", baseType: "符文法杖" }, { name: "寒铁刃【仿品】 艾兹麦之匕", href: "https://poedb.tw/cn/Replica_Cold_Iron_Point", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0NvbGRJcm9uUG9pbnQiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/1a4002957b/ColdIronPoint.png", baseType: "艾兹麦之匕" }, { name: "混响 螺纹法杖", href: "https://poedb.tw/cn/Reverberation_Rod", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9SZXZlcmJlcmF0aW9uUm9kIiwidyI6MSwiaCI6Mywic2NhbGUiOjF9XQ/676a395a5f/ReverberationRod.png", baseType: "螺纹法杖" }, { name: "托沃崩 灵石法杖", href: "https://poedb.tw/cn/Tulborn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9UdWxib3JuIiwidyI6MSwiaCI6Mywic2NhbGUiOjF9XQ/7c7cf3e1f2/Tulborn.png", limit: "「托沃之域」限定掉落\n「精华」联盟限定\n使用 托沃的祝福 升级 托沃卧", baseType: "灵石法杖" }, { name: "砥砺深根 伏击刺刃", href: "https://poedb.tw/cn/Taproot", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL01hcnJvd0dhc2hlciIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/22be181636/MarrowGasher.png", baseType: "伏击刺刃" }, { name: "托沃卧【仿品】 灵石法杖", href: "https://poedb.tw/cn/Replica_Tulfall", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9UdWxib3JuVXBncmFkZWQiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/575d6058a2/TulbornUpgraded.png", baseType: "灵石法杖" }, { name: "白净之风 帝国短匕", href: "https://poedb.tw/cn/White_Wind", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL1doaXRlV2luZCIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/48866b1c7f/WhiteWind.png", baseType: "帝国短匕" }, { name: "噬魂之牙 恐惧之爪", href: "https://poedb.tw/cn/Mortem_Morsu", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9DbGF3OHVuaXF1ZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/7294efb794/Claw8unique.png", baseType: "恐惧之爪" }, { name: "抹灭 魔性法杖", href: "https://poedb.tw/cn/Obliteration", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9NYWxlZGljdCIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/2ddc131782/Maledict.png", baseType: "魔性法杖" }, { name: "蚕食之暗 兽血短匕", href: "https://poedb.tw/cn/The_Consuming_Dark", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0NvbnN1bWluZ3RoZURhcmsiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/71882cbd42/ConsumingtheDark.png", baseType: "兽血短匕" }, { name: "比诺的厨刀 猎者之刃", href: "https://poedb.tw/cn/Binos_Kitchen_Knife", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0Jpbm9zS2l0Y2hlbktuaWZlIiwidyI6MSwiaCI6Mywic2NhbGUiOjF9XQ/499d39d615/BinosKitchenKnife.png", baseType: "猎者之刃" }, { name: "托沃卧 灵石法杖", href: "https://poedb.tw/cn/Tulfall", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9UdWxib3JuVXBncmFkZWQiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/575d6058a2/TulbornUpgraded.png", limit: "「精华」联盟限定\n托沃崩 使用 托沃的祝福 升级", baseType: "灵石法杖" }, { name: "漆黑藤杖 皇家短杖", href: "https://poedb.tw/cn/The_Black_Cane", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9UaGVCbGFja0NhbmUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/b2aa96460e/TheBlackCane.png", limit: "「舆图战记」限定掉落", baseType: "皇家短杖" }, { name: "冥约【仿品】 符文法杖", href: "https://poedb.tw/cn/Replica_Midnight_Bargain", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kVW5pcXVlMyIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/1db4fb5dbf/WandUnique3.png", baseType: "符文法杖" }, { name: "火神锻台 魔灵短匕", href: "https://poedb.tw/cn/Vulconus", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL1Z1bGNvbnVzIiwidyI6MSwiaCI6Mywic2NhbGUiOjF9XQ/aefa0a977b/Vulconus.png", baseType: "魔灵短匕" }, { name: "黯黑贤者 影语短杖", href: "https://poedb.tw/cn/The_Dark_Seer", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9Wb2lkR2F6ZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/e24a55cd27/VoidGaze.png", baseType: "影语短杖" }, { name: "罪恶吞噬者的叹息 暴君之统", href: "https://poedb.tw/cn/Sign_of_the_Sin_Eater", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9TY2VwdGVyT2ZTdWZmZXJpbmciLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/49a06d1a23/ScepterOfSuffering.png", baseType: "暴君之统" }, { name: "拉奇许之刃 贵族之剑", href: "https://poedb.tw/cn/Lakishus_Blade", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL09uZUhhbmRTd29yZDVVbmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/5a5771852b/OneHandSword5Unique.png", baseType: "贵族之剑" }, { name: "多里亚尼的幻化之杖 瓦尔短杖", href: "https://poedb.tw/cn/Doryanis_Catalyst", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9Eb3J5YW5pc0NhdGFseXN0IiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/aa54cbb507/DoryanisCatalyst.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "瓦尔短杖" }, { name: "苍白烈火 灵石短杖", href: "https://poedb.tw/cn/Balefire", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9CYWVsZmlyZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/082c0ee423/Baelfire.png", baseType: "灵石短杖" }, { name: "龙凤吟 狱火之刃", href: "https://poedb.tw/cn/Dyadus", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9EeWFkdXMiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/e1b1cf2439/Dyadus.png", baseType: "狱火之刃" }, { name: "痛苦之触 帝国战爪", href: "https://poedb.tw/cn/Touch_of_Anguish", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9Ub3VjaE9mQW5ndWlzaCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/c3b67bc0c2/TouchOfAnguish.png", baseType: "帝国战爪" }, { name: "寡妇 窃者短匕", href: "https://poedb.tw/cn/Widowmaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL1dpZG93bWFrZXIiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/c581a2aec4/Widowmaker.png", baseType: "窃者短匕" }, { name: "泣月 魔性法杖", href: "https://poedb.tw/cn/Moonsorrow", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9XYW5kcy9XYW5kVW5pcXVlMiIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/7a5458ab50/WandUnique2.png", baseType: "魔性法杖" }, { name: "赤红短刃 锈剑", href: "https://poedb.tw/cn/Redbeak", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL09uZUhhbmRTd29yZDFVbmlxdWUiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/a3010a69f5/OneHandSword1Unique.png", baseType: "锈剑" }, { name: "思动之手 帝国战爪", href: "https://poedb.tw/cn/Hand_of_Thought_and_Motion", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9UaG91Z2h0TW90aW9uMSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/cc443b5108/ThoughtMotion1.png", limit: "「艾许之域」限定掉落\n「精华」联盟限定\n使用 艾许的祝福 升级 智行之手", baseType: "帝国战爪" }, { name: "血谑 锐利刺匕", href: "https://poedb.tw/cn/Bloodplay", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0Jsb29kUGxheSIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/3c8258f393/BloodPlay.png", baseType: "锐利刺匕" }, { name: "隐匿之刃 伏击刺刃", href: "https://poedb.tw/cn/The_Hidden_Blade", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL1NlY3JldEJsYWRlIiwidyI6MSwiaCI6Mywic2NhbGUiOjF9XQ/a82388d924/SecretBlade.png", limit: "「夺宝奇兵」联盟限定", baseType: "伏击刺刃" }, { name: "阿克顿 屠戮之斧", href: "https://poedb.tw/cn/Actum", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9IYW5sb25zUmF6b3IiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/a81f0f6259/HanlonsRazor.png", limit: "「夺宝奇兵」联盟限定", baseType: "屠戮之斧" }, { name: "魅惑 瓦尔战爪", href: "https://poedb.tw/cn/Allure", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9BbGx1cmUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/ff5311676c/Allure.png", baseType: "瓦尔战爪" }, { name: "阿拉卡力之牙 兽血短匕", href: "https://poedb.tw/cn/Arakaalis_Fang", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0ZhbmdVbmlxdWUiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/de6e51652e/FangUnique.png", baseType: "兽血短匕" }, { name: "地精边缘 伏击刺刃", href: "https://poedb.tw/cn/Goblinedge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0dvYmxpbkVkZ2UiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/61d1382d07/GoblinEdge.png", baseType: "伏击刺刃" }, { name: "灾害 恐惧之牙", href: "https://poedb.tw/cn/The_Scourge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9UaGVTY291cmdlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/598a9f9893/TheScourge.png", baseType: "恐惧之牙" }, { name: "裂心刃 皇家短匕", href: "https://poedb.tw/cn/Heartbreaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0hlYXJ0YnJlYWtlciIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/fa73c4d5b4/Heartbreaker.png", baseType: "皇家短匕" }, { name: "野性瑞佛 皇家之斧", href: "https://poedb.tw/cn/Rigwalds_Savagery", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9SaWd3YXJsQXhlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/e2ee95737e/RigwarlAxe.png", baseType: "皇家之斧" }, { name: "鬼弑 查兰之剑", href: "https://poedb.tw/cn/Oni-Goroshi", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1RoZUdvZGRlc3NVbmxlYXNoZWQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/37ecd7541b/TheGoddessUnleashed.png", baseType: "查兰之剑" }, { name: "汉恩的力量 夜语长剑", href: "https://poedb.tw/cn/Ahns_Might", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0FobnNNaWdodCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/ee9d3b45a4/AhnsMight.png", baseType: "夜语长剑" }, { name: "幻梦飞羽【仿品】 永恒之剑", href: "https://poedb.tw/cn/Replica_Dreamfeather", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0RyZWFtZmVhdGhlciIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/89a3a7588c/Dreamfeather.png", baseType: "永恒之剑" }, { name: "塑泥者 破岩锤", href: "https://poedb.tw/cn/Clayshaper", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvQ2xheVNoYXBlciIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/9224ab6497/ClayShaper.png", baseType: "破岩锤" }, { name: "韧木曲刃 永恒之剑", href: "https://poedb.tw/cn/Grelwood_Shank", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL1ZlcmRhbnRHdWFyZGlhblN3b3JkMSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/b085f741a5/VerdantGuardianSword1.png", baseType: "永恒之剑" }, { name: "救世者 军团长剑", href: "https://poedb.tw/cn/The_Saviour", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL01pcmFnZUJsYWRlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/c84975781c/MirageBlade.png", limit: "「诸界觉者希鲁斯」限定掉落", baseType: "军团长剑" }, { name: "芯木腰刀 永恒之剑", href: "https://poedb.tw/cn/Beltimber_Blade", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL1ZlcmRhbnRHdWFyZGlhblN3b3JkMiIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/3f09536952/VerdantGuardianSword2.png", baseType: "永恒之剑" }, { name: "占星 虚影短杖", href: "https://poedb.tw/cn/Augyre", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9FbGRlclNjZXB0cmUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/325c7b1591/ElderSceptre.png", baseType: "虚影短杖" }, { name: "野性狂爪 凿钉", href: "https://poedb.tw/cn/Wildslash", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9XaWxkc2xhc2giLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/9dc7260a86/Wildslash.png", baseType: "凿钉" }, { name: "舍吉的手柄 强化长杖", href: "https://poedb.tw/cn/Xirgils_Crank", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmY3dW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/2437d7498a/Staff7unique.png", limit: "「帝王试炼迷宫」限定掉落", baseType: "强化长杖" }, { name: "钢铁指挥 死亡之弓", href: "https://poedb.tw/cn/Iron_Commander", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0lyb25Db21tZW5kYW50IiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/001ca245e3/IronCommendant.png", baseType: "死亡之弓" }, { name: "支点 艾兹麦长杖", href: "https://poedb.tw/cn/The_Fulcrum", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvRWxlbWVudGFsSGFybW9ueSIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/912f60acd7/ElementalHarmony.png", limit: "「夺宝奇兵」联盟限定", baseType: "艾兹麦长杖" }, { name: "贪婪之潮 城塞战弓", href: "https://poedb.tw/cn/The_Gluttonous_Tide", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0ZyZW56aWVkVGVudGFjbGVzIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/6dc3218af0/FrenziedTentacles.png", limit: "「世界吞噬者」限定掉落", baseType: "城塞战弓" }, { name: "狮眼的战弓 帝国之弓", href: "https://poedb.tw/cn/Lioneyes_Glare", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0Jvdzh1bmlxdWUiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/29fc966523/Bow8unique.png", baseType: "帝国之弓" }, { name: "光耀之锤 战锤", href: "https://poedb.tw/cn/Brightbeak", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvT25lSGFuZE1hY2U1VW5pcXVlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/d3f763cad7/OneHandMace5Unique.png", baseType: "战锤" }, { name: "索伏的爱抚 城塞战弓", href: "https://poedb.tw/cn/Xophs_Nurture", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0Jsb29kUGVyaWdyZWVCUkVBQ0giLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/c1e05d8e31/BloodPerigreeBREACH.png", limit: "「精华」联盟限定\n索伏的始源 使用 索伏的祝福 升级", baseType: "城塞战弓" }, { name: "冥使之琴 死亡之弓", href: "https://poedb.tw/cn/Deaths_Harp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0RlYXRoc2hhcnAiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/488e5f6267/Deathsharp.png", baseType: "死亡之弓" }, { name: "夭马克的协定 瓦尔短杖", href: "https://poedb.tw/cn/Yaomacs_Accord", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9PbmF0emxpU2NlcHRyZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/49dafc0859/OnatzliSceptre.png", limit: "「试炼使者」限定掉落\n「致命贪婪」联盟限定", baseType: "瓦尔短杖" }, { name: "血裂 钝钉木棒", href: "https://poedb.tw/cn/Gorebreaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvT25lSGFuZE1hY2UzVW5pcXVlIiwidyI6MSwiaCI6Mywic2NhbGUiOjF9XQ/c3ca02cad8/OneHandMace3Unique.png", baseType: "钝钉木棒" }, { name: "内布利斯 虚影短杖", href: "https://poedb.tw/cn/Nebulis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9TY2VwdHJlT2ZNZW1vcmllcyIsInciOjIsImgiOjMsInNjYWxlIjoxLCJzeW50aGVzaXNlZCI6dHJ1ZX1d/42c37f31d6/SceptreOfMemories.png", limit: "「维纳留斯」限定掉落\n「虚空忆境」联盟限定", baseType: "虚影短杖" }, { name: "炽炎之使 武术长杖", href: "https://poedb.tw/cn/The_Searing_Touch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmY0dW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/5c7ddd5550/Staff4unique.png", baseType: "武术长杖" }, { name: "宵晓 风暴长杖", href: "https://poedb.tw/cn/Duskdawn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU29sYXJpc0x1bmFyaXNTdGFmZiIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/e5e9df18a4/SolarisLunarisStaff.png", limit: "「Vendor recipe system」限定掉落", baseType: "风暴长杖" }, { name: "遗孀之雹 粗制弓", href: "https://poedb.tw/cn/Widowhail", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL1dpZG93aGFpbEJvdyIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/1f31742277/WidowhailBow.png", baseType: "粗制弓" }, { name: "寒铁刃 艾兹麦之匕", href: "https://poedb.tw/cn/Cold_Iron_Point", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9EYWdnZXJzL0NvbGRJcm9uUG9pbnQiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/1a4002957b/ColdIronPoint.png", baseType: "艾兹麦之匕" }, { name: "纯净之神的祭品 贵族长杖", href: "https://poedb.tw/cn/Martyr_of_Innocence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvTWFydHlySW5ub2NlbmNlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/6fd4eee9df/MartyrInnocence.png", baseType: "贵族长杖" }, { name: "恐惧之镰 切割者", href: "https://poedb.tw/cn/Dreadarc", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9EcmVhZGFyYyIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/fd1e188ee3/Dreadarc.png", baseType: "切割者" }, { name: "魅惑【仿品】 瓦尔战爪", href: "https://poedb.tw/cn/Replica_Allure", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9BbGx1cmUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/ff5311676c/Allure.png", baseType: "瓦尔战爪" }, { name: "苦梦 影语短杖", href: "https://poedb.tw/cn/Bitterdream", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9zY2VwdGVyOHVuaXF1ZTIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/085f7726de/scepter8unique2.png", baseType: "影语短杖" }, { name: "超越壁垒 裂脏钩", href: "https://poedb.tw/cn/Advancing_Fortress", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9DbGF3c2hpZWxkMyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/a04190ca2b/Clawshield3.png", baseType: "裂脏钩" }, { name: "食蚜 斗士长剑", href: "https://poedb.tw/cn/Scaeva", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1NjYWV2YSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/320c7247e3/Scaeva.png", baseType: "斗士长剑" }, { name: "尼布洛克 梦魇之锤", href: "https://poedb.tw/cn/Nebuloch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvRWxkZXJNYWNlIiwidyI6MiwiaCI6Mywic2NhbGUiOjEsImVsZGVyIjp0cnVlfV0/84e6532c8a/ElderMace.png", limit: "「裂界者」限定掉落", baseType: "梦魇之锤" }, { name: "乱矢之弦 暗影弓", href: "https://poedb.tw/cn/Chin_Sol", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0JvdzV1bmlxdWUiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/199f28ea8d/Bow5unique.png", baseType: "暗影弓" }, { name: "嗜血之爪 魔爪刃", href: "https://poedb.tw/cn/Bloodseeker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9CbG9vZHNlZWtlciIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/0b888c4189/Bloodseeker.png", baseType: "魔爪刃" }, { name: "黑钢 瓦尔短杖", href: "https://poedb.tw/cn/Doon_Cuebiyari", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvRG9vbkN1ZWJpeWFyaSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/8a4a0ccb6b/DoonCuebiyari.png", baseType: "瓦尔短杖" }, { name: "凋灵魔爪 虚影短杖", href: "https://poedb.tw/cn/Montreguls_Grasp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9Nb250cmVndWxzR3Jhc3AiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/c94034110b/MontregulsGrasp.png", baseType: "虚影短杖" }, { name: "乱世之翼【仿品】 艾兹麦巨斧", href: "https://poedb.tw/cn/Replica_Wings_of_Entropy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9FbnRyb3B5d2luZ3MiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/86e128789a/Entropywings.png", baseType: "艾兹麦巨斧" }, { name: "裂风【仿品】 帝国之弓", href: "https://poedb.tw/cn/Replica_Windripper", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0VhZ2xlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/01fdf37ac0/Eagle.png", baseType: "帝国之弓" }, { name: "嗜血黑兹玛娜 瓦尔巨斧", href: "https://poedb.tw/cn/Hezmanas_Bloodlust", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9IZXptYW5hc0Jsb29kbHVzdCIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/fdbd48147f/HezmanasBloodlust.png", baseType: "瓦尔巨斧" }, { name: "议会之触 脊弓", href: "https://poedb.tw/cn/Reach_of_the_Council", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0Jvd09mVGhlQ291bmNpbCIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/55dc65893e/BowOfTheCouncil.png", limit: "「预言」联盟限定", baseType: "脊弓" }, { name: "颤抖之杖 军用长杖", href: "https://poedb.tw/cn/Tremor_Rod", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvTWluZVN0YWZmIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/51a69e0959/MineStaff.png", baseType: "军用长杖" }, { name: "The Burden of Shadows 史典长杖", href: "https://poedb.tw/cn/The_Burden_of_Shadows", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvVm9vZG9vS2luZ1N0YWZmIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/295f49d20f/VoodooKingStaff.png", limit: "「禁咒荒林」限定掉落", baseType: "史典长杖" }, { name: "英斯贝理之极 智者长剑", href: "https://poedb.tw/cn/Innsbury_Edge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0VsZGVyU3dvcmQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/2bd26d4bf6/ElderSword.png", baseType: "智者长剑" }, { name: "阐释之杖 艾兹麦长杖", href: "https://poedb.tw/cn/Cane_of_Unravelling", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvQ2FuZU9mVW5yYXZlbGxpbmciLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/99b4e7e44e/CaneOfUnravelling.png", baseType: "艾兹麦长杖" }, { name: "奈可妲之灯 水晶短杖", href: "https://poedb.tw/cn/Nyctas_Lantern", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9MeWNobnVzbHlhZWkiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/c69b77ef8a/Lychnuslyaei.png", baseType: "水晶短杖" }, { name: "女神的灵缚 鲸骨细刃", href: "https://poedb.tw/cn/The_Goddess_Bound", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9SYXBpZXJzL1VuaXF1ZVJhcGllcjYiLCJ3IjoxLCJoIjo0LCJzY2FsZSI6MX1d/b9f0cc5e60/UniqueRapier6.png", baseType: "鲸骨细刃" }, { name: "英斯贝理之极【仿品】 智者长剑", href: "https://poedb.tw/cn/Replica_Innsbury_Edge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0VsZGVyU3dvcmQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/2bd26d4bf6/ElderSword.png", baseType: "智者长剑" }, { name: "卡美利亚之贪婪 坚锤", href: "https://poedb.tw/cn/Camerias_Avarice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvQW1lcmljc01hdWwiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MSwicmVsaWMiOjN9XQ/74305cb6de/AmericsMaul.png", baseType: "坚锤" }, { name: "冈姆的霸业 卡鲁巨斧", href: "https://poedb.tw/cn/Kaoms_Primacy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9Ud29IYW5kQXhlMTFVbmlxdWUiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/544409d7f6/TwoHandAxe11Unique.png", baseType: "卡鲁巨斧" }, { name: "萝丝之触 反曲弓", href: "https://poedb.tw/cn/Roths_Reach", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL1NhcmtoYW1zUmVhY2giLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/89bf0cff0b/SarkhamsReach.png", baseType: "反曲弓" }, { name: "重击之锤 狼牙重锤", href: "https://poedb.tw/cn/Quecholli", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvVHdvSGFuZE1hY2U1VW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/9361b8eb61/TwoHandMace5Unique.png", baseType: "狼牙重锤" }, { name: "女神的怒炎 贵族之剑", href: "https://poedb.tw/cn/The_Goddess_Scorned", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1RoZUdvZGRlc3NzY29ybmVkIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/65470d38e9/TheGoddessscorned.png", limit: "「Vendor recipe system」限定掉落", baseType: "贵族之剑" }, { name: "幻银之弦 粗制弓", href: "https://poedb.tw/cn/Silverbranch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0JvdzFVbmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/73d6f96075/Bow1Unique.png", baseType: "粗制弓" }, { name: "费德利塔斯之锋 锯状薄刃", href: "https://poedb.tw/cn/Fidelitas_Spike", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0ZpZGVsaXRhc1NwaWtlIiwidyI6MSwiaCI6NCwic2NhbGUiOjF9XQ/de1d15ceb1/FidelitasSpike.png", baseType: "锯状薄刃" }, { name: "虚无之倾 游侠弓", href: "https://poedb.tw/cn/Nulls_Inclination", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL051bGxCb3ciLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/067d0e5884/NullBow.png", baseType: "游侠弓" }, { name: "黑鲨 瓦尔军刃", href: "https://poedb.tw/cn/Varunastra", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1ZhcnVuYXN0cmEiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/ce779b1e41/Varunastra.png", baseType: "瓦尔军刃" }, { name: "裂颅【仿品】 刚猛巨锤", href: "https://poedb.tw/cn/Replica_Trypanon", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvVHJ5cGFub24iLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/3152ab4124/Trypanon.png", baseType: "刚猛巨锤" }, { name: "议会之息 禁礼短杖", href: "https://poedb.tw/cn/Breath_of_the_Council", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9QbGFndWVicmluZ2VyIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/c22a70dd6e/Plaguebringer.png", limit: "「预言」联盟限定", baseType: "禁礼短杖" }, { name: "逝空之锤 威权巨锤", href: "https://poedb.tw/cn/Voidhome", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvVm9pZGhvbWUiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/0122c9dcf4/Voidhome.png", baseType: "威权巨锤" }, { name: "暴风之钢【仿品】 征战之剑", href: "https://poedb.tw/cn/Replica_Tempestuous_Steel", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1RlbXBlc3R1b3VzU3RlZWwiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/72078201f9/TempestuousSteel.png", baseType: "征战之剑" }, { name: "灾祸之礁 鱼竿", href: "https://poedb.tw/cn/Reefbane", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9GaXNoaW5nUm9kcy9SZWVmYmFuZSIsInciOjEsImgiOjQsInNjYWxlIjoxfV0/fb59feb3cd/Reefbane.png", baseType: "鱼竿" }, { name: "死神之手 卡鲁短杖", href: "https://poedb.tw/cn/Deaths_Hand", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9FbmRPZkVyYSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/fbfd20f658/EndOfEra.png", baseType: "卡鲁短杖" }, { name: "忠诚之锤 刚猛巨锤", href: "https://poedb.tw/cn/Chober_Chaber", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvQ2hvYmVyQ2hhYmVyIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/77d9d3e30a/ChoberChaber.png", baseType: "刚猛巨锤" }, { name: "穿云【仿品】 猎魂之弓", href: "https://poedb.tw/cn/Replica_Infractem", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0luZnJhY3RlbSIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/ea06e13fb8/Infractem.png", baseType: "猎魂之弓" }, { name: "提图库斯的坚盾 强化塔盾", href: "https://poedb.tw/cn/Titucius_Span", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZFN0clVuaXF1ZTciLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/8dd443976b/ShieldStrUnique7.png", baseType: "强化塔盾" }, { name: "乔赫黑钢 沉钢重锤", href: "https://poedb.tw/cn/Jorrhasts_Blacksteel", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvSm9ycmhhc3RzQmxhY2tzdGVlbCIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/a1ee3a6a3c/JorrhastsBlacksteel.png", limit: "「风暴」联盟限定", baseType: "沉钢重锤" }, { name: "摧残之光 细柄长杖", href: "https://poedb.tw/cn/The_Annihilating_Light", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvSW50cmVwaWR1c0RvbG9yZW0iLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/8244c5f079/IntrepidusDolorem.png", limit: "「灼督」限定掉落", baseType: "细柄长杖" }, { name: "圣恶之喻 帝国长杖", href: "https://poedb.tw/cn/The_Enmity_Divine", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvUmFnZSBTdGFmZiIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/7c95713fe7/Rage%20Staff.png", limit: "「降临之地」限定掉落\n「先驱」联盟限定\n使用 焚血卷轴 升级 死亡屈服", baseType: "帝国长杖" }, { name: "红刃旗帜 彩绘塔盾", href: "https://poedb.tw/cn/Redblade_Banner", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1JlZGJsYWRlQmFubmVyIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/33221fb3e1/RedbladeBanner.png", limit: "「孤岛灯塔」限定掉落\n「战团」联盟限定", baseType: "彩绘塔盾" }, { name: "裂风 帝国之弓", href: "https://poedb.tw/cn/Windripper", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0VhZ2xlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/01fdf37ac0/Eagle.png", baseType: "帝国之弓" }, { name: "暴雨之弦 长弓", href: "https://poedb.tw/cn/Storm_Cloud", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL1N0b3JtY2xvdWQiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/003957da0c/Stormcloud.png", baseType: "长弓" }, { name: "尔奇的巨灵之锤 卡鲁重锤", href: "https://poedb.tw/cn/Marohi_Erqi", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvVHdvSGFuZE1hY2UydW5pcXVlMiIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/6ae0a56923/TwoHandMace2unique2.png", baseType: "卡鲁重锤" }, { name: "骤雨之弦 短弓", href: "https://poedb.tw/cn/Quill_Rain", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0JvdzJ1bmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/5c5cad82e8/Bow2unique.png", baseType: "短弓" }, { name: "局势逆转者 帝国重锤", href: "https://poedb.tw/cn/Tidebreaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvVGlkZWJyZWFrZXIiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/25b69a132f/Tidebreaker.png", baseType: "帝国重锤" }, { name: "塔林的颤栗之语 风暴长杖", href: "https://poedb.tw/cn/Taryns_Shiver", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvVGFyeW5zc2hpdmVyIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/b11b3dffb7/Tarynsshiver.png", baseType: "风暴长杖" }, { name: "乌尔尼多的拥抱 瓦尔巨斧", href: "https://poedb.tw/cn/Uul-Netols_Embrace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9VdWxOZXRvbHNLaXNzVXBncmFkZWQiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MSwicmVsaWMiOjF9XQ/3a59e1526b/UulNetolsKissUpgraded.png", limit: "「精华」联盟限定\n乌尔尼多之吻 使用 乌尔尼多的祝福 升级", baseType: "瓦尔巨斧" }, { name: "五芒屏障 乌木塔盾", href: "https://poedb.tw/cn/Chernobogs_Pillar", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0NoZXJub2JvZ3NwaWxsYXIiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/8868d6add1/Chernobogspillar.png", baseType: "乌木塔盾" }, { name: "破碎传承者 蛇纹长杖", href: "https://poedb.tw/cn/Sire_of_Shards", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvUmFkaWVuY2UiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/229388b736/Radience.png", baseType: "蛇纹长杖" }, { name: "囚神杵 铁锻长杖", href: "https://poedb.tw/cn/Pillar_of_the_Caged_God", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvUGlsbGFyb2Z0aGVDYWdlZEdvZCIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/0451281624/PillaroftheCagedGod.png", baseType: "铁锻长杖" }, { name: "超越壁垒【仿品】 裂脏钩", href: "https://poedb.tw/cn/Replica_Advancing_Fortress", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9DbGF3c2hpZWxkMyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/a04190ca2b/Clawshield3.png", baseType: "裂脏钩" }, { name: "努罗的竖琴 先驱者之弓", href: "https://poedb.tw/cn/Nuros_Harp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL051cm9zUHVyaWZ5aW5nSGFycCIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/36ac89806c/NurosPurifyingHarp.png", baseType: "先驱者之弓" }, { name: "合流梦寐 军用长刃", href: "https://poedb.tw/cn/United_in_Dream", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0V0ZXJuYWxTbGVlcDIiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/8d706ed435/EternalSleep2.png", limit: "「精华」联盟限定\n离异梦寐 使用 夏乌拉的祝福 升级", baseType: "军用长刃" }, { name: "狼蛛 生皮塔盾", href: "https://poedb.tw/cn/Lycosidae", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0x5Y29zaWRhZSIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/ec38e32a56/Lycosidae.png", baseType: "生皮塔盾" }, { name: "瓦尔传说 宝石之剑", href: "https://poedb.tw/cn/Story_of_the_Vaal", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1N0b3J5T2ZUaGVWYWFsIiwidyI6MSwiaCI6Mywic2NhbGUiOjEsInJlbGljIjo1fV0/7aa8285d7d/StoryOfTheVaal.png", limit: "「烈焰坩埚」限定掉落\n「穿越」联盟限定\n使用 命运魔瓶 升级 瓦尔命运", baseType: "宝石之剑" }, { name: "悖论【仿品】 瓦尔细剑", href: "https://poedb.tw/cn/Replica_Paradoxica", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9SYXBpZXJzL0Fzc2Fzc2luYXRpb25VbmlxdWUyIiwidyI6MSwiaCI6NCwic2NhbGUiOjF9XQ/b84147fcbd/AssassinationUnique2.png", baseType: "瓦尔细剑" }, { name: "普兰德斯之徽 松木轻盾", href: "https://poedb.tw/cn/Crest_of_Perandus", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZERleFVuaXF1ZTUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/e85f672678/ShieldDexUnique5.png", baseType: "松木轻盾" }, { name: "开膛斧 破城斧", href: "https://poedb.tw/cn/Soul_Taker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9BbGV4YXhlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/647bb8bb63/Alexaxe.png", baseType: "破城斧" }, { name: "血棘【仿品】 朽木之干", href: "https://poedb.tw/cn/Replica_Blood_Thorn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvVGhlQmxvb2RUaG9ybiIsInciOjEsImgiOjQsInNjYWxlIjoxfV0/3dac5ee34b/TheBloodThorn.png", baseType: "朽木之干" }, { name: "鹰啸 碎玉斧", href: "https://poedb.tw/cn/The_Screaming_Eagle", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9TY3JlYW1pbmdlYWdsZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/1fd02e9312/Screamingeagle.png", baseType: "碎玉斧" }, { name: "西方雷霆圣杖 帝国长杖", href: "https://poedb.tw/cn/Agnerod_West", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmY2dW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/8b60f5a033/Staff6unique.png", baseType: "帝国长杖" }, { name: "图克哈玛堡垒 乌木塔盾", href: "https://poedb.tw/cn/Tukohamas_Fortress", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1R1a29oYW1hc0ZvcnRyZXNzIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/e502c4bcf2/TukohamasFortress.png", baseType: "乌木塔盾" }, { name: "影殒 暮色之刃", href: "https://poedb.tw/cn/Ephemeral_Edge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL09uZUhhbmRTd29yZDhVbmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/d2fdb4e56e/OneHandSword8Unique.png", baseType: "暮色之刃" }, { name: "瓦尔命运 宝石之剑", href: "https://poedb.tw/cn/Fate_of_the_Vaal", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0ZhdGVPZlRoZVZhYWwiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/0a4128aace/FateOfTheVaal.png", limit: "「穿越」联盟限定\n瓦尔传说 使用 命运魔瓶 升级", baseType: "宝石之剑" }, { name: "绿藤 朽木之干", href: "https://poedb.tw/cn/Fencoil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmYxdW5pcXVlIiwidyI6MSwiaCI6NCwic2NhbGUiOjF9XQ/cff9022931/Staff1unique.png", baseType: "朽木之干" }, { name: "东方雷霆圣杖 帝国长杖", href: "https://poedb.tw/cn/Agnerod_East", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmY2dW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/8b60f5a033/Staff6unique.png", baseType: "帝国长杖" }, { name: "宵晓【仿品】 风暴长杖", href: "https://poedb.tw/cn/Replica_Duskdawn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU29sYXJpc0x1bmFyaXNTdGFmZiIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/e5e9df18a4/SolarisLunarisStaff.png", baseType: "风暴长杖" }, { name: "卡斯普里怨恨 宝饰细剑", href: "https://poedb.tw/cn/Cospris_Malice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL0Nvc3ByaXNNYWxpY2UiLCJ3IjoxLCJoIjo0LCJzY2FsZSI6MX1d/e9e517220b/CosprisMalice.png", baseType: "宝饰细剑" }, { name: "瓦尔战刃 瓦尔军刃", href: "https://poedb.tw/cn/Rebuke_of_the_Vaal", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL09uZUhhbmRTd29yZDdVbmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/90312b1e4a/OneHandSword7Unique.png", baseType: "瓦尔军刃" }, { name: "竭血之镰 行刑巨斧", href: "https://poedb.tw/cn/The_Blood_Reaper", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9Ud29IYW5kQXhlVW5pcXVlMiIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/3f8b59ec70/TwoHandAxeUnique2.png", baseType: "行刑巨斧" }, { name: "冰点低语 毒牙长杖", href: "https://poedb.tw/cn/The_Whispering_Ice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmY4dW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/04e7459f43/Staff8unique.png", baseType: "毒牙长杖" }, { name: "断罪 柴斧", href: "https://poedb.tw/cn/Limbsplit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9Ud29IYW5kQXhlX3NwYXJlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/6cc29798f1/TwoHandAxe_spare.png", baseType: "柴斧" }, { name: "智行之手 帝国战爪", href: "https://poedb.tw/cn/Hand_of_Wisdom_and_Action", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9UaG91Z2h0TW90aW9uMiIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/69f2b430d0/ThoughtMotion2.png", limit: "「精华」联盟限定\n思动之手 使用 艾许的祝福 升级", baseType: "帝国战爪" }, { name: "悖论 瓦尔细剑", href: "https://poedb.tw/cn/Paradoxica", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9SYXBpZXJzL0Fzc2Fzc2luYXRpb25VbmlxdWUyIiwidyI6MSwiaCI6NCwic2NhbGUiOjF9XQ/b84147fcbd/AssassinationUnique2.png", limit: "「背叛者」联盟限定", baseType: "瓦尔细剑" }, { name: "战歌 霸主巨斧", href: "https://poedb.tw/cn/Debeons_Dirge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9TdHJpbmdBeGUiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/c3289a678a/StringAxe.png", baseType: "霸主巨斧" }, { name: "玛塔之指教 卡鲁短杖", href: "https://poedb.tw/cn/Maatas_Teaching", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9NYWF0YVNjZXB0cmUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/27dd9da5a6/MaataSceptre.png", baseType: "卡鲁短杖" }, { name: "誓约 审判长杖", href: "https://poedb.tw/cn/Pledge_of_Hands", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvUGxlZGdlb2ZIYW5kcyIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/1da7239060/PledgeofHands.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "审判长杖" }, { name: "东之饰 裂脏钩", href: "https://poedb.tw/cn/Ornament_of_the_East", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9Pcm5hbWVudE9mVGhlRWFzdCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/5bea7643a2/OrnamentOfTheEast.png", baseType: "裂脏钩" }, { name: "哑风尖旗 釉彩轻盾", href: "https://poedb.tw/cn/Mutewind_Pennant", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL011dGV3aW5kUGVubmFudCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/a3efaf0921/MutewindPennant.png", limit: "「极寒冰原」限定掉落\n「战团」联盟限定", baseType: "釉彩轻盾" }, { name: "穿云 猎魂之弓", href: "https://poedb.tw/cn/Infractem", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0luZnJhY3RlbSIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/ea06e13fb8/Infractem.png", baseType: "猎魂之弓" }, { name: "破灭之希 游侠弓", href: "https://poedb.tw/cn/Hopeshredder", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0VsZGVyQm93IiwidyI6MiwiaCI6NCwic2NhbGUiOjEsImVsZGVyIjp0cnVlfV0/0dcd0422ae/ElderBow.png", limit: "「裂界者」限定掉落", baseType: "游侠弓" }, { name: "迷雾之墙 漆彩轻盾", href: "https://poedb.tw/cn/Mistwall", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL01pc3R3YWxsIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/d81f034c2d/Mistwall.png", baseType: "漆彩轻盾" }, { name: "勇气之魄 艾兹麦巨斧", href: "https://poedb.tw/cn/Sinvictas_Mettle", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9TaW52aWN0YXNNZXR0bGUiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/f1eaf2346b/SinvictasMettle.png", baseType: "艾兹麦巨斧" }, { name: "风暴之眼 皇家长杖", href: "https://poedb.tw/cn/The_Stormheart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmY4dW5pcXVlWCIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/fa0b46bc0c/Staff8uniqueX.png", baseType: "皇家长杖" }, { name: "七日锋 夜语长剑", href: "https://poedb.tw/cn/Razor_of_the_Seventh_Sun", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1Jhem9yT2ZUaGVTZXZlbnRoU3VuIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/ef21dd7f97/RazorOfTheSeventhSun.png", baseType: "夜语长剑" }, { name: "夜吟 暗影弓", href: "https://poedb.tw/cn/Darkscorn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0RhcmtzY29ybiIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/5145b7feef/Darkscorn.png", baseType: "暗影弓" }, { name: "布琳洛特之旗 环形魔盾", href: "https://poedb.tw/cn/Brinerot_Flag", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0JyaW5lcm90RmxhZyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/4645154405/BrinerotFlag.png", limit: "「炽炎船坞」限定掉落\n「战团」联盟限定", baseType: "环形魔盾" }, { name: "幻梦飞羽 永恒之剑", href: "https://poedb.tw/cn/Dreamfeather", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0RyZWFtZmVhdGhlciIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/89a3a7588c/Dreamfeather.png", baseType: "永恒之剑" }, { name: "卡美利亚之锤 坚锤", href: "https://poedb.tw/cn/Camerias_Maul", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvQW1lcmljc01hdWwiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/e1b9d35ca3/AmericsMaul.png", baseType: "坚锤" }, { name: "秘法君临 军团长剑", href: "https://poedb.tw/cn/The_Rippling_Thoughts", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0hhcmJpbmdlckxlYWd1ZVN3b3JkIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/e8a974a73b/HarbingerLeagueSword.png", limit: "「降临之地」限定掉落\n「先驱」联盟限定\n使用 电击卷轴 升级 思想奔流", baseType: "军团长剑" }, { name: "霜息 华丽之锤", href: "https://poedb.tw/cn/Frostbreath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvRnJvc3RCcmVhdGgiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/8a6b305388/FrostBreath.png", baseType: "华丽之锤" }, { name: "基洛瓦之风暴 钢木轻盾", href: "https://poedb.tw/cn/Kiloavas_Bluster", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0tpbG9hdmFTaGllbGQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/b1ec2a922a/KiloavaShield.png", baseType: "钢木轻盾" }, { name: "努葛玛呼之耀 深渊巨斧", href: "https://poedb.tw/cn/Ngamahus_Flame", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvUmlyaVRlTmdhbWFodSIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/55c2a170af/RiriTeNgamahu.png", baseType: "深渊巨斧" }, { name: "无上箴言 水晶短杖", href: "https://poedb.tw/cn/The_Supreme_Truth", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9UaGVzdXByZW1ldHJ1dGgiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/1f03434324/Thesupremetruth.png", baseType: "水晶短杖" }, { name: "虹耀之月 暮光长剑", href: "https://poedb.tw/cn/Prismatic_Eclipse", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1ByaXNtYXRpY0VjbGlwc2UiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/d6243ca476/PrismaticEclipse.png", baseType: "暮光长剑" }, { name: "灵护 练武者细剑", href: "https://poedb.tw/cn/Aurumvorax", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9SYXBpZXJzL0F1cnVtdm9yYXgiLCJ3IjoxLCJoIjo0LCJzY2FsZSI6MX1d/64b63c7413/Aurumvorax.png", baseType: "练武者细剑" }, { name: "月影之耀 灵相魔盾", href: "https://poedb.tw/cn/Light_of_Lunaris", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0x1bmFyaXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/a684af2793/Lunaris.png", baseType: "灵相魔盾" }, { name: "瑞佛统帅 夜语长剑", href: "https://poedb.tw/cn/Rigwalds_Command", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL1JpZ3dhcmxTd29yZCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/90114046a7/RigwarlSword.png", baseType: "夜语长剑" }, { name: "脑乱者 戮魂重锤", href: "https://poedb.tw/cn/Brain_Rattler", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvQnJhaW5TY3JhbWJsZXIiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/0749c07fa6/BrainScrambler.png", baseType: "戮魂重锤" }, { name: "蜂巢涌动 刺喉刃", href: "https://poedb.tw/cn/The_Wasp_Nest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9MZXZpYXRoYW5pdm9yeSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/8d31776c34/Leviathanivory.png", baseType: "刺喉刃" }, { name: "钢铁指挥【仿品】 死亡之弓", href: "https://poedb.tw/cn/Replica_Iron_Commander", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0lyb25Db21tZW5kYW50IiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/001ca245e3/IronCommendant.png", baseType: "死亡之弓" }, { name: "拉维安加的智慧 战锤", href: "https://poedb.tw/cn/Laviangas_Wisdom", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvT25lSGFuZE1hY2UzYSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/3c0044c7be/OneHandMace3a.png", baseType: "战锤" }, { name: "圣徒胫骨 史典长杖", href: "https://poedb.tw/cn/Femurs_of_the_Saints", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvRmVtdXJzb2Z0aGVTYWludHMiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/e275f87366/FemursoftheSaints.png", baseType: "史典长杖" }, { name: "血肉之嗜 梦境之锤", href: "https://poedb.tw/cn/Flesh-Eater", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvT25lSGFuZE1hY2U2VW5pcXVlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/2db8b10771/OneHandMace6Unique.png", baseType: "梦境之锤" }, { name: "永恒苹果 魂相魔盾", href: "https://poedb.tw/cn/The_Eternal_Apple", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1RoZUV0ZXJuYWxBcHBsZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/0f1033587d/TheEternalApple.png", baseType: "魂相魔盾" }, { name: "正义之鳞 魂相魔盾", href: "https://poedb.tw/cn/The_Scales_of_Justice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0dvZGRlc3NTY2FsZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/e4ddbd93f5/GoddessScales.png", limit: "「帝王试炼迷宫」限定掉落", baseType: "魂相魔盾" }, { name: "阿伯瑞斯 暗影弓", href: "https://poedb.tw/cn/Arborix", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL1ZlcmRhbnRHdWFyZGlhbkJvdyIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/9008310cc7/VerdantGuardianBow.png", limit: "「Vendor recipe system」限定掉落", baseType: "暗影弓" }, { name: "离异梦寐 军用长刃", href: "https://poedb.tw/cn/Severed_in_Sleep", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0V0ZXJuYWxTbGVlcDEiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/60deeaccc5/EternalSleep1.png", limit: "「夏乌拉之域」限定掉落\n「精华」联盟限定\n使用 夏乌拉的祝福 升级 合流梦寐", baseType: "军用长刃" }, { name: "骤雨之弦【仿品】 短弓", href: "https://poedb.tw/cn/Replica_Quill_Rain", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0JvdzJ1bmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/5c5cad82e8/Bow2unique.png", baseType: "短弓" }, { name: "Nametaker 权贵之剑", href: "https://poedb.tw/cn/Nametaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0FmZmxpY3Rpb25Td29yZCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/7b5d4f7c22/AfflictionSword.png", limit: "「禁咒荒林」限定掉落", baseType: "权贵之剑" }, { name: "女爵 旧军刀", href: "https://poedb.tw/cn/The_Princess", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL09uZUhhbmRTd29yZDNVbmlxdWUiLCJ3IjoxLCJoIjozLCJzY2FsZSI6MX1d/2ffa300730/OneHandSword3Unique.png", baseType: "旧军刀" }, { name: "思想奔流 军团长剑", href: "https://poedb.tw/cn/The_Surging_Thoughts", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0hhcmJpbmdlclN3b3JkVXBncmFkZWQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/bf1d1647f5/HarbingerSwordUpgraded.png", limit: "「灌注的降临之地」限定掉落\n「庄园」联盟限定\n秘法君临 使用 电击卷轴 升级", baseType: "军团长剑" }, { name: "艾普之梦 瓦尔魔盾", href: "https://poedb.tw/cn/Apeps_Slumber", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0FwZXBzU2x1bWJlciIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/334298da3d/ApepsSlumber.png", limit: "「毒林」限定掉落\n「穿越」联盟限定\n使用 觉醒魔瓶 升级 艾普的霸权", baseType: "瓦尔魔盾" }, { name: "阔斩 巨战斧", href: "https://poedb.tw/cn/Wideswing", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9XaWRlc3dpbmciLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/e9dfcf58df/Wideswing.png", baseType: "巨战斧" }, { name: "迷雾之墙【仿品】 漆彩轻盾", href: "https://poedb.tw/cn/Replica_Mistwall", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL01pc3R3YWxsIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/d81f034c2d/Mistwall.png", baseType: "漆彩轻盾" }, { name: "献祭之心 巨人魔盾", href: "https://poedb.tw/cn/Rathpith_Globe", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZEludDZ1bmlxdWUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/5f2434a635/ShieldInt6unique.png", baseType: "巨人魔盾" }, { name: "德瑞索的热情 穿甲刺剑", href: "https://poedb.tw/cn/Daressos_Passion", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9SYXBpZXJzL0RhcmVzc29zIiwidyI6MSwiaCI6NCwic2NhbGUiOjF9XQ/d698c36c19/Daressos.png", baseType: "穿甲刺剑" }, { name: "魔力风暴 软橡魔盾", href: "https://poedb.tw/cn/Manastorm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL01hbmFzdG9ybSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/d816fe3053/Manastorm.png", limit: "「舆图战记」限定掉落", baseType: "软橡魔盾" }, { name: "暴雨之舵 朽木圆盾", href: "https://poedb.tw/cn/Wheel_of_the_Stormsail", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1doZWVsb2Z0aGVzdG9ybXNhaWwiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/9ff4153db8/Wheelofthestormsail.png", baseType: "朽木圆盾" }, { name: "霜息【仿品】 华丽之锤", href: "https://poedb.tw/cn/Replica_Frostbreath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvRnJvc3RCcmVhdGgiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/8a6b305388/FrostBreath.png", baseType: "华丽之锤" }, { name: "幽魂之息 铁锻长杖", href: "https://poedb.tw/cn/Dying_Breath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvRHlpbmdCcmVhdGgiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/3b7be0c935/DyingBreath.png", baseType: "铁锻长杖" }, { name: "魔暴之痕 脊弓", href: "https://poedb.tw/cn/Voltaxic_Rift", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL1ZvaWRzaGFmdCIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/aaa5cfdba1/Voidshaft.png", baseType: "脊弓" }, { name: "图克哈玛堡垒【仿品】 乌木塔盾", href: "https://poedb.tw/cn/Replica_Tukohamas_Fortress", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1R1a29oYW1hc0ZvcnRyZXNzIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/e502c4bcf2/TukohamasFortress.png", baseType: "乌木塔盾" }, { name: "苦痛之处 巨人魔盾", href: "https://poedb.tw/cn/Bitterbind_Point", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL01hc3RlcnNGb2N1cyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/1b2e5df5a6/MastersFocus.png", limit: "「亡灵大师卡塔莉娜」限定掉落\n「背叛者」联盟限定", baseType: "巨人魔盾" }, { name: "沉默之雷 坚锤", href: "https://poedb.tw/cn/Mj%C3%B6lner", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvTWpvbG5lciIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/3e6fc15b26/Mjolner.png", baseType: "坚锤" }, { name: "月岚 征战之斧", href: "https://poedb.tw/cn/Moonbenders_Wing", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9Nb29uYmVuZGVyc1dpbmciLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/68a04ccc3f/MoonbendersWing.png", baseType: "征战之斧" }, { name: "白银之舌 先驱者之弓", href: "https://poedb.tw/cn/Slivertongue", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL1NpbHZlclRvbmd1ZSIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/15c7237f48/SilverTongue.png", baseType: "先驱者之弓" }, { name: "侍从 权贵圆盾", href: "https://poedb.tw/cn/The_Squire", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0Nhc3Bpcm9zUmVzb25hbmNlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/94531d2461/CaspirosResonance.png", baseType: "权贵圆盾" }, { name: "内布利斯【仿品】 虚影短杖", href: "https://poedb.tw/cn/Replica_Nebulis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9TY2VwdHJlT2ZNZW1vcmllcyIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/a627a19fc4/SceptreOfMemories.png", baseType: "虚影短杖" }, { name: "终息【仿品】 拳钉", href: "https://poedb.tw/cn/Replica_Last_Resort", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9OZXJhc0xhc3RSZXNvcnQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/5f5a6bd205/NerasLastResort.png", baseType: "拳钉" }, { name: "破裂碎片 绯红圆盾", href: "https://poedb.tw/cn/Shattershard", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0V2ZXJnbGFzc0JhcnJpZXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/179a505595/EverglassBarrier.png", limit: "「夺宝奇兵」联盟限定", baseType: "绯红圆盾" }, { name: "裂隙 恐惧之牙", href: "https://poedb.tw/cn/Rive", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9CbGVlZENsYXciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/085844fb05/BleedClaw.png", baseType: "恐惧之牙" }, { name: "深渊绝壁 铆钉圆盾", href: "https://poedb.tw/cn/The_Deep_Ones_Hide", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0NoaXRpbmh1bGwiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/90921c2a19/Chitinhull.png", baseType: "铆钉圆盾" }, { name: "库勒马克藤杖 蛇纹长杖", href: "https://poedb.tw/cn/Cane_of_Kulemak", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvQ2F0YXJpbmFTdGFmZiIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/9e79ed63e5/CatarinaStaff.png", limit: "「亡灵大师卡塔莉娜」限定掉落", baseType: "蛇纹长杖" }, { name: "血棘 朽木之干", href: "https://poedb.tw/cn/The_Blood_Thorn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvVGhlQmxvb2RUaG9ybiIsInciOjEsImgiOjQsInNjYWxlIjoxfV0/3dac5ee34b/TheBloodThorn.png", baseType: "朽木之干" }, { name: "裂世轮回 风暴长杖", href: "https://poedb.tw/cn/Disintegrator", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvRWxkZXJTdGFmZiIsInciOjIsImgiOjQsInNjYWxlIjoxLCJlbGRlciI6dHJ1ZSwic2hhcGVyIjp0cnVlfV0/d2d11cc5cc/ElderStaff.png", limit: "「裂界者」限定掉落", baseType: "风暴长杖" }, { name: "惊悸剧院 柚木圆盾", href: "https://poedb.tw/cn/The_Ghastly_Theatre", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1Ntb2tlQW5kTWlycm9ycyIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/95eb622489/SmokeAndMirrors.png", baseType: "柚木圆盾" }, { name: "邪神庇护 波纹轻盾", href: "https://poedb.tw/cn/Great_Old_Ones_Ward", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0dyZWF0T2xkT25lc1dhcmQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/3c0efbf6be/GreatOldOnesWard.png", baseType: "波纹轻盾" }, { name: "死亡屈服 帝国长杖", href: "https://poedb.tw/cn/The_Yielding_Mortality", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvSGFyYmluZ2VyU3RhZmZVcGdyYWRlZCIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/76cf7c8cb7/HarbingerStaffUpgraded.png", limit: "「灌注的降临之地」限定掉落\n「庄园」联盟限定\n圣恶之喻 使用 焚血卷轴 升级", baseType: "帝国长杖" }, { name: "千齿 瓦尔轻盾", href: "https://poedb.tw/cn/Thousand_Teeth_Temu", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZERleFVuaXF1ZTEiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/c466a1eb2a/ShieldDexUnique1.png", baseType: "瓦尔轻盾" }, { name: "幻芒圣盾 斗士鸢盾", href: "https://poedb.tw/cn/Aegis_Aurora", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZFN0ckludFVuaXF1ZTd1bmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/ae1ec0f5d1/ShieldStrIntUnique7unique.png", baseType: "斗士鸢盾" }, { name: "灰色尖椎 审判长杖", href: "https://poedb.tw/cn/The_Grey_Spire", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvVGhlR3JleVNwaXJlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/6e3a1c2c79/TheGreySpire.png", baseType: "审判长杖" }, { name: "维多里奥的贡献 合板鸢盾", href: "https://poedb.tw/cn/Victarios_Charity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1ZpY3Rhcm9zQ2hhcml0eSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/baf0e57fb2/VictarosCharity.png", baseType: "合板鸢盾" }, { name: "汉恩的遗产 巨型塔盾", href: "https://poedb.tw/cn/Ahns_Heritage", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0FobnNIZXJpdGFnZSIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/5a4ca9d54a/AhnsHeritage.png", baseType: "巨型塔盾" }, { name: "压迫者 权贵圆盾", href: "https://poedb.tw/cn/The_Oppressor", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1RoZVN1cHByZXNzb3IiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/c8dcd744a2/TheSuppressor.png", baseType: "权贵圆盾" }, { name: "海妖魅曲 鱼竿", href: "https://poedb.tw/cn/Song_of_the_Sirens", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9GaXNoaW5nUm9kcy9VbmlxdWVGaXNoaW5nUm9kMSIsInciOjEsImgiOjQsInNjYWxlIjoxfV0/4e9d67b927/UniqueFishingRod1.png", baseType: "鱼竿" }, { name: "灭世 皇家猎弓", href: "https://poedb.tw/cn/Doomfletch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0Rvb21GbGV0Y2giLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/a284f1cdab/DoomFletch.png", baseType: "皇家猎弓" }, { name: "赤红风暴 钢木之弓", href: "https://poedb.tw/cn/The_Crimson_Storm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0ZvcnRpZmljYXRpb25zVW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/b95b104d3e/FortificationsUnique.png", limit: "「背叛者」联盟限定", baseType: "钢木之弓" }, { name: "维多里奥的贡献【仿品】 合板鸢盾", href: "https://poedb.tw/cn/Replica_Victarios_Charity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1ZpY3Rhcm9zQ2hhcml0eSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/baf0e57fb2/VictarosCharity.png", baseType: "合板鸢盾" }, { name: "阿兹里的反击 金阳轻盾", href: "https://poedb.tw/cn/Atziris_Reflection", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZERleDVVbmlxdWUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/78fb81c375/ShieldDex5Unique.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "金阳轻盾" }, { name: "收割者 灵玉巨斧", href: "https://poedb.tw/cn/The_Harvest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9UaGVFeHRyYWN0b3IiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/8452349a24/TheExtractor.png", baseType: "灵玉巨斧" }, { name: "坚定之刃 圣约之锤", href: "https://poedb.tw/cn/Callinellus_Malleus", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvQ2FsbGluZWxsdXNNYWxsZXVzIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/54da9946c9/CallinellusMalleus.png", baseType: "圣约之锤" }, { name: "奇异 白金短杖", href: "https://poedb.tw/cn/Singularity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9HbG9vbWV5ZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/12d7027e18/Gloomeye.png", baseType: "白金短杖" }, { name: "不屈烈焰 威能鸢盾", href: "https://poedb.tw/cn/Unyielding_Flame", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0RhbW5hdGlvQWV0ZXJuYSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/755ec1c5d8/DamnatioAeterna.png", baseType: "威能鸢盾" }, { name: "瑞佛的奋战长剑 高山重刃", href: "https://poedb.tw/cn/Rigwalds_Charge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL1R3b0hhbmRTd29yZDVVbmlxdWUiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/ce7492e94d/TwoHandSword5Unique.png", baseType: "高山重刃" }, { name: "布鲁特斯的刑具 祭仪短杖", href: "https://poedb.tw/cn/Brutus_Lead_Sprinkler", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kTWFjZXMvVGhlTGVhZFNwcmlua2xlciIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/9a9217f832/TheLeadSprinkler.png", limit: "「苦痛」联盟限定", baseType: "祭仪短杖" }, { name: "寒光剑 重剑", href: "https://poedb.tw/cn/Shiversting", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL1R3b0hhbmRTd29yZDZVbmlxdWUiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/084a248453/TwoHandSword6Unique.png", baseType: "重剑" }, { name: "奇塔弗之盛宴 虚影巨斧", href: "https://poedb.tw/cn/Kitavas_Feast", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9LaXRhdmFzSHVuZ2VyIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/7e0b7ac41a/KitavasHunger.png", baseType: "虚影巨斧" }, { name: "萨费尔的智慧 圣记鸢盾", href: "https://poedb.tw/cn/Saffells_Frame", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZFN0ckludFVuaXF1ZTYiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/89281a7dc3/ShieldStrIntUnique6.png", baseType: "圣记鸢盾" }, { name: "远祖之颅 环形魔盾", href: "https://poedb.tw/cn/Matua_Tupuna", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL01hdHVhdHVwdW5hIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/db1b66f81d/Matuatupuna.png", baseType: "环形魔盾" }, { name: "山特立的回应 铜锻魔盾", href: "https://poedb.tw/cn/Sentaris_Answer", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NhbnRhcmlzQW5zd2VyIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/f4438d618f/SantarisAnswer.png", baseType: "铜锻魔盾" }, { name: "命运之风 恶灵长杖", href: "https://poedb.tw/cn/The_Winds_of_Fate", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvQW53ZW5zU3RhZmYiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/e26a5d3c65/AnwensStaff.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "恶灵长杖" }, { name: "峰回路转 艾兹麦刺盾", href: "https://poedb.tw/cn/Perepiteia", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0xpZ2h0bmluZ1NoaWVsZCIsInciOjIsImgiOjIsInNjYWxlIjoxLCJzeW50aGVzaXNlZCI6dHJ1ZX1d/05aa542efd/LightningShield.png", limit: "「虚空忆境」联盟限定", baseType: "艾兹麦刺盾" }, { name: "回声锻炉 狱炎重剑", href: "https://poedb.tw/cn/Echoforge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL0Nvc21pY0ZvcmdlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/df82c06267/CosmicForge.png", limit: "「贤主」限定掉落", baseType: "狱炎重剑" }, { name: "阿兹里的统治 审判长杖", href: "https://poedb.tw/cn/Atziris_Rule", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvUG9ydGVudE9mQUZhbHNlR29kIiwidyI6MiwiaCI6NCwic2NhbGUiOjEsInJlbGljIjo1fV0/3de8220276/PortentOfAFalseGod.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "审判长杖" }, { name: "艾许之面 瓦尔魔盾", href: "https://poedb.tw/cn/Eshs_Visage", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0VzaHNNaXJyb3JVcGdyYWRlZCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/f965a13213/EshsMirrorUpgraded.png", limit: "「精华」联盟限定\n艾许之镜 使用 艾许的祝福 升级", baseType: "瓦尔魔盾" }, { name: "创域 铁锻长杖", href: "https://poedb.tw/cn/Realmshaper", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmY1dW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/33929e1979/Staff5unique.png", baseType: "铁锻长杖" }, { name: "行刑之刃 虎牙巨剑", href: "https://poedb.tw/cn/Terminus_Est", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL1R3b0hhbmRTd29yZFVuaXF1ZTIiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/c5d5843861/TwoHandSwordUnique2.png", baseType: "虎牙巨剑" }, { name: "马雷格罗的染血透镜 复合刺盾", href: "https://poedb.tw/cn/Maligaros_Lens", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL01hbGlnYXJvc0xlbnMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/514791cb42/MaligarosLens.png", baseType: "复合刺盾" }, { name: "绿藤【仿品】 朽木之干", href: "https://poedb.tw/cn/Replica_Fencoil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmYxdW5pcXVlIiwidyI6MSwiaCI6NCwic2NhbGUiOjF9XQ/cff9022931/Staff1unique.png", baseType: "朽木之干" }, { name: "苦梦【仿品】 影语短杖", href: "https://poedb.tw/cn/Replica_Bitterdream", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9zY2VwdGVyOHVuaXF1ZTIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/085f7726de/scepter8unique2.png", baseType: "影语短杖" }, { name: "泽尔的放大器 光辉刺盾", href: "https://poedb.tw/cn/Zeels_Amplifier", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1plYWxzQW1wbGlmaWVyIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/d1e9af3da7/ZealsAmplifier.png", baseType: "光辉刺盾" }, { name: "汉恩的蔑视 领主战冠", href: "https://poedb.tw/cn/Ahns_Contempt", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0FobnNDb250ZW1wdCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/a946d28e48/AhnsContempt.png", baseType: "领主战冠" }, { name: "艾普的霸权 瓦尔魔盾", href: "https://poedb.tw/cn/Apeps_Supremacy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0FwZXBzU3VwcmVtYWN5IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/e97426b026/ApepsSupremacy.png", limit: "「穿越」联盟限定\n艾普之梦 使用 觉醒魔瓶 升级", baseType: "瓦尔魔盾" }, { name: "欧罗的贡品【仿品】 狱炎重剑", href: "https://poedb.tw/cn/Replica_Oros_Sacrifice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL09yb3NTYWNyaWZpY2UiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/82b813f27d/OrosSacrifice.png", baseType: "狱炎重剑" }, { name: "扭魂者 艾兹麦长杖", href: "https://poedb.tw/cn/Soulwrest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvVG9wRG93blN0YXZlSWNvbiIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/f62cfea775/TopDownStaveIcon.png", baseType: "艾兹麦长杖" }, { name: "乌尔尼多之吻 瓦尔巨斧", href: "https://poedb.tw/cn/Uul-Netols_Kiss", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9VdWxOZXRvbHNLaXNzIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/300d5ffe23/UulNetolsKiss.png", limit: "「乌尔尼多之域」限定掉落\n「精华」联盟限定\n使用 乌尔尼多的祝福 升级 乌尔尼多的拥抱", baseType: "瓦尔巨斧" }, { name: "巫木 松木塔盾", href: "https://poedb.tw/cn/Trolltimber_Spire", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZFN0clVuaXF1ZTMiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/062f3d11c8/ShieldStrUnique3.png", limit: "「风暴」联盟限定", baseType: "松木塔盾" }, { name: "终末之始 狮爪巨剑", href: "https://poedb.tw/cn/Doomsower", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL0Rvb21Tb3dlciIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/7d9d914b75/DoomSower.png", baseType: "狮爪巨剑" }, { name: "深渊之唤 艾兹麦坚盔", href: "https://poedb.tw/cn/Abyssus", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0FieXNzdXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/a12f5424c8/Abyssus.png", baseType: "艾兹麦坚盔" }, { name: "孔明的神算 远古魔盾", href: "https://poedb.tw/cn/Kongmings_Stratagem", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0tvbmdtaW5nc1N0cmF0YWdlbSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/b7f1e57399/KongmingsStratagem.png", baseType: "远古魔盾" }, { name: "降伏 艾兹麦塔盾", href: "https://poedb.tw/cn/The_Surrender", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0xvbmdpbmcyIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/c97882a68e/Longing2.png", limit: "「精华」联盟限定\n悬念 使用 乌尔尼多的祝福 升级", baseType: "艾兹麦塔盾" }, { name: "雷姆诺的豪情 萨姆尼盔", href: "https://poedb.tw/cn/Hrimnors_Resolve", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hyaW1ub3JzUmVzb2x2ZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/cb3ab90132/HrimnorsResolve.png", baseType: "萨姆尼盔" }, { name: "康戈的战炎 惧灵重锤", href: "https://poedb.tw/cn/Kongors_Undying_Rage", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvS29uZ29yc1VuZHlpbmdSYWdlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/5fa26110bc/KongorsUndyingRage.png", baseType: "惧灵重锤" }, { name: "烈炎之翼 厚装鸢盾", href: "https://poedb.tw/cn/Rise_of_the_Phoenix", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1Jpc2VvZnRoZXBob2VuaXgiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/965404630a/Riseofthephoenix.png", baseType: "厚装鸢盾" }, { name: "恐惧之缶 战争轻盾", href: "https://poedb.tw/cn/Chalice_of_Horrors", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0NoYWxpY2VvZmhvcnJvcnMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/532f7ec81c/Chaliceofhorrors.png", baseType: "战争轻盾" }, { name: "霸权时代 审判长杖", href: "https://poedb.tw/cn/Hegemonys_Era", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvSGVnZW1vbnlzRXJhIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/85929506ae/HegemonysEra.png", baseType: "审判长杖" }, { name: "费尔之帽 三角帽", href: "https://poedb.tw/cn/Fairgraves_Tricorne", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0ZhaXJncmF2ZXNUcmljb3JuZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/6a828c8150/FairgravesTricorne.png", baseType: "三角帽" }, { name: "艾兹麦的荣光 粗铁盔", href: "https://poedb.tw/cn/Ezomyte_Peak", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0V6b215dGVQZWFrIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/058b75e4e0/EzomytePeak.png", baseType: "粗铁盔" }, { name: "阿兹里的刑刃 瓦尔巨斧", href: "https://poedb.tw/cn/Atziris_Disfavour", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9BdHppcmlzRGlzZmF2b3VyIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/1ffab716f8/AtzirisDisfavour.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "瓦尔巨斧" }, { name: "猎巫人的审判 贵族长杖", href: "https://poedb.tw/cn/Witchhunters_Judgment", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvQnJhbmREZXRvbmF0ZVN0YWZmIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/07d64ef02c/BrandDetonateStaff.png", limit: "「庄园化身欧莱娜」限定掉落\n「庄园」联盟限定", baseType: "贵族长杖" }, { name: "王者之刃 霸主巨斧", href: "https://poedb.tw/cn/Kingmaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9BbGV4YXhlYW5kaGVhcnRicmVha2VyIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/fb47351eee/Alexaxeandheartbreaker.png", baseType: "霸主巨斧" }, { name: "无形炼狱 皇室坚盔", href: "https://poedb.tw/cn/The_Formless_Inferno", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Zvcm1sZXNzSW5GbGFtZXNVUEdSQURFIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/3ac12068fd/FormlessInFlamesUPGRADE.png", limit: "「精华」联盟限定\n无形火炬 使用 索伏的祝福 升级", baseType: "皇室坚盔" }, { name: "葛尔贡的凝视 弑君之面", href: "https://poedb.tw/cn/Gorgons_Gaze", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1BpbGxhcnNPZkFydW4iLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/49ec219fc5/PillarsOfArun.png", limit: "「阿尔伦神柱」限定掉落", baseType: "弑君之面" }, { name: "德瑞索的勇者之盾 古代圆盾", href: "https://poedb.tw/cn/Daressos_Courage", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZFN0ckRleFVuaXF1ZTEiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/320f1e78fa/ShieldStrDexUnique1.png", baseType: "古代圆盾" }, { name: "科塔拉的调节器 王权刺盾", href: "https://poedb.tw/cn/Qotras_Regulator", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0Fnb255T2ZEZWNheSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/025ae438c5/AgonyOfDecay.png", limit: "「驱灵仪式」联盟限定", baseType: "王权刺盾" }, { name: "不朽意志 威能鸢盾", href: "https://poedb.tw/cn/The_Immortal_Will", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0hhcmJpbmdlclNoaWVsZFVwZ3JhZGVkIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/a259d55fe1/HarbingerShieldUpgraded.png", limit: "「灌注的降临之地」限定掉落\n「庄园」联盟限定\n不屈之志 使用 光棱卷轴 升级", baseType: "威能鸢盾" }, { name: "威严之刃 名贵巨剑", href: "https://poedb.tw/cn/Queens_Decree", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL1R3b0hhbmRTd29yZFVuaXF1ZTMiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/a79e04039c/TwoHandSwordUnique3.png", baseType: "名贵巨剑" }, { name: "艾尔弗雷 狼首皮盔", href: "https://poedb.tw/cn/Elevore", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1dpbGRjYWxsIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/bf0a462a3a/Wildcall.png", baseType: "狼首皮盔" }, { name: "寒焰 革兜", href: "https://poedb.tw/cn/Heatshiver", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlYXRzaGl2ZXIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/b1860c890e/Heatshiver.png", baseType: "革兜" }, { name: "鼠巢 熊首皮盔", href: "https://poedb.tw/cn/Rats_Nest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1JhdHNOZXN0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/857976167e/RatsNest.png", baseType: "熊首皮盔" }, { name: "裂颅 刚猛巨锤", href: "https://poedb.tw/cn/Trypanon", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvVHJ5cGFub24iLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/3152ab4124/Trypanon.png", baseType: "刚猛巨锤" }, { name: "苍空之翎 绸缎之兜", href: "https://poedb.tw/cn/Saqawals_Flock", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0F2aWFuSGVsbWV0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/29e7c95170/AvianHelmet.png", limit: "「苍空初子 萨奇沃」限定掉落\n「猎魔」联盟限定", baseType: "绸缎之兜" }, { name: "玛拉凯的远见 领主战冠", href: "https://poedb.tw/cn/Malachais_Vision", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01hbGFjaGFpc1Zpc2lvbiIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/bbdd9c241f/MalachaisVision.png", limit: "福尔的远见 使用 瓦尔宝珠 升级", baseType: "领主战冠" }, { name: "无击 残暴巨剑", href: "https://poedb.tw/cn/Hiltless", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL0hpbHRsZXNzIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/04689b7d41/Hiltless.png", baseType: "残暴巨剑" }, { name: "极地之眼 罪者之帽", href: "https://poedb.tw/cn/Alphas_Howl", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1dvbGZoZWFkIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/2acc10e593/Wolfhead.png", baseType: "罪者之帽" }, { name: "吉尔菲的净罪之锤 铜影巨锤", href: "https://poedb.tw/cn/Geofris_Baptism", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvVHdvSGFuZE1hY2U3VW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/378419527e/TwoHandMace7Unique.png", baseType: "铜影巨锤" }, { name: "禅意苦行僧 残暴巨剑", href: "https://poedb.tw/cn/The_Dancing_Dervish", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL1JoeXNibGFkZSIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/3ed974e708/Rhysblade.png", baseType: "残暴巨剑" }, { name: "厌食者 狮首皮盔", href: "https://poedb.tw/cn/Obscurantis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL09ic2N1cmFudGlzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/95ebfbbef1/Obscurantis.png", baseType: "狮首皮盔" }, { name: "无形火炬 皇室坚盔", href: "https://poedb.tw/cn/The_Formless_Flame", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Zvcm1sZXNzSW5GbGFtZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/baa0d0009b/FormlessInFlames.png", limit: "「索伏之域」限定掉落\n「精华」联盟限定\n使用 索伏的祝福 升级 无形炼狱", baseType: "皇室坚盔" }, { name: "乱世之翼 艾兹麦巨斧", href: "https://poedb.tw/cn/Wings_of_Entropy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kQXhlcy9FbnRyb3B5d2luZ3MiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/86e128789a/Entropywings.png", baseType: "艾兹麦巨斧" }, { name: "刺棘之冠 藤蔓之冠", href: "https://poedb.tw/cn/Crown_of_Thorns", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Nyb3dub2ZUaG9ybnMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/23054b0443/CrownofThorns.png", baseType: "藤蔓之冠" }, { name: "安赛娜丝的迅敏之冠 铁锻之冠", href: "https://poedb.tw/cn/Asenaths_Mark", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0h5cnJpc01hcmsiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/4e0f1cc6a8/HyrrisMark.png", baseType: "铁锻之冠" }, { name: "极地之眼【仿品】 罪者之帽", href: "https://poedb.tw/cn/Replica_Alphas_Howl", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1dvbGZoZWFkIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/2acc10e593/Wolfhead.png", baseType: "罪者之帽" }, { name: "金缕帽 皮帽", href: "https://poedb.tw/cn/Goldrim", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldERleFVuaXF1ZTIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/7f4908ef2f/HelmetDexUnique2.png", baseType: "皮帽" }, { name: "雷鸣洗礼 钢镜刺盾", href: "https://poedb.tw/cn/Font_of_Thunder", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0ZvbnRPZlRodW5kZXIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/dec53fec0c/FontOfThunder.png", limit: "「夺宝奇兵」联盟限定", baseType: "钢镜刺盾" }, { name: "疯狂边界 术雕巨剑", href: "https://poedb.tw/cn/Edge_of_Madness", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL0VkZ2VPZk1hZG5lc3MiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/5ab6c808b5/EdgeOfMadness.png", baseType: "术雕巨剑" }, { name: "坚毅之食 坚毅塔盾", href: "https://poedb.tw/cn/Magna_Eclipsis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL01hZ25pc0VjbGlwc2lzIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/1e76b68e1a/MagnisEclipsis.png", limit: "「Vendor recipe system」限定掉落", baseType: "坚毅塔盾" }, { name: "血债 掠夺者之盔", href: "https://poedb.tw/cn/Blood_Price", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Jsb29kUHJpY2VIZWxtVW5pcXVlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/ae8ee271e3/BloodPriceHelmUnique.png", baseType: "掠夺者之盔" }, { name: "红契符印 祭仪之冠", href: "https://poedb.tw/cn/Mark_of_the_Red_Covenant", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1BoYW50YXNtbGFGbGFtZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/0d222d092f/PhantasmlaFlame.png", baseType: "祭仪之冠" }, { name: "幽冥灵王 灵骨之冠", href: "https://poedb.tw/cn/Wraithlord", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1dyYWl0aGxvcmQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/090d3d6bb3/Wraithlord.png", baseType: "灵骨之冠" }, { name: "费西亚的花环 铁锻之冠", href: "https://poedb.tw/cn/Wreath_of_Phrecia", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1dyZWF0aF9vZl9QaHJlY2lhIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/7ae5bac7c5/Wreath_of_Phrecia.png", baseType: "铁锻之冠" }, { name: "裂空者 狱炎重剑", href: "https://poedb.tw/cn/Voidforge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL1N0YXJmb3JnZSIsInciOjIsImgiOjQsInNjYWxlIjoxLCJlbGRlciI6dHJ1ZSwic2hhcGVyIjp0cnVlfV0/7e1bc3d425/Starforge.png", limit: "「裂界者」限定掉落", baseType: "狱炎重剑" }, { name: "狮眼的荣耀之盾 坚毅塔盾", href: "https://poedb.tw/cn/Lioneyes_Remorse", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZFN0clVuaXF1ZTYiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/dd7ee8e1a0/ShieldStrUnique6.png", baseType: "坚毅塔盾" }, { name: "德瑞的蔑视 月影之冠", href: "https://poedb.tw/cn/Doedres_Scorn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0RvZWRyZXNTY29ybiIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/16c4d034ee/DoedresScorn.png", baseType: "月影之冠" }, { name: "男爵 护面盔", href: "https://poedb.tw/cn/The_Baron", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RoZUJhcm9uIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/7a7ba87170/TheBaron.png", baseType: "护面盔" }, { name: "索伏的始源 城塞战弓", href: "https://poedb.tw/cn/Xophs_Inception", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Cb3dzL0Jsb29kUGVyaWdyZWUiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/7856c171f7/BloodPerigree.png", limit: "「索伏之域」限定掉落\n「精华」联盟限定\n使用 索伏的祝福 升级 索伏的爱抚", baseType: "城塞战弓" }, { name: "追逐之羽 灵骨之冠", href: "https://poedb.tw/cn/Plume_of_Pursuit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1JhdmVuc0Nyb3duIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/dc40362912/RavensCrown.png", limit: "「凶兆贾纳尔」限定掉落\n「庄园」联盟限定", baseType: "灵骨之冠" }, { name: "新生之徽 朽木鸢盾", href: "https://poedb.tw/cn/Springleaf", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZFN0ckludFVuaXF1ZTIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/def84c6e93/ShieldStrIntUnique2.png", baseType: "朽木鸢盾" }, { name: "切特斯的威权 操灵者之冠", href: "https://poedb.tw/cn/Chitus_Apex", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0NoaXR1c0FwZXgiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/65697b1d09/ChitusApex.png", baseType: "操灵者之冠" }, { name: "创造回声 皇室坚盔", href: "https://poedb.tw/cn/Echoes_of_Creation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RoZVR3aXN0aW5nU2NyZWFtIiwidyI6MiwiaCI6Miwic2NhbGUiOjEsInNoYXBlciI6dHJ1ZX1d/a52bc6cab0/TheTwistingScream.png", limit: "「塑界者」限定掉落", baseType: "皇室坚盔" }, { name: "苦痛狂鲨 霸者刺盾", href: "https://poedb.tw/cn/Jaws_of_Agony", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0JlYXJUcmFwU2hpZWxkMiIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/4d66593647/BearTrapShield2.png", baseType: "霸者刺盾" }, { name: "元素的庇护 威能鸢盾", href: "https://poedb.tw/cn/Prism_Guardian", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1RoZUNvcnVuZHVtIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/f9ca50a663/TheCorundum.png", baseType: "威能鸢盾" }, { name: "叶兰德尔的拥抱 远古之祭", href: "https://poedb.tw/cn/Earendels_Embrace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9FYXJlbmRlbHNFbWJyYWNlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/7fbecdb2b3/EarendelsEmbrace.png", baseType: "远古之祭" }, { name: "暗夜毒牙 操灵者之冠", href: "https://poedb.tw/cn/Fenumus_Toxins", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1NwaWRlckFybW91ckhlbG1ldCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/da7582cbf6/SpiderArmourHelmet.png", limit: "「暗夜初子 费努姆斯」限定掉落\n「猎魔」联盟限定", baseType: "操灵者之冠" }, { name: "禁域面容 操灵者之冠", href: "https://poedb.tw/cn/Sandstorm_Visage", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Fud2Vuc1RpYXJhIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/db74af1ed2/AnwensTiara.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "操灵者之冠" }, { name: "威尔玛的报偿 日耀之冠", href: "https://poedb.tw/cn/Wilmas_Requital", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1dpbG1hc1JlcXVpdGFsIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/32cf26ca5b/WilmasRequital.png", baseType: "日耀之冠" }, { name: "欧罗的贡品 狱炎重剑", href: "https://poedb.tw/cn/Oros_Sacrifice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL09yb3NTYWNyaWZpY2UiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/82b813f27d/OrosSacrifice.png", baseType: "狱炎重剑" }, { name: "嗜雷之冠 日耀之冠", href: "https://poedb.tw/cn/Cowl_of_the_Ceraunophile", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1N1cHBvcnRlcjFoZWxtZXRDIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/9455b25c23/Supporter1helmetC.png", limit: "「菌潮」联盟限定", baseType: "日耀之冠" }, { name: "酷寒的凝视 灵能之笼", href: "https://poedb.tw/cn/Rime_Gaze", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldERleEludFVuaXF1ZTEiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/607641b0c2/HelmetDexIntUnique1.png", baseType: "灵能之笼" }, { name: "冰霜之镜 彩绘轻盾", href: "https://poedb.tw/cn/Kaltenhalt", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZERleFVuaXF1ZTYiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/543c4a2444/ShieldDexUnique6.png", baseType: "彩绘轻盾" }, { name: "雷目 日耀之冠", href: "https://poedb.tw/cn/Thundersight", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0V4cGxvcmVyc1Zpc2lvbkxpZ2h0bmluZyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/56f2f88c51/ExplorersVisionLightning.png", baseType: "日耀之冠" }, { name: "破碎信念 威能鸢盾", href: "https://poedb.tw/cn/Broken_Faith", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NhbnRvbmlzRmFpdGgiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/82ea2899a8/SantonisFaith.png", limit: "「强酸洞穴」限定掉落\n「战团」联盟限定", baseType: "威能鸢盾" }, { name: "临死的施舍 钢镜刺盾", href: "https://poedb.tw/cn/Lepers_Alms", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0xlcGVyc0FsbXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/3f9c2a1cec/LepersAlms.png", baseType: "钢镜刺盾" }, { name: "康戈的战炎【仿品】 惧灵重锤", href: "https://poedb.tw/cn/Replica_Kongors_Undying_Rage", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvS29uZ29yc1VuZHlpbmdSYWdlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/5fa26110bc/KongorsUndyingRage.png", baseType: "惧灵重锤" }, { name: "禁语 灵能之笼", href: "https://poedb.tw/cn/Scolds_Bridle", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1Njb2xkc0JyaWRsZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/d8277c58aa/ScoldsBridle.png", limit: "「苦痛」联盟限定", baseType: "灵能之笼" }, { name: "轮回 和谐魔盾", href: "https://poedb.tw/cn/Malachais_Loop", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL01hbGFjaGFpTG9vcCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/8c38fb6a4e/MalachaiLoop.png", baseType: "和谐魔盾" }, { name: "强健否决者 灵能之笼", href: "https://poedb.tw/cn/Hale_Negator", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hhbGVOZWdhdG9yIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/f1a292f713/HaleNegator.png", limit: "「墨血库高」限定掉落\n「地心」联盟限定", baseType: "灵能之笼" }, { name: "惊险刺激 轻骑盔", href: "https://poedb.tw/cn/Thrillsteel", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1vZldhciIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/887e20115c/HelmofWar.png", baseType: "轻骑盔" }, { name: "终息 拳钉", href: "https://poedb.tw/cn/Last_Resort", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9DbGF3cy9OZXJhc0xhc3RSZXNvcnQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/5f5a6bd205/NerasLastResort.png", baseType: "拳钉" }, { name: "伊芙班的诡计 灵主之环", href: "https://poedb.tw/cn/Ylfebans_Trickery", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1lsZmViYW4iLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/c40f798e46/Ylfeban.png", limit: "「风暴」联盟限定", baseType: "灵主之环" }, { name: "敲诈笑颜 清视护盔", href: "https://poedb.tw/cn/The_Tricksters_Smile", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0F6bWVyaUhlbG1ldCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/8f7af19434/AzmeriHelmet.png", limit: "「禁咒荒林」限定掉落", baseType: "清视护盔" }, { name: "丧钟 金面护盔", href: "https://poedb.tw/cn/Deidbell", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0RlaWRiZWxsIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/fd66b0b28f/Deidbell.png", baseType: "金面护盔" }, { name: "艾许之镜 瓦尔魔盾", href: "https://poedb.tw/cn/Eshs_Mirror", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0VzaHNNaXJyb3IiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/983cf91bf4/EshsMirror.png", limit: "「艾许之域」限定掉落\n「精华」联盟限定\n使用 艾许的祝福 升级 艾许之面", baseType: "瓦尔魔盾" }, { name: "黑阳之冠 漆彩之盔", href: "https://poedb.tw/cn/Black_Sun_Crest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0JsYWNrc3VuY3Jlc3QiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/d5c3617a52/Blacksuncrest.png", baseType: "漆彩之盔" }, { name: "光辉之颅 精兵之盔", href: "https://poedb.tw/cn/Skullhead", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1NrdWxsaGVhZCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/55adeb7e35/Skullhead.png", baseType: "精兵之盔" }, { name: "雏鸟 漆彩之盔", href: "https://poedb.tw/cn/The_Fledgling", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0V4dHJlbWVGb2N1cyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/d900d9764f/ExtremeFocus.png", limit: "「契约：荣誉之心」限定掉落\n「夺宝奇兵」联盟限定", baseType: "漆彩之盔" }, { name: "德沃托的信念之盔 梦魇战盔", href: "https://poedb.tw/cn/Devotos_Devotion", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldFN0ckRleDJ1bmlxdWUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/65fa7daa88/HelmetStrDex2unique.png", baseType: "梦魇战盔" }, { name: "夜幕 巨盔", href: "https://poedb.tw/cn/Veil_of_the_Night", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1ZlaWxPZlRoZU5pZ2h0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/809ee0994f/VeilOfTheNight.png", baseType: "巨盔" }, { name: "马赫索托之诈 冷钢鸢盾", href: "https://poedb.tw/cn/Mahuxotls_Machination", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL01haHV4b3RsU2hpZWxkIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/b39b6fe011/MahuxotlShield.png", limit: "「致命贪婪」联盟限定", baseType: "冷钢鸢盾" }, { name: "渴望之冠 全罩战盔", href: "https://poedb.tw/cn/Crest_of_Desire", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01hZ25pZmljYXRpb24iLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/1c4139ef41/Magnification.png", limit: "「夺宝奇兵」联盟限定", baseType: "全罩战盔" }, { name: "叶兰德尔的拥抱【仿品】 远古之祭", href: "https://poedb.tw/cn/Replica_Earendels_Embrace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9TY2VwdGVycy9FYXJlbmRlbHNFbWJyYWNlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/7fbecdb2b3/EarendelsEmbrace.png", baseType: "远古之祭" }, { name: "私欲的光辉 士兵之盔", href: "https://poedb.tw/cn/Honourhome", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hvbm91cmhvbWUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/11382c25e9/Honourhome.png", baseType: "士兵之盔" }, { name: "收割者【仿品】 灵玉巨斧", href: "https://poedb.tw/cn/Replica_Harvest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9UaGVFeHRyYWN0b3IiLCJ3IjoyLCJoIjo0LCJzY2FsZSI6MX1d/8452349a24/TheExtractor.png", baseType: "灵玉巨斧" }, { name: "拉其塔之舞 符文巨剑", href: "https://poedb.tw/cn/Rakiatas_Dance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL1Jha2lhdGFTd29yZCIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/ec593eeaa8/RakiataSword.png", baseType: "符文巨剑" }, { name: "光明偷猎者 强化巨盔", href: "https://poedb.tw/cn/Lightpoacher", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0FieXNzSGVsbWV0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/45c869b05c/AbyssHelmet.png", limit: "「Abyss Lich」限定掉落\n「深渊」联盟限定", baseType: "强化巨盔" }, { name: "深海魔角 行政者战冠", href: "https://poedb.tw/cn/Craiceanns_Chitin", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0NyYWJVbmlxdWVIZWxtZXQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/70715aae61/CrabUniqueHelmet.png", limit: "「深海初子 克林斯昂」限定掉落\n「猎魔」联盟限定", baseType: "行政者战冠" }, { name: "灵漩 战意之盔", href: "https://poedb.tw/cn/Mindspiral", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01pbmRzcGlyYWwiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/e4b2c14ad7/Mindspiral.png", baseType: "战意之盔" }, { name: "夜幕【仿品】 巨盔", href: "https://poedb.tw/cn/Replica_Veil_of_the_Night", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1ZlaWxPZlRoZU5pZ2h0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/809ee0994f/VeilOfTheNight.png", baseType: "巨盔" }, { name: "暴君王冠 行政者战冠", href: "https://poedb.tw/cn/Crown_of_the_Tyrant", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RoZUltcG9zaW5nIENyb3duIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/e9e915daa7/TheImposing%20Crown.png", limit: "「水晶之王奥尔」限定掉落\n「地心」联盟限定", baseType: "行政者战冠" }, { name: "饮魂者面罩 行政者战冠", href: "https://poedb.tw/cn/Mask_of_the_Spirit_Drinker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01hc2tvZnRoZVNwaXJpdERyaW5rZXIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/7a9bcf5886/MaskoftheSpiritDrinker.png", limit: "「不朽圣殿」限定掉落\n「穿越」联盟限定\n使用 召唤魔瓶 升级 缝合恶魔面罩", baseType: "行政者战冠" }, { name: "吉尔菲的荣光 强化巨盔", href: "https://poedb.tw/cn/Geofris_Crest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0dlb2ZyaXNDcmVzdCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/4daae52cf5/GeofrisCrest.png", baseType: "强化巨盔" }, { name: "海昂的狂怒 军团长剑", href: "https://poedb.tw/cn/Hyaons_Fury", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9PbmVIYW5kV2VhcG9ucy9PbmVIYW5kU3dvcmRzL0h5YW9uc0Z1cnkiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/1abaf6507b/HyaonsFury.png", baseType: "军团长剑" }, { name: "缺角帝冠 箴言战冠", href: "https://poedb.tw/cn/The_Broken_Crown", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Jyb2tlbkNyb3duIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/98b19a6cfb/BrokenCrown.png", baseType: "箴言战冠" }, { name: "缝合恶魔面罩 行政者战冠", href: "https://poedb.tw/cn/Mask_of_the_Stitched_Demon", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01hc2tvZnRoZVN0aXRjaGVkRGVtb24iLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/0e24c9f156/MaskoftheStitchedDemon.png", limit: "「穿越」联盟限定\n饮魂者面罩 使用 召唤魔瓶 升级", baseType: "行政者战冠" }, { name: "海王冠冕 箴言战冠", href: "https://poedb.tw/cn/The_Brine_Crown", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RoZUJyaW5lQ3Jvd24iLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/785aa5f630/TheBrineCrown.png", baseType: "箴言战冠" }, { name: "祭礼之雨 梦魇战盔", href: "https://poedb.tw/cn/The_Bringer_of_Rain", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RoZUJyaW5nZXJvZlJhaW4iLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/3878572958/TheBringerofRain.png", baseType: "梦魇战盔" }, { name: "福尔的远见 领主战冠", href: "https://poedb.tw/cn/Volls_Vision", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1ZvbGxzVmlzaW9uIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/c8dd3f6cf3/VollsVision.png", limit: "使用 瓦尔宝珠 升级 玛拉凯的远见", baseType: "领主战冠" }, { name: "破晓者 巨型塔盾", href: "https://poedb.tw/cn/Dawnbreaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1N1cGVyaGVhdGVkU2hpZWxkIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/59e3552a9b/SuperheatedShield.png", limit: "「灼督」限定掉落", baseType: "巨型塔盾" }, { name: "内省之冠 箴言战冠", href: "https://poedb.tw/cn/Crown_of_the_Inward_Eye", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Nyb3duT2ZUaGVJbndhcmRFeWUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/fdb20856e4/CrownOfTheInwardEye.png", limit: "「诸界觉者希鲁斯」限定掉落", baseType: "箴言战冠" }, { name: "众生指引 箴言战冠", href: "https://poedb.tw/cn/Speakers_Wreath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01pbmlvbkhlbG1ldCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/7cf5db368e/MinionHelmet.png", baseType: "箴言战冠" }, { name: "禁断的军帽 强化巨盔", href: "https://poedb.tw/cn/Forbidden_Shako", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RoZUVwaXBoYW55IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/e8e44ba854/TheEpiphany.png", limit: "「庄园化身欧莱娜」限定掉落\n「庄园」联盟限定", baseType: "强化巨盔" }, { name: "南方雷霆圣杖 帝国长杖", href: "https://poedb.tw/cn/Agnerod_South", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmY2dW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/8b60f5a033/Staff6unique.png", baseType: "帝国长杖" }, { name: "记忆囚笼 领主战冠", href: "https://poedb.tw/cn/Memory_Vault", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0VsZGVyR3VhcmRpYW4iLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/efcf4a9c86/ElderGuardian.png", baseType: "领主战冠" }, { name: "深渊之唤【仿品】 艾兹麦坚盔", href: "https://poedb.tw/cn/Replica_Abyssus", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0FieXNzdXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/a12f5424c8/Abyssus.png", baseType: "艾兹麦坚盔" }, { name: "维里迪的面纱 领主战冠", href: "https://poedb.tw/cn/Viridis_Veil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0NvbnN0cmljdGluZ0Nyb3duIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/04ee655ca5/ConstrictingCrown.png", limit: "「贤主」限定掉落", baseType: "领主战冠" }, { name: "玛拉凯的祭具 铁锻之面", href: "https://poedb.tw/cn/Malachais_Simula", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01hbGFjaGFpc1NpbXVsYSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/8bf83455f4/MalachaisSimula.png", baseType: "铁锻之面" }, { name: "奇塔弗之渴望 热战之盔", href: "https://poedb.tw/cn/Kitavas_Thirst", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0tpdGF2YXNUaGlyc3QiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/585034f884/KitavasThirst.png", baseType: "热战之盔" }, { name: "耀日 威能鸢盾", href: "https://poedb.tw/cn/Invictus_Solaris", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0ludmljdHVzIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/98194c56fe/Invictus.png", baseType: "威能鸢盾" }, { name: "夜幕召唤 疫灾之面", href: "https://poedb.tw/cn/Curtain_Call", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0N1cnRhaW5DYWxsIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/5f3eb95031/CurtainCall.png", baseType: "疫灾之面" }, { name: "意志交锋 黄金之面", href: "https://poedb.tw/cn/Willclash", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01pbmRCbG9ja01hc2siLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/aeb4a78ada/MindBlockMask.png", baseType: "黄金之面" }, { name: "北方雷霆圣杖 帝国长杖", href: "https://poedb.tw/cn/Agnerod_North", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9TdGF2ZXMvU3RhZmY2dW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/8b60f5a033/Staff6unique.png", baseType: "帝国长杖" }, { name: "共鸣之面【仿品】 节庆之面", href: "https://poedb.tw/cn/Replica_Leer_Cast", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldERleEludDl4IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/6693f97fdf/HelmetDexInt9x.png", baseType: "节庆之面" }, { name: "怨恨之眼 无情之面", href: "https://poedb.tw/cn/Eye_of_Malice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0V5ZU9mRGVzaXJlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/4218c3cc66/EyeOfDesire.png", baseType: "无情之面" }, { name: "嗜火之冠 艾兹麦坚盔", href: "https://poedb.tw/cn/Cowl_of_the_Thermophile", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1N1cHBvcnRlcjFoZWxtZXRCIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/3a31f05cd3/Supporter1helmetB.png", limit: "「菌潮」联盟限定", baseType: "艾兹麦坚盔" }, { name: "悬念 艾兹麦塔盾", href: "https://poedb.tw/cn/The_Anticipation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0xvbmdpbmcxIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/50fbf4d6ba/Longing1.png", limit: "「乌尔尼多之域」限定掉落\n「精华」联盟限定\n使用 乌尔尼多的祝福 升级 降伏", baseType: "艾兹麦塔盾" }, { name: "大地之牙 鹰喙之面", href: "https://poedb.tw/cn/Farruls_Bite", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RpZ2VySGVsbWV0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/c056a59c62/TigerHelmet.png", limit: "「大地初子 法瑞尔」限定掉落\n「猎魔」联盟限定", baseType: "鹰喙之面" }, { name: "影月 祭者圆盾", href: "https://poedb.tw/cn/Vix_Lunaris", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL1NoaWVsZFN0ckRleFVuaXF1ZTQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/24175c8ffb/ShieldStrDexUnique4.png", baseType: "祭者圆盾" }, { name: "风暴拘束 无情之面", href: "https://poedb.tw/cn/The_Tempests_Binding", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0NoaWxsU2hvY2tIYXJiaW5nZXJNYXNrIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/9a113d997b/ChillShockHarbingerMask.png", limit: "「降临之地」限定掉落\n「先驱」联盟限定\n使用 解除卷轴 升级 风雪释放", baseType: "无情之面" }, { name: "谜容 瓦尔之面", href: "https://poedb.tw/cn/The_Vertex", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RoZVZlcnRleCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/e4cca2929d/TheVertex.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "瓦尔之面" }, { name: "异教面纱 弑神之面", href: "https://poedb.tw/cn/Heretics_Veil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0ZhY2VPZkRpdmluaXR5IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/dcefc8975e/FaceOfDivinity.png", baseType: "弑神之面" }, { name: "鸥喙 祸鸦之面", href: "https://poedb.tw/cn/The_Gull", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RoZUd1bGwiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/ca1678efd9/TheGull.png", limit: "「支配」联盟限定", baseType: "祸鸦之面" }, { name: "裁决面罩 行政者战冠", href: "https://poedb.tw/cn/Mask_of_the_Tribunal", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldE9mRG9taW5hbmNlMiIsInciOjIsImgiOjIsInNjYWxlIjoxLCJzeW50aGVzaXNlZCI6dHJ1ZX1d/7cac104f3e/HelmetOfDominance2.png", limit: "「虚空忆境」联盟限定", baseType: "行政者战冠" }, { name: "分形思维 瓦尔之面", href: "https://poedb.tw/cn/Fractal_Thoughts", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0ZyYWN0YWx0aG91Z2h0cyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/64d44c7c52/Fractalthoughts.png", baseType: "瓦尔之面" }, { name: "害人之口 唤骨头盔", href: "https://poedb.tw/cn/Maw_of_Mischief", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01hd09mTWlzY2hpZWYiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/1e970a0f36/MawOfMischief.png", baseType: "唤骨头盔" }, { name: "风雪释放 无情之面", href: "https://poedb.tw/cn/The_Tempests_Liberation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hhcmJpbmdlckhlbG1VcGdyYWRlZCIsInciOjIsImgiOjIsInNjYWxlIjoxLCJyZWxpYyI6Nn1d/3cd51ee5dd/HarbingerHelmUpgraded.png", limit: "「灌注的降临之地」限定掉落\n「庄园」联盟限定\n风暴拘束 使用 解除卷轴 升级", baseType: "无情之面" }, { name: "混沌一瞥 瓦尔之面", href: "https://poedb.tw/cn/Glimpse_of_Chaos", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1ZhYWxDb3JydXB0aW9uSGVsbWV0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/3476e5818d/VaalCorruptionHelmet.png", limit: "「致命贪婪」联盟限定", baseType: "瓦尔之面" }, { name: "刺棘宝甲 铁制背心", href: "https://poedb.tw/cn/Bramblejack", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9CcmFtYmxlamFjayIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/d2e07d1ed8/Bramblejack.png", baseType: "铁制背心" }, { name: "卡迪甘王冠 符文王冠", href: "https://poedb.tw/cn/Cadigans_Crown", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0FkYXB0YXRpb25IZWxtZXRVbmlxdWUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/693ad15174/AdaptationHelmetUnique.png", limit: "「堕落之源欧罗什」限定掉落\n「先祖秘藏」联盟限定", baseType: "符文王冠" }, { name: "信仰守卫 符文头盔", href: "https://poedb.tw/cn/Faithguard", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1NwaXJpdEhlbG1ldFVuaXF1ZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/0921dc17df/SpiritHelmetUnique.png", limit: "「先祖秘藏」联盟限定", baseType: "符文头盔" }, { name: "烈阳铠 铜锻板甲", href: "https://poedb.tw/cn/Solaris_Lorica", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy90b3JuZmxlc2hvZmdvZHMiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/420988ec91/tornfleshofgods.png", baseType: "铜锻板甲" }, { name: "上古之颅 唤骨头盔", href: "https://poedb.tw/cn/Ancient_Skull", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvRWZmZWN0cy9IYXRzL0NodWh1dGx1c1NrdWxsIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/65537c5ac3/ChuhutlusSkull.png", baseType: "唤骨头盔" }, { name: "智者之秘 鹰喙之面", href: "https://poedb.tw/cn/Mind_of_the_Council", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RodW5kZXJpbmdXaGlzcGVycyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/dd96346bfc/ThunderingWhispers.png", limit: "「预言」联盟限定", baseType: "鹰喙之面" }, { name: "斯塔空加之首 绸缎之兜", href: "https://poedb.tw/cn/Starkonjas_Head", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Z1cnJ5aGVhZG9mc3RhcmtvbmphIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/ba13fa5202/Furryheadofstarkonja.png", baseType: "绸缎之兜" }, { name: "狮眼的视线 征战重铠", href: "https://poedb.tw/cn/Lioneyes_Vision", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9MaW9uZXllc0FybW91ciIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/b6e10a9216/LioneyesArmour.png", baseType: "征战重铠" }, { name: "独断专行 决斗之铠", href: "https://poedb.tw/cn/Pragmatism", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9HcmVlbmV5ZXNBcm1vdXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/bef792208d/GreeneyesArmour.png", limit: "「禁咒荒林」限定掉落", baseType: "决斗之铠" }, { name: "深海魔甲 金耀之铠", href: "https://poedb.tw/cn/Craiceanns_Carapace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9DcmFiVW5pcXVlIiwidyI6MiwiaCI6Mywic2NhbGUiOjEsInJlbGljIjo0fV0/7bbc3f9ca0/CrabUnique.png", limit: "「深海初子 克林斯昂」限定掉落\n「猎魔」联盟限定", baseType: "金耀之铠" }, { name: "贪婪之拥 金耀之铠", href: "https://poedb.tw/cn/Greeds_Embrace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9HcmVlZHNFbWJyYWNlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/0e8984128f/GreedsEmbrace.png", baseType: "金耀之铠" }, { name: "三龙战纪 黄金之面", href: "https://poedb.tw/cn/The_Three_Dragons", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RocmVlRHJhZ29ucyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/50afe0768b/ThreeDragons.png", baseType: "黄金之面" }, { name: "卓识 日耀之冠", href: "https://poedb.tw/cn/Flamesight", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0V4cGxvcmVyc1Zpc2lvbkZpcmUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/972275807c/ExplorersVisionFire.png", baseType: "日耀之冠" }, { name: "金珏之缮 精制皮甲", href: "https://poedb.tw/cn/Kintsugi", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9LaW50c3VnaSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/8fcd7ea593/Kintsugi.png", limit: "「预言」联盟限定", baseType: "精制皮甲" }, { name: "森林之后 命运皮甲", href: "https://poedb.tw/cn/Queen_of_the_Forest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9RdWVlbm9mdGhlRm9yZXN0IiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/bd3ec993e7/QueenoftheForest.png", baseType: "命运皮甲" }, { name: "篡夺者的救赎 永恒坚盔", href: "https://poedb.tw/cn/Usurpers_Penance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1VuYnJpZGxlZFJhZ2UiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/3d6a6901bb/UnbridledRage.png", limit: "「先祖秘藏」联盟限定", baseType: "永恒坚盔" }, { name: "狐毛铠 狂野部族皮甲", href: "https://poedb.tw/cn/Foxshade", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Gb3hzaGFkZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/bf15e97218/Foxshade.png", baseType: "狂野部族皮甲" }, { name: "皇帝的警戒 冷钢鸢盾", href: "https://poedb.tw/cn/Emperors_Vigilance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0hpZ2hQcmllc3RTaGllbGQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/4c24c383b8/HighPriestShield.png", limit: "「庄园」联盟限定", baseType: "冷钢鸢盾" }, { name: "荒途 日光皮甲", href: "https://poedb.tw/cn/Briskwrap", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Ccmlza3dyYXAiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/4a3c7d71e6/Briskwrap.png", baseType: "日光皮甲" }, { name: "布隆的影衣 死神之装", href: "https://poedb.tw/cn/Bronns_Lithe", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Ccm9ubnNsaXRoZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/80b9cf6b0b/Bronnslithe.png", baseType: "死神之装" }, { name: "西里的战衣 星辰皮甲", href: "https://poedb.tw/cn/Hyrris_Ire", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Cb2R5RGV4M0NVbmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/fb532d6c21/BodyDex3CUnique.png", baseType: "星辰皮甲" }, { name: "雪盲恩惠 星辰皮甲", href: "https://poedb.tw/cn/The_Snowblind_Grace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaGVTbm93YmxpbmRHcmFjZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/1f9378f004/TheSnowblindGrace.png", limit: "「托沃之域」限定掉落\n「精华」联盟限定\n使用 托沃的祝福 升级 完美姿态", baseType: "星辰皮甲" }, { name: "雷姆诺的夺命凶器 冷铁重锤", href: "https://poedb.tw/cn/Hrimnors_Hymn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kTWFjZXMvVHdvSGFuZE1hY2U2VW5pcXVlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/31ad6258ac/TwoHandMace6Unique.png", baseType: "冷铁重锤" }, { name: "冈姆的壮志 荣耀战铠", href: "https://poedb.tw/cn/Kaoms_Heart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Cb2R5U3RyM0NVbmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/1027cdf1ad/BodyStr3CUnique.png", baseType: "荣耀战铠" }, { name: "邪眼之冠 灵主之环", href: "https://poedb.tw/cn/Crown_of_Eyes", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Nyb3dub2ZFeWVzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/778182e367/CrownofEyes.png", baseType: "灵主之环" }, { name: "卡斯普里意志 暗影之装", href: "https://poedb.tw/cn/Cospris_Will", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Db3NwcmlzV2lsbCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/e7801b1322/CosprisWill.png", baseType: "暗影之装" }, { name: "完美姿态【仿品】 星辰皮甲", href: "https://poedb.tw/cn/Replica_Perfect_Form", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaGVQZXJmZWN0Rm9ybSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/b149b68ecb/ThePerfectForm.png", baseType: "星辰皮甲" }, { name: "曙光骤现 冷钢之冠", href: "https://poedb.tw/cn/Sudden_Dawn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1NvdWxsZXNzRWxlZ2FuY2UiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/9c572a99fe/SoullessElegance.png", limit: "「漆黑之星」限定掉落", baseType: "冷钢之冠" }, { name: "希伯的霸权 灵主之环", href: "https://poedb.tw/cn/Ebers_Unification", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1BhbGVDb3VuY2lsSGVsbWV0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/4415fd6474/PaleCouncilHelmet.png", limit: "「苍白议会」限定掉落", baseType: "灵主之环" }, { name: "靛蓝之冠 灵主之环", href: "https://poedb.tw/cn/Indigon", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1ViZXJFbGRlckhlbG1ldCIsInciOjIsImgiOjIsInNjYWxlIjoxLCJlbGRlciI6dHJ1ZSwic2hhcGVyIjp0cnVlfV0/29ddf76107/UberElderHelmet.png", limit: "「裂界者」限定掉落", baseType: "灵主之环" }, { name: "拂烬 鹿皮外套", href: "https://poedb.tw/cn/Ashrend", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Bc2hyZW5kIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/9755e9fe99/Ashrend.png", baseType: "鹿皮外套" }, { name: "千里狙敌 罪者之帽", href: "https://poedb.tw/cn/Assailum", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RhbmdtYXp1YXJtb3VyaGVsbWV0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/6e327593b9/Tangmazuarmourhelmet.png", baseType: "罪者之帽" }, { name: "巨铜之顶 角斗重铠", href: "https://poedb.tw/cn/The_Brass_Dome", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Eb21lT2ZCcmFzcyIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/41f06694f2/DomeOfBrass.png", baseType: "角斗重铠" }, { name: "冈姆的壮志【仿品】 荣耀战铠", href: "https://poedb.tw/cn/Replica_Kaoms_Heart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Cb2R5U3RyM0NVbmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/1027cdf1ad/BodyStr3CUnique.png", baseType: "荣耀战铠" }, { name: "烈炎之袍 学者之袍", href: "https://poedb.tw/cn/Cloak_of_Flame", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Cb2R5SW50MUF1bmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/41c15c6511/BodyInt1Aunique.png", baseType: "学者之袍" }, { name: "千缎 简易之袍", href: "https://poedb.tw/cn/Thousand_Ribbons", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaG91c2FuZHJpYmJvbnMiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/65a99640e9/Thousandribbons.png", baseType: "简易之袍" }, { name: "血誓【仿品】 蛛丝之袍", href: "https://poedb.tw/cn/Replica_Covenant", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9FbWJyYWNlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/d0110e7660/Embrace.png", limit: "「夺宝奇兵」限定掉落", baseType: "蛛丝之袍" }, { name: "冥使之体 星芒战铠", href: "https://poedb.tw/cn/Deaths_Oath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9EZWF0aHNvYXRoIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/f81375e335/Deathsoath.png", baseType: "星芒战铠" }, { name: "灰眼 日耀之冠", href: "https://poedb.tw/cn/Galesight", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0V4cGxvcmVyc1Zpc2lvbkNvbGQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/702f0515fb/ExplorersVisionCold.png", baseType: "日耀之冠" }, { name: "薛朗的护身长袍 秘术长衣", href: "https://poedb.tw/cn/Shavronnes_Wrappings", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Cb2R5SW50MUNVbmlxdWUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/4f3e22a163/BodyInt1CUnique.png", baseType: "秘术长衣" }, { name: "塔温的披风 智者之袍", href: "https://poedb.tw/cn/Cloak_of_Tawmr_Isley", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Ub21PUmVpbGx5Q2xvYWsiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/595ee9c868/TomOReillyCloak.png", baseType: "智者之袍" }, { name: "无常法袍 智者之袍", href: "https://poedb.tw/cn/Garb_of_the_Ephemeral", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaGVUZW1wbGFyc1JvYmVzIiwidyI6MiwiaCI6Mywic2NhbGUiOjEsInN5bnRoZXNpc2VkIjp0cnVlfV0/bd9f49e4b4/TheTemplarsRobes.png", limit: "「维纳留斯」限定掉落\n「虚空忆境」联盟限定", baseType: "智者之袍" }, { name: "灵魂甲胄 灭世法衣", href: "https://poedb.tw/cn/The_Coming_Calamity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9TcGlyaXRIYXJuZXNzIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/69c0a6780d/SpiritHarness.png", baseType: "灭世法衣" }, { name: "炼狱之心 毒蛛丝之袍", href: "https://poedb.tw/cn/Infernal_Mantle", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9JbmZlcm5hbG1hbnRsZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/ea1b86d7f9/Infernalmantle.png", baseType: "毒蛛丝之袍" }, { name: "欺诈獠牙 龙鳞战甲", href: "https://poedb.tw/cn/Gruthkuls_Pelt", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9XaWxlZmFuZ3NQZWx0IiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/e393dbd9af/WilefangsPelt.png", baseType: "龙鳞战甲" }, { name: "德瑞之肤 毒蛛丝之袍", href: "https://poedb.tw/cn/Doedres_Skin", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Eb2VkcmVzU2tpbiIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/a04f3c7a0a/DoedresSkin.png", baseType: "毒蛛丝之袍" }, { name: "暗夜弑衣 毒蛛丝之袍", href: "https://poedb.tw/cn/Fenumus_Shroud", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9TcGlkZXJBcm1vdXJCb2R5IiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/f48eff23e8/SpiderArmourBody.png", limit: "「暗夜初子 费努姆斯」限定掉落\n「猎魔」联盟限定", baseType: "毒蛛丝之袍" }, { name: "塑血巨匠 操灵者背心", href: "https://poedb.tw/cn/Fleshcrafter", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Fc3NlbmNlR2lmdGVyIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/3b3446e019/EssenceGifter.png", baseType: "操灵者背心" }, { name: "疫鼠囚笼 鲨皮之衣", href: "https://poedb.tw/cn/The_Rat_Cage", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaGVSYXRDYWdlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/585313cc27/TheRatCage.png", limit: "「苦痛」联盟限定", baseType: "鲨皮之衣" }, { name: "兽毛披肩 瓦尔法衣", href: "https://poedb.tw/cn/The_Beast_Fur_Shawl", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9CZWFzdEZ1clNoYXdsIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/f2a30a7f0c/BeastFurShawl.png", baseType: "瓦尔法衣" }, { name: "共鸣之面 节庆之面", href: "https://poedb.tw/cn/Leer_Cast", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0hlbG1ldERleEludDl4IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/6693f97fdf/HelmetDexInt9x.png", baseType: "节庆之面" }, { name: "大地之护【仿品】 胜利盔甲", href: "https://poedb.tw/cn/Replica_Farruls_Fur", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaWdlckJvZHlBcm1vdXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/1cfa248b9b/TigerBodyArmour.png", baseType: "胜利盔甲" }, { name: "薛鲁宾的恶作剧 胜利盔甲", href: "https://poedb.tw/cn/Cherrubims_Maleficence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9DaGVycnViaW1zQ3JhdmUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/90d81e1e5b/CherrubimsCrave.png", baseType: "胜利盔甲" }, { name: "兽腹 连身龙鳞战甲", href: "https://poedb.tw/cn/Belly_of_the_Beast", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9iZWxseW9mdGhlYmVhc3QiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/d38723f8b9/bellyofthebeast.png", baseType: "连身龙鳞战甲" }, { name: "大地之护 胜利盔甲", href: "https://poedb.tw/cn/Farruls_Fur", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaWdlckJvZHlBcm1vdXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MSwicmVsaWMiOjV9XQ/5030cf2889/TigerBodyArmour.png", limit: "「大地初子 法瑞尔」限定掉落\n「猎魔」联盟限定", baseType: "胜利盔甲" }, { name: "鼠疫之源 暗影者长靴", href: "https://poedb.tw/cn/Bubonic_Trail", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9BYnlzc0Jvb3RzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/61dd23f86c/AbyssBoots.png", limit: "「Abyss Lich」限定掉落\n「深渊」联盟限定", baseType: "暗影者长靴" }, { name: "升华之风 远古护手", href: "https://poedb.tw/cn/Winds_of_Change", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzU3RyNiIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/d66854dd65/GlovesStr6.png", limit: "「帝王试炼迷宫」限定掉落", baseType: "远古护手" }, { name: "帝国之掌 巨灵护手", href: "https://poedb.tw/cn/Empires_Grasp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvSGl0aGVyIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/c23bccbc39/Hither.png", baseType: "巨灵护手" }, { name: "欧罗什的指控 符文护腿", href: "https://poedb.tw/cn/Olroths_Charge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9BZGFwdGF0aW9uQm9vdHNVbmlxdWUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/a0b7d6e35c/AdaptationBootsUnique.png", limit: "「先祖秘藏」联盟限定", baseType: "符文护腿" }, { name: "君主之肤 简易之袍", href: "https://poedb.tw/cn/Skin_of_the_Lords", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9NeXJpYWRHcmFzcEdyYW5kIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/a4525f8d94/MyriadGraspGrand.png", limit: "「精华」联盟限定\n忠诚之肤 使用 夏乌拉的祝福 升级", baseType: "简易之袍" }, { name: "阿寇亚之凝视 弑君之面", href: "https://poedb.tw/cn/Akoyas_Gaze", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Frb3lhTWFzayIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/bee9827a02/AkoyaMask.png", baseType: "弑君之面" }, { name: "女王的饥饿 瓦尔法衣", href: "https://poedb.tw/cn/The_Queens_Hunger", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaGVRdWVlbnNIdW5nZXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/9dd0ea5e00/TheQueensHunger.png", limit: "「亡灵大师卡塔莉娜」限定掉落\n「背叛者」联盟限定", baseType: "瓦尔法衣" }, { name: "第四誓言 虔诚链甲", href: "https://poedb.tw/cn/The_Fourth_Vow", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9DbGVyaWNzU2FuY3R1YXJ5IiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/447f6b17b1/ClericsSanctuary.png", baseType: "虔诚链甲" }, { name: "德瑞索的卫衣 连身龙鳞铠", href: "https://poedb.tw/cn/Daressos_Defiance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9EYXJlc3Nvc0RlZmlhbmNlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/2e5802be5f/DaressosDefiance.png", baseType: "连身龙鳞铠" }, { name: "征服之口 冷钢之冠", href: "https://poedb.tw/cn/Maw_of_Conquest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL01hd09mQ29ucXVlc3QiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/4d335be1c6/MawOfConquest.png", baseType: "冷钢之冠" }, { name: "皇家卫甲 征战锁甲", href: "https://poedb.tw/cn/Kingsguard", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9LaW5nc2d1YXJkIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/28d6e7ff11/Kingsguard.png", baseType: "征战锁甲" }, { name: "孢囊守卫 圣者链甲", href: "https://poedb.tw/cn/Sporeguard", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9TdXBwb3J0ZXIxYm9keUEiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/2eeb350e76/Supporter1bodyA.png", limit: "「菌潮」联盟限定", baseType: "圣者链甲" }, { name: "安姆布的战甲【仿品】 圣战锁甲", href: "https://poedb.tw/cn/Replica_Ambus_Charge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9TdHJJbnQzQVVuaXF1ZTIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/9928614b24/StrInt3AUnique2.png", baseType: "圣战锁甲" }, { name: "魔道之衣 华丽环甲", href: "https://poedb.tw/cn/Lightbane_Raiment", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9MaWdodGJhbmVyYWlubWVudCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/016757db31/Lightbanerainment.png", baseType: "华丽环甲" }, { name: "满溢之甲 权贵环甲", href: "https://poedb.tw/cn/Loreweave", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Mb3Jld2VhdmUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/fd11495220/Loreweave.png", limit: "「Vendor recipe system」限定掉落", baseType: "权贵环甲" }, { name: "安姆布的战甲 圣战锁甲", href: "https://poedb.tw/cn/Ambus_Charge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9TdHJJbnQzQVVuaXF1ZTIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/9928614b24/StrInt3AUnique2.png", baseType: "圣战锁甲" }, { name: "吉尔菲的圣殿 权贵环甲", href: "https://poedb.tw/cn/Geofris_Sanctuary", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9HZW9mcmlTYW5jdHVhcnkiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/6f94f74244/GeofriSanctuary.png", baseType: "权贵环甲" }, { name: "象牙之塔 圣者链甲", href: "https://poedb.tw/cn/The_Ivory_Tower", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaGVJdm9yeVRvd2VyIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/26d71eb965/TheIvoryTower.png", limit: "「舆图战记」限定掉落", baseType: "圣者链甲" }, { name: "尤图拉之贪噬 庄严之铠", href: "https://poedb.tw/cn/Utulas_Hunger", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9VdGFsYUJvZHlBcm1vdXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/4a4891f3f3/UtalaBodyArmour.png", baseType: "庄严之铠" }, { name: "满溢之甲【仿品】 权贵环甲", href: "https://poedb.tw/cn/Replica_Loreweave", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Mb3Jld2VhdmUiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/fd11495220/Loreweave.png", baseType: "权贵环甲" }, { name: "卫道之袍 漆彩束衣", href: "https://poedb.tw/cn/Cloak_of_Defiance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9DbG9ha09mRGVmaWFuY2UiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/87997e3b8a/CloakOfDefiance.png", baseType: "漆彩束衣" }, { name: "多里亚尼的试作甲 圣者链甲", href: "https://poedb.tw/cn/Doryanis_Prototype", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9TaG9ja0Nsb2FrIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/44e73cc73c/ShockCloak.png", baseType: "圣者链甲" }, { name: "血脉相连 骨制战甲", href: "https://poedb.tw/cn/Bloodbond", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Db21tdW5hbEZsZXNoIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/ad6a787fcf/CommunalFlesh.png", baseType: "骨制战甲" }, { name: "箭丽毒蛙 哨兵之衣", href: "https://poedb.tw/cn/Dendrobate", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9EZW5kcm9iYXRpcyIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/7c2d6dd5ce/Dendrobatis.png", baseType: "哨兵之衣" }, { name: "速度之力 狂虐者束衣", href: "https://poedb.tw/cn/Inpulsas_Broken_Heart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9PblNob2NrZWQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/ce499f7b0b/OnShocked.png", baseType: "狂虐者束衣" }, { name: "苍空之巢 血色之衣", href: "https://poedb.tw/cn/Saqawals_Nest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9BdmlhbkJvZHlBcm1vdXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/260410472f/AvianBodyArmour.png", limit: "「苍空初子 萨奇沃」限定掉落\n「猎魔」联盟限定", baseType: "血色之衣" }, { name: "永恒幽影【仿品】 血色之衣", href: "https://poedb.tw/cn/Replica_Eternity_Shroud", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9NYW50bGVPZkRpc21hbnRsaW5nIiwidyI6MiwiaCI6Mywic2NhbGUiOjEsImVsZGVyIjp0cnVlLCJzaGFwZXIiOnRydWV9XQ/802dd6d751/MantleOfDismantling.png", baseType: "血色之衣" }, { name: "兀鸣 操灵者背心", href: "https://poedb.tw/cn/Vis_Mortis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9WaXNNb3J0aXMiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/771efa547e/VisMortis.png", baseType: "操灵者背心" }, { name: "永恒幽影 血色之衣", href: "https://poedb.tw/cn/The_Eternity_Shroud", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9NYW50bGVPZkRpc21hbnRsaW5nIiwidyI6MiwiaCI6Mywic2NhbGUiOjEsImVsZGVyIjp0cnVlLCJzaGFwZXIiOnRydWV9XQ/802dd6d751/MantleOfDismantling.png", limit: "「裂界者」限定掉落", baseType: "血色之衣" }, { name: "海军上将 映彩外套", href: "https://poedb.tw/cn/The_Admiral", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9IZWFydG9mdGhlRWxlbWVudHMiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/f211c99b10/HeartoftheElements.png", limit: "「契约：达诺的覆灭」限定掉落\n「夺宝奇兵」联盟限定", baseType: "映彩外套" }, { name: "致命之体 映彩外套", href: "https://poedb.tw/cn/Carcass_Jack", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9DYXJjYXNzSmFjayIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/e496ea8e6e/CarcassJack.png", baseType: "映彩外套" }, { name: "无尽之卫 禁礼之甲", href: "https://poedb.tw/cn/The_Restless_Ward", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaGVSZXN0bGVzc1dhcmQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/2508832517/TheRestlessWard.png", baseType: "禁礼之甲" }, { name: "烈炎之心 圣洁锁甲", href: "https://poedb.tw/cn/Incandescent_Heart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9JbGx1bWluYXRpcyIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/da0dbbc10a/Illuminatis.png", baseType: "圣洁锁甲" }, { name: "变形者外衣 狂虐者束衣", href: "https://poedb.tw/cn/Doppelg%C3%A4nger_Guise", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Db2xsZWN0b3JzR2FyYkRpZmYiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/eb8a6d36ef/CollectorsGarbDiff.png", limit: "「贤主」限定掉落", baseType: "狂虐者束衣" }, { name: "维多里奥之绝响 漆彩束衣", href: "https://poedb.tw/cn/Victarios_Influence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9WaWN0YXJpb3NKYWNrZXQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/b50998d963/VictariosJacket.png", baseType: "漆彩束衣" }, { name: "钢铁要塞 征战重铠", href: "https://poedb.tw/cn/The_Iron_Fortress", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Jcm9uSGVhcnQgRmluYWwiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/113c4e83b6/IronHeart%20Final.png", baseType: "征战重铠" }, { name: "远征尽头 哨兵之衣", href: "https://poedb.tw/cn/Expeditions_End", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9BZG1pcmFsc0phY2tldCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/8c204b4c87/AdmiralsJacket.png", limit: "「夺宝奇兵」联盟限定", baseType: "哨兵之衣" }, { name: "泯光寿衣 禁礼之甲", href: "https://poedb.tw/cn/Shroud_of_the_Lightless", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9BYnlzc0JvZHkiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/cd67f9b5d3/AbyssBody.png", limit: "「Abyss Lich」限定掉落\n「深渊」联盟限定", baseType: "禁礼之甲" }, { name: "禁锢监狱 禁礼之甲", href: "https://poedb.tw/cn/Stasis_Prison", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9DaHJvbm9tYW5jZXJBcm1vdXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MSwicmVsaWMiOjF9XQ/00838a0893/ChronomancerArmour.png", limit: "「Uber Timeless Conflict」限定掉落", baseType: "禁礼之甲" }, { name: "风暴骑士 坚铁胫甲", href: "https://poedb.tw/cn/Stormcharger", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9TdG9ybWNoYXJnZXIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/4f1fe9a640/Stormcharger.png", baseType: "坚铁胫甲" }, { name: "阿兹里的威权 祭礼束衣", href: "https://poedb.tw/cn/Atziris_Splendour", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9BdHppcmlzU3BsZW5kb3VyIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/24c910e168/AtzirisSplendour.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "祭礼束衣" }, { name: "卡胡图罗阿之确信 远古胫甲", href: "https://poedb.tw/cn/Kahuturoas_Certainty", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9LYWh1dHVyb2FCb290cyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/1453ec94bb/KahuturoaBoots.png", baseType: "远古胫甲" }, { name: "火柳胫甲 古钢胫甲", href: "https://poedb.tw/cn/Torchoak_Step", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy84NTQ4MyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/5d406f4285/85483.png", baseType: "古钢胫甲" }, { name: "深海魔足 巨灵胫甲", href: "https://poedb.tw/cn/Craiceanns_Tracks", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9DcmFiVW5pcXVlQm9vdHMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/65740a31fd/CrabUniqueBoots.png", limit: "「深海初子 克林斯昂」限定掉落\n「猎魔」联盟限定", baseType: "巨灵胫甲" }, { name: "殒皇之冠 弑君之面", href: "https://poedb.tw/cn/Crown_of_the_Pale_King", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL0Nyb3dub2Z0aGVQYWxlS2luZyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/a2cd2b0900/CrownofthePaleKing.png", limit: "「苍白议会」限定掉落\n「风暴」联盟限定", baseType: "弑君之面" }, { name: "恶风足迹 强化胫甲", href: "https://poedb.tw/cn/Windscream", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9XaW5kc2NyZWFtIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/7cc293769c/Windscream.png", baseType: "强化胫甲" }, { name: "红刃蹂躏靴 远古胫甲", href: "https://poedb.tw/cn/Redblade_Tramplers", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9SdW1ibGVzdGVwIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/7ebd8e4a3e/Rumblestep.png", limit: "「孤岛灯塔」限定掉落\n「战团」联盟限定", baseType: "远古胫甲" }, { name: "赤红踪迹 巨人胫甲", href: "https://poedb.tw/cn/The_Red_Trail", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9UaGVJbmZpbml0ZVB1cnN1aXQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/518d10f12f/TheInfinitePursuit.png", limit: "「精华」联盟限定\n无尽之距 使用 乌尔尼多的祝福 升级", baseType: "巨人胫甲" }, { name: "黎明行者 瓦尔胫甲", href: "https://poedb.tw/cn/Dawnstrider", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9JbmZlY3Rpb3VzQ29uc3RydWN0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/bf1cb0a5b4/InfectiousConstruct.png", limit: "「灼督」限定掉落", baseType: "瓦尔胫甲" }, { name: "伊瑞的精通 精制皮甲", href: "https://poedb.tw/cn/Yriels_Fostering", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9QYWxlQ291bmNpbEFybW91ciIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/f3c31cf6b4/PaleCouncilArmour.png", limit: "「苍白议会」限定掉落", baseType: "精制皮甲" }, { name: "蹒跚巨兽 星芒战铠", href: "https://poedb.tw/cn/Blunderbore", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9CbHVuZGVyYm9yZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/4b34ebf3fe/Blunderbore.png", baseType: "星芒战铠" }, { name: "维多里奥的飞升 羊皮短靴", href: "https://poedb.tw/cn/Victarios_Flight", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Cb290c0RleEludFVuaXF1ZTIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/11ab397d3d/BootsDexIntUnique2.png", baseType: "羊皮短靴" }, { name: "无尽之距 巨人胫甲", href: "https://poedb.tw/cn/The_Infinite_Pursuit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Ud29Ub25lZEJvb3RzQUxUMyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/ce68366000/TwoTonedBootsALT3.png", limit: "「乌尔尼多之域」限定掉落\n「精华」联盟限定\n使用 乌尔尼多的祝福 升级 赤红踪迹", baseType: "巨人胫甲" }, { name: "龙炎足迹 砂影短靴", href: "https://poedb.tw/cn/Goldwyrm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Cb290c0RleFVuaXF1ZTIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/548228175c/BootsDexUnique2.png", baseType: "砂影短靴" }, { name: "多利亚尼的幻想 巨人胫甲", href: "https://poedb.tw/cn/Doryanis_Delusion", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Eb3JpeWFuaXNCbHVlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/0288b52fee/DoriyanisBlue.png", limit: "「多利亚尼的迷城」限定掉落", baseType: "巨人胫甲" }, { name: "赤红踪迹【仿品】 巨人胫甲", href: "https://poedb.tw/cn/Replica_Red_Trail", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9UaGVJbmZpbml0ZVB1cnN1aXQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/518d10f12f/TheInfinitePursuit.png", baseType: "巨人胫甲" }, { name: "暗影缝合 祭礼束衣", href: "https://poedb.tw/cn/Shadowstitch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9TaGFkb3dTdGl0Y2giLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/2f847b36bd/ShadowStitch.png", limit: "「腐化蝗群」限定掉落\n「穿越」联盟限定", baseType: "祭礼束衣" }, { name: "背信弃义 荣耀战铠", href: "https://poedb.tw/cn/Perfidy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UYW5nbWF6dWFybW91cmJvZHlhcm1vdXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/2170370e8f/Tangmazuarmourbodyarmour.png", baseType: "荣耀战铠" }, { name: "神行靴 生皮短靴", href: "https://poedb.tw/cn/Seven-League_Step", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Cb290c0RleFVuaXF1ZTMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/23e4614336/BootsDexUnique3.png", baseType: "生皮短靴" }, { name: "忠诚之肤 简易之袍", href: "https://poedb.tw/cn/Skin_of_the_Loyal", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9NeXJpYWRHcmFzcCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/03d7746f71/MyriadGrasp.png", limit: "「夏乌拉之域」限定掉落\n「精华」联盟限定\n使用 夏乌拉的祝福 升级 君主之肤", baseType: "简易之袍" }, { name: "猎踪 鹿皮短靴", href: "https://poedb.tw/cn/Deerstalker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Cb290c0RleFVuaXF1ZTEiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/8d8725b395/BootsDexUnique1.png", baseType: "鹿皮短靴" }, { name: "欧巴拉的坚守 鳗皮短靴", href: "https://poedb.tw/cn/Orbalas_Stand", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9SdWdnZWRTdGVwQm9vdHMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/d3af99e8fe/RuggedStepBoots.png", baseType: "鳗皮短靴" }, { name: "强袭者【仿品】 粗革短靴", href: "https://poedb.tw/cn/Replica_Three-step_Assault", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9UaHJlZVN0ZXBBc3NhdWx0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/56daf8a36a/ThreeStepAssault.png", baseType: "粗革短靴" }, { name: "血影 鲨皮短靴", href: "https://poedb.tw/cn/The_Blood_Dance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Hb3JlRnJlbnp5IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/db5eeb8b01/GoreFrenzy.png", baseType: "鲨皮短靴" }, { name: "无悔之爱 贤者之袍", href: "https://poedb.tw/cn/Diallas_Malefaction", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9EaWFsbGFzTWFsZWZhY3Rpb24iLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/842ace4d64/DiallasMalefaction.png", baseType: "贤者之袍" }, { name: "吞噬者王冠 操灵者之冠", href: "https://poedb.tw/cn/The_Devouring_Diadem", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1RoZURldm91cmluZ0RpYWRlbSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/8bc93d2104/TheDevouringDiadem.png", limit: "「亡灵大师卡塔莉娜」限定掉落\n「背叛者」联盟限定", baseType: "操灵者之冠" }, { name: "强袭者 粗革短靴", href: "https://poedb.tw/cn/Three-step_Assault", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9UaHJlZVN0ZXBBc3NhdWx0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/56daf8a36a/ThreeStepAssault.png", baseType: "粗革短靴" }, { name: "阿兹里的金履 迷踪短靴", href: "https://poedb.tw/cn/Atziris_Step", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9BdHppcmlzU3RlcCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/ec85575514/AtzirisStep.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "迷踪短靴" }, { name: "苦行之履 羊毛之鞋", href: "https://poedb.tw/cn/Wanderlust", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9XYW5kZXJsdXN0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/c83c1c3bdc/Wanderlust.png", baseType: "羊毛之鞋" }, { name: "敏锐思维 匿踪短靴", href: "https://poedb.tw/cn/Sin_Trek", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9TaW5UcmVrIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/84281e0f84/SinTrek.png", baseType: "匿踪短靴" }, { name: "薛朗的秘术长靴 学者长靴", href: "https://poedb.tw/cn/Shavronnes_Pace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9TaGF2cm9ubmVzUGFjZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/065a61276a/ShavronnesPace.png", baseType: "学者长靴" }, { name: "盖卢坎的飞升 匿踪短靴", href: "https://poedb.tw/cn/Garukhans_Flight", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Ud29Ub25lZEJvb3RzQUxUIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/4e0bb109ae/TwoTonedBootsALT.png", baseType: "匿踪短靴" }, { name: "诱惑阶梯 粗革短靴", href: "https://poedb.tw/cn/Temptation_Step", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9BdGFpdG9sQm9vdHMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/dd0d386124/AtaitolBoots.png", limit: "「致命贪婪」联盟限定", baseType: "粗革短靴" }, { name: "回光之迹 丝绒便鞋", href: "https://poedb.tw/cn/Wondertrap", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Xb25kZXJ0cmFwIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/6af24f543f/Wondertrap.png", baseType: "丝绒便鞋" }, { name: "大地之痕 迷踪短靴", href: "https://poedb.tw/cn/Farruls_Chase", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9UaWdlckJvb3RzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/640a42e82a/TigerBoots.png", limit: "「大地初子 法瑞尔」限定掉落\n「猎魔」联盟限定", baseType: "迷踪短靴" }, { name: "茵雅的启蒙 秘术便鞋", href: "https://poedb.tw/cn/Inyas_Epiphany", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9QYWxlQ291bmNpbEJvb3RzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/78e277875f/PaleCouncilBoots.png", limit: "「苍白议会」限定掉落", baseType: "秘术便鞋" }, { name: "血誓 蛛丝之袍", href: "https://poedb.tw/cn/The_Covenant", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9FbWJyYWNlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/d0110e7660/Embrace.png", baseType: "蛛丝之袍" }, { name: "灵骸之履【仿品】 丝绸便鞋", href: "https://poedb.tw/cn/Replica_Bones_of_Ullr", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9ib290dW5pcXVlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/1dfabe3358/bootunique.png", baseType: "丝绸便鞋" }, { name: "灵骸之履 丝绸便鞋", href: "https://poedb.tw/cn/Bones_of_Ullr", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9ib290dW5pcXVlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/1dfabe3358/bootunique.png", baseType: "丝绸便鞋" }, { name: "茵雅的启蒙【仿品】 秘术便鞋", href: "https://poedb.tw/cn/Replica_Inyas_Epiphany", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9QYWxlQ291bmNpbEJvb3RzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/78e277875f/PaleCouncilBoots.png", baseType: "秘术便鞋" }, { name: "塑星者 狱炎重剑", href: "https://poedb.tw/cn/Starforge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL1N0YXJmb3JnZSIsInciOjIsImgiOjQsInNjYWxlIjoxLCJyZWxpYyI6MSwic2hhcGVyIjp0cnVlfV0/7407e2c748/Starforge.png", limit: "「塑界者」限定掉落", baseType: "狱炎重剑" }, { name: "虹幕 咒者长靴", href: "https://poedb.tw/cn/Rainbowstride", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9yYWluYm93c3RyaWRlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/bf663baf47/rainbowstride.png", baseType: "咒者长靴" }, { name: "绝地魔履 术士长靴", href: "https://poedb.tw/cn/Steppan_Eard", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Bc3NlZGFpc2ZlcnZvciIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/6758b977d2/Assedaisfervor.png", limit: "「强酸洞穴」限定掉落\n「战团」联盟限定", baseType: "术士长靴" }, { name: "狮眼的斗志【仿品】 铜影长靴", href: "https://poedb.tw/cn/Replica_Lioneyes_Paws", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9MaW9uZXllc1Bhd3MiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/550a8f59d4/LioneyesPaws.png", baseType: "铜影长靴" }, { name: "迎暮 铁影长靴", href: "https://poedb.tw/cn/Dusktoe", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Cb290c1N0ckRleFVuaXF1ZTMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/39b842cf85/BootsStrDexUnique3.png", baseType: "铁影长靴" }, { name: "哑风轻步 蛇鳞长靴", href: "https://poedb.tw/cn/Mutewind_Whispersteps", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9UYXJnZW10YWJpIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/fb8815a6bd/Targemtabi.png", limit: "「极寒冰原」限定掉落\n「战团」联盟限定", baseType: "蛇鳞长靴" }, { name: "狮眼的斗志 铜影长靴", href: "https://poedb.tw/cn/Lioneyes_Paws", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9MaW9uZXllc1Bhd3MiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/550a8f59d4/LioneyesPaws.png", baseType: "铜影长靴" }, { name: "覆灭之兆 网眼长靴", href: "https://poedb.tw/cn/Wake_of_Destruction", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9XYWtlT2ZEZXN0cnVjdGlvbiIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/5964f215f5/WakeOfDestruction.png", baseType: "网眼长靴" }, { name: "代笔人 绸缎背心", href: "https://poedb.tw/cn/Ghostwrithe", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9HaG9zdHdlYXZlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/95d1911033/Ghostweave.png", baseType: "绸缎背心" }, { name: "阿尔贝隆的征途 战士之靴", href: "https://poedb.tw/cn/Alberons_Warpath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9BbGJlcm9uc3dhcnBhdGgiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/be7b089ef3/Alberonswarpath.png", baseType: "战士之靴" }, { name: "愤恨遗产 地蝮鳞长靴", href: "https://poedb.tw/cn/Legacy_of_Fury", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9TY29yY2hlZEVhcnRoIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/fda63f7588/ScorchedEarth.png", limit: "「贤主」限定掉落", baseType: "地蝮鳞长靴" }, { name: "拉克斯的渴望 仪式短靴", href: "https://poedb.tw/cn/Ralakeshs_Impatience", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9SYWxha2VzaHNJbXBhdGllbmNlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/54540f0f3d/RalakeshsImpatience.png", baseType: "仪式短靴" }, { name: "地动 羊皮短靴", href: "https://poedb.tw/cn/Abberaths_Hooves", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9BYmJlcmF0aHNIb292ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/445b84d83c/AbberathsHooves.png", baseType: "羊皮短靴" }, { name: "冈姆的稳重之靴 巨人胫甲", href: "https://poedb.tw/cn/Kaoms_Roots", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9LYW9tc1Jvb3RzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/23b569d35e/KaomsRoots.png", baseType: "巨人胫甲" }, { name: "毁灭的逼近 龙鳞长靴", href: "https://poedb.tw/cn/Annihilations_Approach", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9VYmVyU2VhcmluZ0V4YXJjaEJvb3QiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/705e9f657f/UberSearingExarchBoot.png", limit: "「Uber Searing Exarch」限定掉落", baseType: "龙鳞长靴" }, { name: "暗雷 龙鳞长靴", href: "https://poedb.tw/cn/Darkray_Vectors", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9EYXJrcmF5VmVjdG9ycyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/e96f134d02/DarkrayVectors.png", baseType: "龙鳞长靴" }, { name: "苍空之爪 火蝮鳞长靴", href: "https://poedb.tw/cn/Saqawals_Talons", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9BdmlhbkJvb3RzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/4ea544616e/AvianBoots.png", limit: "「苍空初子 萨奇沃」限定掉落\n「猎魔」联盟限定", baseType: "火蝮鳞长靴" }, { name: "阿尔贝隆的征途【仿品】 战士之靴", href: "https://poedb.tw/cn/Replica_Alberons_Warpath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9BbGJlcm9uc3dhcnBhdGgiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/be7b089ef3/Alberonswarpath.png", baseType: "战士之靴" }, { name: "雷语 荒野锁铠", href: "https://poedb.tw/cn/Lightning_Coil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9MaWdodG5pbmdDb2lsIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/1b36c39f5a/LightningCoil.png", baseType: "荒野锁铠" }, { name: "刚勇 军团长靴", href: "https://poedb.tw/cn/Gangs_Momentum", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9HYW5nc0Jvb3RzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/4443459d14/GangsBoots.png", baseType: "军团长靴" }, { name: "军团的进击 军团长靴", href: "https://poedb.tw/cn/March_of_the_Legion", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9BdXJhQm9vdHMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/736eee69a4/AuraBoots.png", baseType: "军团长靴" }, { name: "死亡大门 圣战长靴", href: "https://poedb.tw/cn/Deaths_Door", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9EZWF0aHNkb29yIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/49384091d3/Deathsdoor.png", limit: "「帝王试炼迷宫」限定掉落", baseType: "圣战长靴" }, { name: "灵柩行者 禁礼之靴", href: "https://poedb.tw/cn/Corpsewalker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9EaXN0dXJiVGhlRGVhZCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/fabb05d84e/DisturbTheDead.png", limit: "「夺宝奇兵」联盟限定", baseType: "禁礼之靴" }, { name: "日耀 环带长靴", href: "https://poedb.tw/cn/Sundance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9TdW5kYW5jZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/b3a611197c/Sundance.png", baseType: "环带长靴" }, { name: "溃败【仿品】 暗影之靴", href: "https://poedb.tw/cn/Replica_Stampede", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9TdXBwb3J0ZXIxYm9vdEEiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/f0b4c611d1/Supporter1bootA.png", baseType: "暗影之靴" }, { name: "诺米克的风暴 扣环短靴", href: "https://poedb.tw/cn/Nomics_Storm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Ob21pY3NTdG9ybSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/33fedc8e3d/NomicsStorm.png", baseType: "扣环短靴" }, { name: "至高天堂 禁礼之靴", href: "https://poedb.tw/cn/Omeyocan", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9PbWV5b2NhbiIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/f72f6a000d/Omeyocan.png", limit: "「穿越」联盟限定\n献祭舞鞋 使用 仪祭魔瓶 升级", baseType: "禁礼之靴" }, { name: "布琳洛特岸行者 猎人之靴", href: "https://poedb.tw/cn/Brinerot_Whalers", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9SZWVmc2NvdXJnZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/6f72714c8f/Reefscourge.png", limit: "「炽炎船坞」限定掉落\n「战团」联盟限定", baseType: "猎人之靴" }, { name: "暗夜刺足 暗影之靴", href: "https://poedb.tw/cn/Fenumus_Spinnerets", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9TcGlkZXJBcm1vdXJCb290cyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/ba3f1e4f2a/SpiderArmourBoots.png", limit: "「暗夜初子 费努姆斯」限定掉落\n「猎魔」联盟限定", baseType: "暗影之靴" }, { name: "献祭舞鞋 禁礼之靴", href: "https://poedb.tw/cn/Dance_of_the_Offered", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9EYW5jZU9mVGhlT2ZmZXJlZCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/ca6a0319e6/DanceOfTheOffered.png", limit: "「闪电通道」限定掉落\n「穿越」联盟限定\n使用 仪祭魔瓶 升级 至高天堂", baseType: "禁礼之靴" }, { name: "溃败 暗影之靴", href: "https://poedb.tw/cn/The_Stampede", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9TdXBwb3J0ZXIxYm9vdEEiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/f0b4c611d1/Supporter1bootA.png", limit: "「菌潮」联盟限定", baseType: "暗影之靴" }, { name: "祖灵之约 蛛丝之袍", href: "https://poedb.tw/cn/Soul_Mantle", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9Tb3VsTWFudGxlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/19bb017ce4/SoulMantle.png", baseType: "蛛丝之袍" }, { name: "虚空行者 暗影者长靴", href: "https://poedb.tw/cn/Voidwalker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Dcm9zc2luZ1RoZVZvaWQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MSwic2hhcGVyIjp0cnVlfV0/97df35ca87/CrossingTheVoid.png", limit: "「塑界者」限定掉落", baseType: "暗影者长靴" }, { name: "疯狂的象征 异色鞋(冰闪)", href: "https://poedb.tw/cn/Beacon_of_Madness", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9UYW5nbWF6dWFybW91cmJvb3RzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/664521517c/Tangmazuarmourboots.png", baseType: "异色鞋 (火闪)" }, { name: "宿命 逃亡之靴", href: "https://poedb.tw/cn/Inextricable_Fate", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9WaW5lZ3Jhc3BCb290c1VuaXF1ZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/4f56e4bdb0/VinegraspBootsUnique.png", limit: "「世界吞噬者」限定掉落", baseType: "逃亡之靴" }, { name: "虚空行者【仿品】 暗影者长靴", href: "https://poedb.tw/cn/Replica_Voidwalker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Dcm9zc2luZ1RoZVZvaWQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MSwic2hhcGVyIjp0cnVlfV0/97df35ca87/CrossingTheVoid.png", baseType: "暗影者长靴" }, { name: "将军的复生 圣洁锁甲", href: "https://poedb.tw/cn/Chains_of_Command", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9DaGFpbnNPZkNvbW1hbmQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/3919d27d1b/ChainsOfCommand.png", baseType: "圣洁锁甲" }, { name: "空向 术士长靴", href: "https://poedb.tw/cn/Skyforth", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9Ta3lmb3J0aCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/56fee4545a/Skyforth.png", baseType: "术士长靴" }, { name: "福尔的战铠 圣语锁甲", href: "https://poedb.tw/cn/Volls_Protector", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9TdHJJbnQzQVVuaXF1ZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/d79c6d5644/StrInt3AUnique.png", baseType: "圣语锁甲" }, { name: "完美姿态 星辰皮甲", href: "https://poedb.tw/cn/The_Perfect_Form", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaGVQZXJmZWN0Rm9ybSIsInciOjIsImgiOjMsInNjYWxlIjoxLCJyZWxpYyI6MX1d/11c2598c82/ThePerfectForm.png", limit: "「精华」联盟限定\n雪盲恩惠 使用 托沃的祝福 升级", baseType: "星辰皮甲" }, { name: "不屈之志 威能鸢盾", href: "https://poedb.tw/cn/The_Unshattered_Will", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9TaGllbGRzL0NoYW5uZWxpbmcgU2hpZWxkIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/95b237ca78/Channeling%20Shield.png", limit: "「降临之地」限定掉落\n「先驱」联盟限定\n使用 光棱卷轴 升级 不朽意志", baseType: "威能鸢盾" }, { name: "嗜寒之冠 绸缎之兜", href: "https://poedb.tw/cn/Cowl_of_the_Cryophile", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9IZWxtZXRzL1N1cHBvcnRlcjFoZWxtZXRBIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/5283e1920d/Supporter1helmetA.png", limit: "「菌潮」联盟限定", baseType: "绸缎之兜" }, { name: "刚多的虚荣 艾兹麦巨剑", href: "https://poedb.tw/cn/Kondos_Pride", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kU3dvcmRzL0tvbmRvc1ByaWRlIiwidyI6MiwiaCI6NCwic2NhbGUiOjF9XQ/59f41a868c/KondosPride.png", baseType: "艾兹麦巨剑" }, { name: "无尽之卫【仿品】 禁礼之甲", href: "https://poedb.tw/cn/Replica_Restless_Ward", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UaGVSZXN0bGVzc1dhcmQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/2508832517/TheRestlessWard.png", baseType: "禁礼之甲" }, { name: "沃拉娜的征途 符文战靴", href: "https://poedb.tw/cn/Voranas_March", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb290cy9TcGlyaXRCb290c1VuaXF1ZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/90177dcbec/SpiritBootsUnique.png", limit: "「堕落之源欧罗什」限定掉落\n「先祖秘藏」联盟限定", baseType: "符文战靴" }, { name: "意识之缘 铁锻护手", href: "https://poedb.tw/cn/Lochtonial_Caress", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvTG9jaHRvbmlhbENhcmVzcyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/4609116291/LochtonialCaress.png", baseType: "铁锻护手" }, { name: "梅吉诺德的巨力腕甲 冷钢护手", href: "https://poedb.tw/cn/Meginords_Vise", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzU3RyNSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/2aaf87839e/GlovesStr5.png", baseType: "冷钢护手" }, { name: "巨灵灾星 青铜护手", href: "https://poedb.tw/cn/Giantsbane", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRGVhdGhmb3JnZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/88c0b6908a/Deathforge.png", baseType: "青铜护手" }, { name: "乌扎萨的山谷 蓝玉戒指", href: "https://poedb.tw/cn/Uzazas_Valley", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvR3JlZW5Db21wb25lbnQzIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7e3d39e9a7/GreenComponent3.png", limit: "「水晶之王奥尔」限定掉落\n「地心」联盟限定", baseType: "蓝玉戒指" }, { name: "泯光寿衣【仿品】 禁礼之甲", href: "https://poedb.tw/cn/Replica_Shroud_of_the_Lightless", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9BYnlzc0JvZHkiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/cd67f9b5d3/AbyssBody.png", baseType: "禁礼之甲" }, { name: "深海魔钳 巨人护手", href: "https://poedb.tw/cn/Craiceanns_Pincers", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQ3JhYlVuaXF1ZUdsb3ZlcyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/c5811ae4bd/CrabUniqueGloves.png", limit: "「深海初子 克林斯昂」限定掉落\n「猎魔」联盟限定", baseType: "巨人护手" }, { name: "阿兹里的捷思【仿品】 瓦尔护手", href: "https://poedb.tw/cn/Replica_Atziris_Acuity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQXR6aXJpc0FjdWl0eSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/2c0f04ae47/AtzirisAcuity.png", baseType: "瓦尔护手" }, { name: "钟表匠的华服 狂虐者束衣", href: "https://poedb.tw/cn/Tinkerskin", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9UcmFwcGVyQXJtb3VyIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/3e6bd8eefe/TrapperArmour.png", baseType: "狂虐者束衣" }, { name: "仇恨熔炉 远古护手", href: "https://poedb.tw/cn/Hateforge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvVmFhbFJhZ2VHbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MSwicmVsaWMiOjV9XQ/551c8e896a/VaalRageGloves.png", limit: "「致命贪婪」联盟限定", baseType: "远古护手" }, { name: "札德图斯的圣衣 贤者之袍", href: "https://poedb.tw/cn/Zahndethus_Cassock", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9aYWhuZGV0aHVzY2Fzc29jayIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/6de1273e49/Zahndethuscassock.png", baseType: "贤者之袍" }, { name: "陨落之环 巨人护手", href: "https://poedb.tw/cn/Verusos_Battering_Rams", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvVmVydXNvc0JhdHRlcmluZ1JhbXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/e6727320e2/VerusosBatteringRams.png", baseType: "巨人护手" }, { name: "冰冷之眼 羊皮手套", href: "https://poedb.tw/cn/Hrimsorrow", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvSHJpbXNvcnJvdyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/bc13b3487c/Hrimsorrow.png", baseType: "羊皮手套" }, { name: "欧斯卡姆 砂影手套", href: "https://poedb.tw/cn/Oskarm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvWmVub0dsb3ZlcyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/a0056936c7/ZenoGloves.png", baseType: "砂影手套" }, { name: "冈姆的精神 巨人护手", href: "https://poedb.tw/cn/Kaoms_Spirit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvS2FvbXNTcGlyaXQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/eefa7c48f9/KaomsSpirit.png", baseType: "巨人护手" }, { name: "马雷格罗的玫红手套 鹿皮手套", href: "https://poedb.tw/cn/Maligaros_Virtuosity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvTWFsaWdhcm9zVmlydG91c2l0eSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/7cdbba458f/MaligarosVirtousity.png", baseType: "鹿皮手套" }, { name: "伟大旧神之触手 鳗皮手套", href: "https://poedb.tw/cn/Great_Old_Ones_Tentacles", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvSW1wYWxlR2xvdmVzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/37dd8738f8/ImpaleGloves.png", baseType: "鳗皮手套" }, { name: "明恩的慧心 紫晶戒指", href: "https://poedb.tw/cn/Mings_Heart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTWluZ3NIZWFydCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/7395d98bba/MingsHeart.png", baseType: "紫晶戒指" }, { name: "苦难探寻者 粗革手套", href: "https://poedb.tw/cn/Painseeker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR3JpcE9mVW5tYWtpbmciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/9a6348dc81/GripOfUnmaking.png", baseType: "粗革手套" }, { name: "多里亚尼之拳 瓦尔护手", href: "https://poedb.tw/cn/Doryanis_Fist", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRG9yeWFuaXNGaXN0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/92cfa78e4d/DoryanisFist.png", baseType: "瓦尔护手" }, { name: "安赛娜丝的安抚之语 丝绸手套", href: "https://poedb.tw/cn/Asenaths_Gentle_Touch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQXNlbmF0aHNHZW50bGVUb3VjaCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/ea6e822bbe/AsenathsGentleTouch.png", baseType: "丝绸手套" }, { name: "窃罪 三相戒指", href: "https://poedb.tw/cn/Thiefs_Torment", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGhpZWZzVG9ybWVudCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/1c182176dc/ThiefsTorment.png", baseType: "三相戒指" }, { name: "猎宝者的护手 羊毛手套", href: "https://poedb.tw/cn/Sadimas_Touch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU2FkaW1hc1RvdWNoIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/751c14cb9c/SadimasTouch.png", baseType: "羊毛手套" }, { name: "冰息 精制环甲", href: "https://poedb.tw/cn/Icetomb", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9Cb2R5QXJtb3Vycy9JY2V0b21iIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/956a92a3fd/Icetomb.png", baseType: "精制环甲" }, { name: "相生相克 缎布手套", href: "https://poedb.tw/cn/Allelopathy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRW1iYWxtZXJzR2xvdmVzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/62148488f8/EmbalmersGloves.png", baseType: "缎布手套" }, { name: "相生相克【仿品】 缎布手套", href: "https://poedb.tw/cn/Replica_Allelopathy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRW1iYWxtZXJzR2xvdmVzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/62148488f8/EmbalmersGloves.png", baseType: "缎布手套" }, { name: "刁妇的圈套 刺绣手套", href: "https://poedb.tw/cn/Vixens_Entrapment", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvVml4ZW5zRW50cmFwbWVudCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/e2d77223f8/VixensEntrapment.png", baseType: "刺绣手套" }, { name: "虚空之力 咒者手套", href: "https://poedb.tw/cn/Voidbringer", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvSGVsbGJyaW5nZXIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/d82eb1cc3f/Hellbringer.png", baseType: "咒者手套" }, { name: "卡莉莎的优雅之影 绣布手套", href: "https://poedb.tw/cn/Kalisas_Grace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvS2FsaXNhc0dyYWNlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/b165e39eff/KalisasGrace.png", baseType: "绣布手套" }, { name: "恶魔缝补者 缎布手套", href: "https://poedb.tw/cn/Demon_Stitcher", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRGVtb25TdGljaGVyIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/0269893a5c/DemonSticher.png", baseType: "缎布手套" }, { name: "卡莉莎的优雅之影【仿品】 绣布手套", href: "https://poedb.tw/cn/Replica_Kalisas_Grace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvS2FsaXNhc0dyYWNlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/b165e39eff/KalisasGrace.png", baseType: "绣布手套" }, { name: "议会之握 秘术手套", href: "https://poedb.tw/cn/Grip_of_the_Council", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzSW50M1VuaXF1ZTIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/88338fac41/GlovesInt3Unique2.png", limit: "「预言」联盟限定", baseType: "秘术手套" }, { name: "议会之握【仿品】 秘术手套", href: "https://poedb.tw/cn/Replica_Grip_of_the_Council", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzSW50M1VuaXF1ZTIiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/88338fac41/GlovesInt3Unique2.png", baseType: "秘术手套" }, { name: "苍蟒之鳞 铜影手套", href: "https://poedb.tw/cn/Slitherpinch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU2xpdGhlcnBpbmNoIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/8f23a9535d/Slitherpinch.png", baseType: "铜影手套" }, { name: "肉体与魂灵 铁影手套", href: "https://poedb.tw/cn/Flesh_and_Spirit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRmxlc2hBbmRTcGlyaXQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/cff8e05a60/FleshAndSpirit.png", limit: "「暴走」联盟限定", baseType: "铁影手套" }, { name: "瓦尔的灵手 铜影手套", href: "https://poedb.tw/cn/Vaal_Caress", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvVmFhbENhcmVzcyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/1caec1617d/VaalCaress.png", limit: "「伏击/侵略」联盟限定", baseType: "铜影手套" }, { name: "富贵之运 钢影护手", href: "https://poedb.tw/cn/Aurseize", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQXVyc2VpemUiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/4c0d010425/Aurseize.png", baseType: "钢影护手" }, { name: "扼息者 火蝮鳞手套", href: "https://poedb.tw/cn/Breathstealer", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU3VwcG9ydGVyMWdsb3ZlQSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/0cbf141437/Supporter1gloveA.png", limit: "「菌潮」联盟限定", baseType: "火蝮鳞手套" }, { name: "烈火送葬 蝮鳞手套", href: "https://poedb.tw/cn/Tanu_Ahi", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR29yZWZpc3RHbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/4c11aafeb7/GorefistGloves.png", baseType: "蝮鳞手套" }, { name: "死神的取魂器 幽影巨斧", href: "https://poedb.tw/cn/Reapers_Pursuit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvV2VhcG9ucy9Ud29IYW5kV2VhcG9ucy9Ud29IYW5kQXhlcy9Ud29IYW5kQXhlVW5pcXVlMSIsInciOjIsImgiOjQsInNjYWxlIjoxfV0/d39a181d8d/TwoHandAxeUnique1.png", baseType: "幽影巨斧" }, { name: "龙族印记 蝮鳞手套", href: "https://poedb.tw/cn/Wyrmsign", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvV3lybXNpZ25HbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/fe7ef54102/WyrmsignGloves.png", baseType: "蝮鳞手套" }, { name: "坟场之链 火蝮鳞手套", href: "https://poedb.tw/cn/Gravebind", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRGVhdGhHcmlwIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/371752d95c/DeathGrip.png", baseType: "火蝮鳞手套" }, { name: "大地之握 火蝮鳞手套", href: "https://poedb.tw/cn/Farruls_Pounce", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvVGlnZXJHbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/294e636cf1/TigerGloves.png", limit: "「大地初子 法瑞尔」限定掉落\n「猎魔」联盟限定", baseType: "火蝮鳞手套" }, { name: "悲运之缚 链甲手套", href: "https://poedb.tw/cn/Shackles_of_the_Wretched", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvUmVjYWxsaW5ndGhlV3JldGNoZWQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/faf70b1bf0/RecallingtheWretched.png", baseType: "链甲手套" }, { name: "巨坑之令 仪式手套", href: "https://poedb.tw/cn/Command_of_the_Pit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQ29tbWFuZG9mdGhlUGl0IiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/cc7772a880/CommandofthePit.png", limit: "「墨血库高」限定掉落\n「地心」联盟限定", baseType: "仪式手套" }, { name: "三重扣 网眼手套", href: "https://poedb.tw/cn/Triad_Grip", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvTWluaW9uQ29udmVyc2lvbkdsb3ZlcyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/6b9b027d0f/MinionConversionGloves.png", baseType: "网眼手套" }, { name: "福库尔的手【仿品】 狂热者手套", href: "https://poedb.tw/cn/Replica_Volkuurs_Guidance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvUGFsZUNvdW5jaWxHbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/3271f5441a/PaleCouncilGloves.png", baseType: "狂热者手套" }, { name: "热诚之手 狂热者手套", href: "https://poedb.tw/cn/Hand_of_the_Fervent", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR3JpcG9mU2FjcmlmaWNlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/9ac4073c28/GripofSacrifice.png", limit: "「驱灵仪式」联盟限定", baseType: "狂热者手套" }, { name: "福库尔的手 狂热者手套", href: "https://poedb.tw/cn/Volkuurs_Guidance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvUGFsZUNvdW5jaWxHbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/3271f5441a/PaleCouncilGloves.png", limit: "「苍白议会」限定掉落", baseType: "狂热者手套" }, { name: "浪涌缚者 龙鳞手套", href: "https://poedb.tw/cn/Surgebinders", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU3VyZ2VCaW5kZXJzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/c0b8d5494e/SurgeBinders.png", baseType: "龙鳞手套" }, { name: "虚空 军团手套", href: "https://poedb.tw/cn/Null_and_Void", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvTnVsbEFuZFZvaWQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/4f851f97fc/NullAndVoid.png", limit: "「暴走」联盟限定", baseType: "军团手套" }, { name: "塑界之触 圣战手套", href: "https://poedb.tw/cn/Shapers_Touch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU2hhcGVyc0dsb3ZlcyIsInciOjIsImgiOjIsInNjYWxlIjoxLCJzaGFwZXIiOnRydWV9XQ/7f4c45d53e/ShapersGloves.png", limit: "「塑界者」限定掉落", baseType: "圣战手套" }, { name: "恩德的迅影 裹趾护手", href: "https://poedb.tw/cn/Ondars_Clasp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvT25kYXJzQ2xhc3AiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/029ff8ad2d/OndarsClasp.png", baseType: "裹趾护手" }, { name: "悔悟之掌 圣战手套", href: "https://poedb.tw/cn/Repentance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvUmVwZW50YW5jZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/20af664d44/Repentance.png", baseType: "圣战手套" }, { name: "毁面者 扣环护手", href: "https://poedb.tw/cn/Facebreaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR2xvdmVzRGV4SW50VW5pcXVlMSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/b97dda23b0/GlovesDexIntUnique1.png", baseType: "扣环护手" }, { name: "苍空之翼 战士手套", href: "https://poedb.tw/cn/Saqawals_Winds", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQXZpYW5HbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/eff17664b9/AvianGloves.png", limit: "「苍空初子 萨奇沃」限定掉落\n「猎魔」联盟限定", baseType: "战士手套" }, { name: "水火不容 伏击护手", href: "https://poedb.tw/cn/Abhorrent_Interrogation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRGVjYXlpbmdHcmlwIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/fa04f8c987/DecayingGrip.png", limit: "「庄园化身欧莱娜」限定掉落\n「庄园」联盟限定", baseType: "伏击护手" }, { name: "奥库娜的意志 环带护手", href: "https://poedb.tw/cn/Aukunas_Will", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQXVrdW5hc1dpbGwiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/b3a94fe874/AukunasWill.png", baseType: "环带护手" }, { name: "风暴觅者 伏击护手", href: "https://poedb.tw/cn/Stormseeker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU3Rvcm1zZWVrZXJHbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/5f70258b38/StormseekerGloves.png", baseType: "伏击护手" }, { name: "建筑师之手 伏击护手", href: "https://poedb.tw/cn/Architects_Hand", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQXJjaGl0ZWN0c0hhbmQiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/8f303b6f98/ArchitectsHand.png", limit: "「防御研究实验室」限定掉落\n「穿越」联盟限定\n使用 统御魔瓶 升级 奴隶贩子之手", baseType: "伏击护手" }, { name: "沙尘之影 环带护手", href: "https://poedb.tw/cn/Shadows_and_Dust", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU2hhZG93c0FuZER1c3QiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/80cb67dfe9/ShadowsAndDust.png", limit: "「暴走」联盟限定", baseType: "环带护手" }, { name: "奴隶贩子之手 伏击护手", href: "https://poedb.tw/cn/Slavedrivers_Hand", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU2xhdmVkcml2ZXJzSGFuZCIsInciOjIsImgiOjIsInNjYWxlIjoxLCJyZWxpYyI6MX1d/2963ae5e20/SlavedriversHand.png", limit: "「穿越」联盟限定\n建筑师之手 使用 统御魔瓶 升级", baseType: "伏击护手" }, { name: "南方 战士手套", href: "https://poedb.tw/cn/Southbound", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvTm9ydGhib3VuZCIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/7b4cbc713d/Northbound.png", baseType: "战士手套" }, { name: "神主之手 圣战手套", href: "https://poedb.tw/cn/Hands_of_the_High_Templar", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvSGFuZHNPZlRoZUhpZ2hUZW1wbGFyIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/239b2df5cf/HandsOfTheHighTemplar.png", limit: "「诸界觉者希鲁斯」限定掉落", baseType: "圣战手套" }, { name: "入殓师 禁礼护手", href: "https://poedb.tw/cn/The_Embalmer", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQWxsZWxvcGF0aHkiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/bcf128d770/Allelopathy.png", baseType: "禁礼护手" }, { name: "风暴赐福 暗影护手", href: "https://poedb.tw/cn/Storms_Gift", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU3Rvcm1HbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MSwic3ludGhlc2lzZWQiOnRydWV9XQ/11d9bac786/StormGloves.png", limit: "「虚空忆境」联盟限定", baseType: "暗影护手" }, { name: "蝮吻 暗影护手", href: "https://poedb.tw/cn/Snakebite", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvZnJlbnp5Z2xvdmVzIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/2d25853f41/frenzygloves.png", baseType: "暗影护手" }, { name: "熵能毁灭 暗影护手", href: "https://poedb.tw/cn/Entropic_Devastation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvVWJlclNoYXBlckdsb3ZlcyIsInciOjIsImgiOjIsInNjYWxlIjoxLCJzaGFwZXIiOnRydWV9XQ/2f48b97b16/UberShaperGloves.png", limit: "「Uber The Shaper」限定掉落", baseType: "暗影护手" }, { name: "灵魂飞升 禁礼护手", href: "https://poedb.tw/cn/Soul_Ascension", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU291bEFzY2Vuc2lvbiIsInciOjIsImgiOjIsInNjYWxlIjoxLCJlbGRlciI6dHJ1ZX1d/261dad7419/SoulAscension.png", limit: "「Uber Uber Elder」限定掉落", baseType: "禁礼护手" }, { name: "亵渎者之握 暗影护手", href: "https://poedb.tw/cn/Blasphemers_Grasp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRWxkZXJHbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MSwiZWxkZXIiOnRydWV9XQ/b07fd0eac2/ElderGloves.png", limit: "「裂界者」限定掉落", baseType: "暗影护手" }, { name: "尸僵 禁礼护手", href: "https://poedb.tw/cn/Algor_Mortis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvVGFuZ21henVhcm1vdXJnbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/fff14c8039/Tangmazuarmourgloves.png", baseType: "禁礼护手" }, { name: "轰天雷 暗影者护手", href: "https://poedb.tw/cn/Thunderfist", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvdGh1bmRlcmNsYXciLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/c566a6b7aa/thunderclaw.png", baseType: "暗影者护手" }, { name: "无尽盛宴 扣钉手套", href: "https://poedb.tw/cn/Ceaseless_Feast", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvVG91Y2hPZlJ1c3QiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/a9b7f33bdf/TouchOfRust.png", limit: "「无限饥渴」限定掉落", baseType: "扣钉手套" }, { name: "英灵宝环 锻铁戒指", href: "https://poedb.tw/cn/Le_Heup_of_All", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTGVoZXVwb2ZhbGwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/6ea73cc7e4/Leheupofall.png", baseType: "锻铁戒指" }, { name: "漆黑天顶 丝绸手套", href: "https://poedb.tw/cn/Black_Zenith", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRWJiQW5kRmxvdyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/3e5e1a62ea/EbbAndFlow.png", limit: "「无限饥渴」限定掉落", baseType: "丝绸手套" }, { name: "马奇纳护手 暗影者护手", href: "https://poedb.tw/cn/Machina_Mitts", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvODU0NzkiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/360a5df732/85479.png", limit: "「菌潮」联盟限定", baseType: "暗影者护手" }, { name: "幽暗之语 锻铁戒指", href: "https://poedb.tw/cn/Blackheart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzFVbmlxdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/40666e2827/Ring1Unique.png", baseType: "锻铁戒指" }, { name: "暗夜之握 符文笼手", href: "https://poedb.tw/cn/Nightgrip", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU3Bpcml0R2xvdmVzVW5pcXVlIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/c40058de12/SpiritGlovesUnique.png", limit: "「先祖秘藏」联盟限定", baseType: "符文笼手" }, { name: "罪恶之环 锻铁戒指", href: "https://poedb.tw/cn/Circle_of_Guilt", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU3ludGhlc2lzUGh5c2ljYWwyIiwidyI6MSwiaCI6MSwic2NhbGUiOjEsInN5bnRoZXNpc2VkIjp0cnVlfV0/9345ce30d7/SynthesisPhysical2.png", limit: "「虚空忆境」联盟限定", baseType: "锻铁戒指" }, { name: "马拉凯之记 暗影者护手", href: "https://poedb.tw/cn/Malachais_Mark", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvTWFsYWNoYWlzTWFyayIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/2f2a8c0dff/MalachaisMark.png", baseType: "暗影者护手" }, { name: "冬日之织 珊瑚戒指", href: "https://poedb.tw/cn/Winterweave", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmxvb2RCb2lsIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/8335c22285/BloodBoil.png", baseType: "珊瑚戒指" }, { name: "静脉穿刺 锻铁戒指", href: "https://poedb.tw/cn/Venopuncture", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmxvb2RmcmVlemUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/8873778384/Bloodfreeze.png", limit: "「菌潮」联盟限定", baseType: "锻铁戒指" }, { name: "冰牙指环 锻铁戒指", href: "https://poedb.tw/cn/Icefang_Orbit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvSWNlZmFuZ09yYml0IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/da6e5eb5aa/IcefangOrbit.png", limit: "「菌潮」联盟限定", baseType: "锻铁戒指" }, { name: "守卫之铭 锻铁戒指", href: "https://poedb.tw/cn/The_Wardens_Brand", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGhlV2FyZGVuc0JhbmQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/5d3830d11d/TheWardensBand.png", baseType: "锻铁戒指" }, { name: "希比尔之叹 珊瑚戒指", href: "https://poedb.tw/cn/Sibyls_Lament", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU2lieWxzTGFtZW50IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/73ccf7d7c4/SibylsLament.png", baseType: "珊瑚戒指" }, { name: "普拉克斯 海灵戒指", href: "https://poedb.tw/cn/Praxis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUHJheGlzIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/5098474fb7/Praxis.png", baseType: "海灵戒指" }, { name: "命中注定 海灵戒指", href: "https://poedb.tw/cn/Fated_End", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvRm9yYmlkZGVuU2VhbCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/f402209b8f/ForbiddenSeal.png", limit: "「夺宝奇兵」联盟限定", baseType: "海灵戒指" }, { name: "德瑞的魔具【仿品】 海灵戒指", href: "https://poedb.tw/cn/Replica_Doedres_Damning", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzNVbmlxdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/d06b386d73/Ring3Unique.png", baseType: "海灵戒指" }, { name: "灵魂绑定 海灵戒指", href: "https://poedb.tw/cn/Soulbound", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQm9uZGVkTGlmZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/2ee06d14a2/BondedLife.png", baseType: "海灵戒指" }, { name: "尊贵的同盟 珊瑚戒指", href: "https://poedb.tw/cn/Honoured_Alliance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvSGluZWtvcmFSaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/c4fd7ccffe/HinekoraRing.png", limit: "「Ancestor Tournament」限定掉落", baseType: "珊瑚戒指" }, { name: "陵拳 钢影护手", href: "https://poedb.tw/cn/Tombfist", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQWJ5c3NHbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/d0d174823c/AbyssGloves.png", limit: "「Abyss Lich」限定掉落\n「深渊」联盟限定", baseType: "钢影护手" }, { name: "赌神芬多 金光戒指", href: "https://poedb.tw/cn/Ventors_Gamble", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvRGllT2ZEZXN0aW55IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/1470dfcdce/DieOfDestiny.png", baseType: "金光戒指" }, { name: "贪欲之记 金光戒指", href: "https://poedb.tw/cn/Andvarius", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzRVbmlxdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/eea4645cf2/Ring4Unique.png", baseType: "金光戒指" }, { name: "瓦拉库之印 黄玉戒指", href: "https://poedb.tw/cn/Valakos_Sign", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVmFsYWtvc1NpZ24iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/cd646c8c54/ValakosSign.png", limit: "「血族」联盟限定", baseType: "黄玉戒指" }, { name: "伊克切尔的诱惑 金光戒指", href: "https://poedb.tw/cn/Ixchels_Temptation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQWx0QnJlYWNoIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/b2c5201c70/AltBreach.png", limit: "「致命贪婪」限定掉落", baseType: "金光戒指" }, { name: "普藤博的山谷 黄玉戒指", href: "https://poedb.tw/cn/Putembos_Valley", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmx1ZUNvbXBvbmVudDMiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/cd1b931996/BlueComponent3.png", limit: "「盲目者亚华托提利」限定掉落\n「地心」联盟限定", baseType: "黄玉戒指" }, { name: "基加萨鲁 黄玉戒指", href: "https://poedb.tw/cn/Kikazaru", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvS2lrYXphcnUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/911affa06b/Kikazaru.png", baseType: "黄玉戒指" }, { name: "冈姆的远见 珊瑚戒指", href: "https://poedb.tw/cn/Kaoms_Sign", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzJVbmlxdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/15ce180809/Ring2Unique.png", baseType: "珊瑚戒指" }, { name: "普藤博的高山 黄玉戒指", href: "https://poedb.tw/cn/Putembos_Mountain", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmx1ZUNvbXBvbmVudCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/086886e893/BlueComponent.png", limit: "「水晶之王奥尔」限定掉落\n「地心」联盟限定", baseType: "黄玉戒指" }, { name: "星界投影 黄玉戒指", href: "https://poedb.tw/cn/Astral_Projector", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQXN0cmFsUHJvamVjdG9yIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/92eca463f2/AstralProjector.png", limit: "「灾变」联盟限定", baseType: "黄玉戒指" }, { name: "梦语之痕 蓝玉戒指", href: "https://poedb.tw/cn/Dream_Fragments", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzZVbmlxdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/0c74ddd77c/Ring6Unique.png", baseType: "蓝玉戒指" }, { name: "尼米斯 黄玉戒指", href: "https://poedb.tw/cn/Nimis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVWJlckVhdGVyb2ZXb3JsZHMiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/6dbfb1baea/UberEaterofWorlds.png", limit: "「Uber The Eater of Worlds」限定掉落", baseType: "黄玉戒指" }, { name: "风暴之秘 黄玉戒指", href: "https://poedb.tw/cn/Storm_Secret", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGh1bmRlckxvb3AiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/1322cee671/ThunderLoop.png", limit: "「庄园」联盟限定", baseType: "黄玉戒指" }, { name: "血友病 蛇鳞手套", href: "https://poedb.tw/cn/Haemophilia", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvYmxlZWRnbG92ZXMiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MX1d/005045bec7/bleedgloves.png", baseType: "蛇鳞手套" }, { name: "恐惧之环 蓝玉戒指", href: "https://poedb.tw/cn/Circle_of_Fear", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU3ludGhlc2lzQ29sZCIsInciOjEsImgiOjEsInNjYWxlIjoxLCJzeW50aGVzaXNlZCI6dHJ1ZX1d/f2a949365a/SynthesisCold.png", limit: "「虚空忆境」联盟限定", baseType: "蓝玉戒指" }, { name: "蛇穴 蓝玉戒指", href: "https://poedb.tw/cn/Snakepit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU2VycGVudHNlZWQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/634a5c8913/Serpentseed.png", baseType: "蓝玉戒指" }, { name: "乌扎萨的高山 蓝玉戒指", href: "https://poedb.tw/cn/Uzazas_Mountain", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvR3JlZW5Db21wb25lbnQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/f6e55e6800/GreenComponent.png", limit: "「墨血库高」限定掉落\n「地心」联盟限定", baseType: "蓝玉戒指" }, { name: "乌扎萨的草原 蓝玉戒指", href: "https://poedb.tw/cn/Uzazas_Meadow", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvR3JlZW5Db21wb25lbnQyIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/c5f02c50a6/GreenComponent2.png", limit: "「盲目者亚华托提利」限定掉落\n「地心」联盟限定", baseType: "蓝玉戒指" }, { name: "燃焰 蓝玉戒指", href: "https://poedb.tw/cn/Pyre", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQ2hlcnVmZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/08c38718a4/Cherufe.png", baseType: "蓝玉戒指" }, { name: "塔萨里奥之印【仿品】 蓝玉戒指", href: "https://poedb.tw/cn/Replica_Tasalios_Sign", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGFzYWxpb3NTaWduIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/1e73f81099/TasaliosSign.png", baseType: "蓝玉戒指" }, { name: "阿克莱的高山 红玉戒指", href: "https://poedb.tw/cn/Ahkelis_Mountain", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmVkQ29tcG9uZW50IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/4c8c42f98b/RedComponent.png", limit: "「盲目者亚华托提利」限定掉落\n「地心」联盟限定", baseType: "红玉戒指" }, { name: "阿兹里的捷思 瓦尔护手", href: "https://poedb.tw/cn/Atziris_Acuity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQXR6aXJpc0FjdWl0eSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/2c0f04ae47/AtzirisAcuity.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "瓦尔护手" }, { name: "苦痛之环 红玉戒指", href: "https://poedb.tw/cn/Circle_of_Anguish", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU3ludGhlc2lzRmlyZSIsInciOjEsImgiOjEsInNjYWxlIjoxLCJzeW50aGVzaXNlZCI6dHJ1ZX1d/f64b382150/SynthesisFire.png", limit: "「虚空忆境」联盟限定", baseType: "红玉戒指" }, { name: "莫考之拥 红玉戒指", href: "https://poedb.tw/cn/Mokous_Embrace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTW9rb3VzRW1icmFjZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/b3bd556d83/MokousEmbrace.png", baseType: "红玉戒指" }, { name: "战士的遗产 红玉戒指", href: "https://poedb.tw/cn/Warriors_Legacy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvV2FycmlvcnNMZWdhY3kiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/80c16ee4e7/WarriorsLegacy.png", limit: "「灾变」联盟限定", baseType: "红玉戒指" }, { name: "罗里的幸运之灯 三相戒指", href: "https://poedb.tw/cn/Loris_Lantern", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTG9yaXNMYW50ZXJuIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7abe3ca54f/LorisLantern.png", baseType: "三相戒指" }, { name: "阿克莱的山谷 红玉戒指", href: "https://poedb.tw/cn/Ahkelis_Valley", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmVkQ29tcG9uZW50MyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/fe1c0d1513/RedComponent3.png", limit: "「墨血库高」限定掉落\n「地心」联盟限定", baseType: "红玉戒指" }, { name: "元素之章 三相戒指", href: "https://poedb.tw/cn/The_Taming", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGhlVGFtaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/17c5d3d74b/TheTaming.png", limit: "「Vendor recipe system」限定掉落\n「支配/复仇」联盟限定", baseType: "三相戒指" }, { name: "暗夜织礼 禁礼护手", href: "https://poedb.tw/cn/Fenumus_Weave", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU3BpZGVyQXJtb3VyIEdsb3ZlcyIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/cb4ae94f6d/SpiderArmour%20Gloves.png", limit: "「暗夜初子 费努姆斯」限定掉落\n「猎魔」联盟限定", baseType: "禁礼护手" }, { name: "梅德维德的挑战 符文手甲", href: "https://poedb.tw/cn/Medveds_Challenge", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvQWRhcHRhdGlvbkdsb3Zlc1VuaXF1ZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/865b871153/AdaptationGlovesUnique.png", limit: "「先祖秘藏」联盟限定", baseType: "符文手甲" }, { name: "先驱的纹章 黄玉戒指", href: "https://poedb.tw/cn/Precursors_Emblem", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQ29tYmluZWRSZWRSaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjEsInJlbGljIjo0fV0/1a9f93301c/CombinedRedRing.png", limit: "「Vendor recipe system」限定掉落", baseType: "红玉戒指" }, { name: "薛朗的启示之环 月光石戒指", href: "https://poedb.tw/cn/Shavronnes_Revelation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTW9vbnN0b25lUmluZ1VuaXF1ZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/d8c1823da5/MoonstoneRingUnique.png", limit: "「混乱/猛攻」联盟限定", baseType: "月光石戒指" }, { name: "咒逐 月光石戒指", href: "https://poedb.tw/cn/Anathema", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVW5pcXVlQ3Vyc2VSaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/db99b5c4d2/UniqueCurseRing.png", baseType: "月光石戒指" }, { name: "普藤博的草原 黄玉戒指", href: "https://poedb.tw/cn/Putembos_Meadow", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmx1ZUNvbXBvbmVudDIiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/e8d0f426fe/BlueComponent2.png", limit: "「墨血库高」限定掉落\n「地心」联盟限定", baseType: "黄玉戒指" }, { name: "普兰德斯之记 海灵戒指", href: "https://poedb.tw/cn/Perandus_Signet", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTGFkeVJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/d696be5b25/LadyRing.png", baseType: "海灵戒指" }, { name: "结魂之环 月光石戒指", href: "https://poedb.tw/cn/Heartbound_Loop", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvSGVhcnRib3VuZFJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c214aff507/HeartboundRing.png", baseType: "月光石戒指" }, { name: "德瑞的魔具 海灵戒指", href: "https://poedb.tw/cn/Doedres_Damning", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzNVbmlxdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/d06b386d73/Ring3Unique.png", baseType: "海灵戒指" }, { name: "绿林豪侠 金光戒指", href: "https://poedb.tw/cn/The_Highwayman", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmFuZGl0UmluZyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/e08cd25657/BanditRing.png", baseType: "金光戒指" }, { name: "余烬之痕【仿品】 红玉戒指", href: "https://poedb.tw/cn/Replica_Emberwake", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzEwIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/55c8711fd7/Ring10.png", baseType: "红玉戒指" }, { name: "悔恨之环 黄玉戒指", href: "https://poedb.tw/cn/Circle_of_Regret", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU3ludGhlc2lzTGlnaHRuaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjEsInN5bnRoZXNpc2VkIjp0cnVlfV0/ce810e2fcc/SynthesisLightning.png", limit: "「虚空忆境」联盟限定", baseType: "黄玉戒指" }, { name: "佣兵领地 迷踪手套", href: "https://poedb.tw/cn/Mercenarys_Lot", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvU3RyaWtlVHJ1ZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/4a73ba7bf5/StrikeTrue.png", baseType: "迷踪手套" }, { name: "黑焰 紫晶戒指", href: "https://poedb.tw/cn/Blackflame", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmxhY2tGbGFtZUZpcmUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/d8cb90fe20/BlackFlameFire.png", limit: "「驱灵仪式」联盟限定", baseType: "紫晶戒指" }, { name: "亡者呼唤 紫晶戒指", href: "https://poedb.tw/cn/Death_Rush", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQW1ldGh5c3RSaW5nVW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/1ade97e0ac/AmethystRingUnique.png", limit: "「猛攻」联盟限定", baseType: "紫晶戒指" }, { name: "原初之罪 紫晶戒指", href: "https://poedb.tw/cn/Original_Sin", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU2FuY3R1bVNwZWNpYWxVbmlxdWVSaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/e0ff1c1c6b/SanctumSpecialUniqueRing.png", limit: "「圣地」限定掉落", baseType: "紫晶戒指" }, { name: "神赐 宝钻戒指", href: "https://poedb.tw/cn/Gifts_from_Above", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvRGlhbW9uZFJpbmdVbmlxdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/8edaf6655a/DiamondRingUnique.png", limit: "「混乱」联盟限定", baseType: "晶钻戒指" }, { name: "德瑞的精神手套 丝绒手套", href: "https://poedb.tw/cn/Doedres_Tenure", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvRG9lZHJlc1RlbnVyZSIsInciOjIsImgiOjIsInNjYWxlIjoxfV0/052a57aabd/DoedresTenure.png", baseType: "丝绒手套" }, { name: "陶哈努库之时间 月光石戒指", href: "https://poedb.tw/cn/Tawhanukus_Timing", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGF3aGFudWt1UmluZyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/024958a572/TawhanukuRing.png", baseType: "月光石戒指" }, { name: "瑞佛之冠 双玉戒指", href: "https://poedb.tw/cn/Rigwalds_Crest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmlnd2FsZHNDcmVzdCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/ba5e5c58a3/RigwaldsCrest.png", baseType: "双玉戒指" }, { name: "乡愁之环 紫晶戒指", href: "https://poedb.tw/cn/Circle_of_Nostalgia", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU3ludGhlc2lzUGh5c2ljYWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MSwic3ludGhlc2lzZWQiOnRydWV9XQ/91f50b535b/SynthesisPhysical.png", limit: "「虚空忆境」联盟限定", baseType: "紫晶戒指" }, { name: "菁华蠕虫 潜能之戒", href: "https://poedb.tw/cn/Essence_Worm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvRXNzZW5jZVdvcm0iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/4455cc009b/EssenceWorm.png", baseType: "潜能之戒" }, { name: "虚空召唤 蓝玉戒指", href: "https://poedb.tw/cn/Call_of_the_Void", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvRnJvc3RHbGF6ZWRFeWVSaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjEsImVsZGVyIjp0cnVlLCJzaGFwZXIiOnRydWV9XQ/ed288bc494/FrostGlazedEyeRing.png", limit: "「裂界者」限定掉落", baseType: "蓝玉戒指" }, { name: "饥饿之环 潜能之戒", href: "https://poedb.tw/cn/The_Hungry_Loop", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGhlSHVuZ3J5TG9vcCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/2225980dc6/TheHungryLoop.png", baseType: "潜能之戒" }, { name: "塔萨里奥之印 蓝玉戒指", href: "https://poedb.tw/cn/Tasalios_Sign", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGFzYWxpb3NTaWduIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/1e73f81099/TasaliosSign.png", limit: "「血族」联盟限定", baseType: "蓝玉戒指" }, { name: "哑风封印 潜能之戒", href: "https://poedb.tw/cn/Mutewind_Seal", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTXV0ZXdpbmQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/3c7eee1d2b/Mutewind.png", limit: "「极寒冰原」限定掉落\n「战团」联盟限定", baseType: "潜能之戒" }, { name: "余烬之痕 红玉戒指", href: "https://poedb.tw/cn/Emberwake", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmluZzEwIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/55c8711fd7/Ring10.png", baseType: "红玉戒指" }, { name: "草民 潜能之戒", href: "https://poedb.tw/cn/The_Pariah", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGhlUGFyaWFoIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/778fe35c1e/ThePariah.png", limit: "「强酸洞穴」限定掉落\n「战团」联盟限定", baseType: "潜能之戒" }, { name: "布琳洛特印记 潜能之戒", href: "https://poedb.tw/cn/Brinerot_Mark", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQnJpbmVyb3QiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c1d39c178d/Brinerot.png", limit: "「炽炎船坞」限定掉落\n「战团」联盟限定", baseType: "潜能之戒" }, { name: "渔夫之辫 潜能之戒", href: "https://poedb.tw/cn/Anglers_Plait", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQW5nbGVyc1BsYWl0IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/508979b802/AnglersPlait.png", baseType: "潜能之戒" }, { name: "玛拉凯的巧技 潜能之戒", href: "https://poedb.tw/cn/Malachais_Artifice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTWFsYWNoYWlzQXJ0aWZpY2UiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/dfbb52ebfe/MalachaisArtifice.png", baseType: "潜能之戒" }, { name: "红刃之环 潜能之戒", href: "https://poedb.tw/cn/Redblade_Band", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmVkYmxhZGUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/cf85c48dff/Redblade.png", limit: "「孤岛灯塔」限定掉落\n「战团」联盟限定", baseType: "潜能之戒" }, { name: "狡徒束腰 重革腰带", href: "https://poedb.tw/cn/Belt_of_the_Deceiver", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmVsdE9mVGhlRGVjaWV2ZXIiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/914fb37e8c/BeltOfTheDeciever.png", baseType: "重革腰带" }, { name: "奴役之索 重革腰带", href: "https://poedb.tw/cn/String_of_Servitude", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvU3RyaW5nX29mX1NlcnZpdHVkZSIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/a19be8cb67/String_of_Servitude.png", limit: "「瓦尔妖塔」限定掉落\n「穿越」联盟限定", baseType: "重革腰带" }, { name: "意志呼唤 双玉戒指", href: "https://poedb.tw/cn/Call_of_the_Brotherhood", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQnJvdGhlcmhvb2QiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/956d645be0/Brotherhood.png", baseType: "双玉戒指" }, { name: "暴君之握 军团手套", href: "https://poedb.tw/cn/Offering_to_the_Serpent", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQXJtb3Vycy9HbG92ZXMvR3JpcE9mVGhlQ29icmEiLCJ3IjoyLCJoIjoyLCJzY2FsZSI6MSwic3ludGhlc2lzZWQiOnRydWV9XQ/f77051c363/GripOfTheCobra.png", limit: "「维纳留斯」限定掉落\n「虚空忆境」联盟限定", baseType: "军团手套" }, { name: "虚空慧眼 潜能之戒", href: "https://poedb.tw/cn/Voideye", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvdW51c2VkNCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/6f0e76fbbb/unused4.png", limit: "「伏击/侵略」联盟限定", baseType: "潜能之戒" }, { name: "贝雷克的火与雷之乐 双玉戒指", href: "https://poedb.tw/cn/Bereks_Respite", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmVyZWtzUmVzcGl0ZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/82b228798a/BereksRespite.png", limit: "「支配/复仇」联盟限定", baseType: "双玉戒指" }, { name: "贝雷克的冰与雷之曲 双玉戒指", href: "https://poedb.tw/cn/Bereks_Grip", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmVyZWtzR3JpcCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/7abb06d839/BereksGrip.png", limit: "「支配/复仇」联盟限定", baseType: "双玉戒指" }, { name: "渎神代理 潜能之戒", href: "https://poedb.tw/cn/Profane_Proxy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU2tpdHRlcmJvdFJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/20b7d215dd/SkitterbotRing.png", baseType: "潜能之戒" }, { name: "贝雷克的冰与火之歌 双玉戒指", href: "https://poedb.tw/cn/Bereks_Pass", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmVyZWtzUGFzcyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/efb7743eeb/BereksPass.png", limit: "「支配/复仇」联盟限定", baseType: "双玉戒指" }, { name: "阿克莱的草原 红玉戒指", href: "https://poedb.tw/cn/Ahkelis_Meadow", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmVkQ29tcG9uZW50MiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/0c950dc560/RedComponent2.png", limit: "「水晶之王奥尔」限定掉落\n「地心」联盟限定", baseType: "红玉戒指" }, { name: "三头威仪 潜能之戒", href: "https://poedb.tw/cn/Triumvirate_Authority", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVmFhbFVuc2V0UmluZyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/21c7f71af2/VaalUnsetRing.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "潜能之戒" }, { name: "风暴之炎 蛋白石戒指", href: "https://poedb.tw/cn/Stormfire", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvU3Rvcm1GaXJlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/6b3db4e8df/StormFire.png", baseType: "蛋白石戒指" }, { name: "罗米拉的潜力之环 宝钻戒指", href: "https://poedb.tw/cn/Romiras_Banquet", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUm9taXJhc0JhbnF1ZXQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/aa054b3ccd/RomirasBanquet.png", baseType: "晶钻戒指" }, { name: "裂界之印 合金戒指", href: "https://poedb.tw/cn/Mark_of_the_Elder", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVWJlckVsZGVyUmluZyIsInciOjEsImgiOjEsInNjYWxlIjoxLCJlbGRlciI6dHJ1ZX1d/02f45acdfb/UberElderRing.png", limit: "「裂界者」限定掉落", baseType: "合金戒指" }, { name: "阿兹里圣徽 海灵护身符", href: "https://poedb.tw/cn/Atziris_Foible", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9RdWlkIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/00c2b3a588/Quid.png", baseType: "海灵护身符" }, { name: "毁灭激波 蛋白石戒指", href: "https://poedb.tw/cn/Polaric_Devastation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQXNoQW5kRnJvc3QiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/70630a6e17/AshAndFrost.png", limit: "「漆黑之星」限定掉落", baseType: "蛋白石戒指" }, { name: "魔灵之符 海灵护身符", href: "https://poedb.tw/cn/Sidhebreath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQxVW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/2a0f1c86cc/Amulet1Unique.png", baseType: "海灵护身符" }, { name: "时光之握 月光石戒指", href: "https://poedb.tw/cn/Timeclasp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVGltZWNsYXNwIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/b0c1b94ad1/Timeclasp.png", baseType: "月光石戒指" }, { name: "腐血的承诺 潜能之戒", href: "https://poedb.tw/cn/Rotblood_Promise", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQ3Vyc2VkRXllIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/6f6b42ce7e/CursedEye.png", limit: "「驱灵仪式」联盟限定", baseType: "潜能之戒" }, { name: "卡兰德之触 戒指", href: "https://poedb.tw/cn/Kalandras_Touch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTWlycm9yUmluZyIsInciOjEsImgiOjEsInNjYWxlIjoxLCJkdXBsaWNhdGVkIjp0cnVlfV0/2cbd02eced/MirrorRing.png", baseType: "戒指" }, { name: "玛拉凯的巧技【仿品】 潜能之戒", href: "https://poedb.tw/cn/Replica_Malachais_Artifice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTWFsYWNoYWlzQXJ0aWZpY2UiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/dfbb52ebfe/MalachaisArtifice.png", baseType: "潜能之戒" }, { name: "祭祀之心 海灵护身符", href: "https://poedb.tw/cn/Sacrificial_Heart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TYWNyaWZpY2lhbF9IZWFydCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/e3daa4cd32/Sacrificial_Heart.png", limit: "「瓦尔妖塔」限定掉落\n「穿越」联盟限定\n使用 献祭魔瓶 升级 泽佛伊之心", baseType: "海灵护身符" }, { name: "泽佛伊之心 海灵护身符", href: "https://poedb.tw/cn/Zerphis_Heart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9aZXJwaGlzSGVhcnQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/3e35140dfe/ZerphisHeart.png", limit: "「穿越」联盟限定\n祭祀之心 使用 献祭魔瓶 升级", baseType: "海灵护身符" }, { name: "隐灵之符 珊瑚护身符", href: "https://poedb.tw/cn/Araku_Tiki", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQyVW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/6468b95d6b/Amulet2Unique.png", baseType: "珊瑚护身符" }, { name: "阿兹里圣徽【仿品】 海灵护身符", href: "https://poedb.tw/cn/Replica_Atziris_Foible", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9RdWlkIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/00c2b3a588/Quid.png", baseType: "海灵护身符" }, { name: "活解 潜能之戒", href: "https://poedb.tw/cn/Vivinsect", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvQmV0cmF5YWxFeHBlcmltZW50YXRpb25SaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/0131f81491/BetrayalExperimentationRing.png", limit: "「背叛者」联盟限定", baseType: "潜能之戒" }, { name: "堕落之血 琥珀护身符", href: "https://poedb.tw/cn/Blood_of_Corruption", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9IZWFydE9mQ29ycnVwdGlvbiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/ded3d6446f/HeartOfCorruption.png", limit: "纯净之泪 使用 瓦尔宝珠 升级", baseType: "琥珀护身符" }, { name: "信念之砧 琥珀护身符", href: "https://poedb.tw/cn/The_Anvil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbnZpbCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/8d05280077/Anvil.png", baseType: "琥珀护身符" }, { name: "索伏之心 琥珀护身符", href: "https://poedb.tw/cn/Xophs_Heart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9ZcGhldGhha2tzSGVhcnQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/8fce3ec78f/YphethakksHeart.png", limit: "「索伏之域」限定掉落\n「精华」联盟限定\n使用 索伏的祝福 升级 索伏之血", baseType: "琥珀护身符" }, { name: "浸血徽章 琥珀护身符", href: "https://poedb.tw/cn/Bloodsoaked_Medallion", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9CbG9vZFNvYWtlZF9NZWRhbGxpb24iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/2160ca2460/BloodSoaked_Medallion.png", baseType: "琥珀护身符" }, { name: "玷污契约 珊瑚护身符", href: "https://poedb.tw/cn/Tainted_Pact", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9UYWludGVkUGFjdCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/77ad55d4dd/TaintedPact.png", baseType: "珊瑚护身符" }, { name: "卡鲁的战徽 翠玉护身符", href: "https://poedb.tw/cn/Karui_Ward", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQ0VW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/069e4f76ea/Amulet4Unique.png", baseType: "翠玉护身符" }, { name: "塑界之印 蛋白石戒指", href: "https://poedb.tw/cn/Mark_of_the_Shaper", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVWJlclNoYXBlclJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MSwic2hhcGVyIjp0cnVlfV0/d856526767/UberShaperRing.png", limit: "「裂界者」限定掉落", baseType: "蛋白石戒指" }, { name: "圣令 珊瑚护身符", href: "https://poedb.tw/cn/Tavukai", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9UYXZ1a2FpIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/86cc756de2/Tavukai.png", baseType: "珊瑚护身符" }, { name: "拉什卡德的耐心 翠玉护身符", href: "https://poedb.tw/cn/Rashkaldors_Patience", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9SYXNoa2FsZG9yc1BhdGllbmNlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/336e3419f4/RashkaldorsPatience.png", baseType: "翠玉护身符" }, { name: "太平 翠玉护身符", href: "https://poedb.tw/cn/The_Halcyon", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9HbGFjaWVyQ2Fjb29uIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/9bb08197c4/GlacierCacoon.png", limit: "「托沃之域」限定掉落\n「精华」联盟限定\n使用 托沃的祝福 升级 群魔殿", baseType: "翠玉护身符" }, { name: "索伏之血 琥珀护身符", href: "https://poedb.tw/cn/Xophs_Blood", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9ZcGhldGhha2tzSGVhcnRVcGdyYWRlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/259f2be84d/YphethakksHeartUpgrade.png", limit: "「精华」联盟限定\n索伏之心 使用 索伏的祝福 升级", baseType: "琥珀护身符" }, { name: "卡鲁的战徽【仿品】 翠玉护身符", href: "https://poedb.tw/cn/Replica_Karui_Ward", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQ0VW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/069e4f76ea/Amulet4Unique.png", baseType: "翠玉护身符" }, { name: "伊基阿霍之诺言 珊瑚护身符", href: "https://poedb.tw/cn/Ikiahos_Promise", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Ja2lhaG9BbXVsZXQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/119e919299/IkiahoAmulet.png", baseType: "珊瑚护身符" }, { name: "柳树之赐 翠玉护身符", href: "https://poedb.tw/cn/Willowgift", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TdGFybGlnaHRNYXJrIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/b956123acc/StarlightMark.png", baseType: "翠玉护身符" }, { name: "西里的真相 翠玉护身符", href: "https://poedb.tw/cn/Hyrris_Truth", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TeW50aGVzaXNBY2N1cmFjeUFtdWxldCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/6062fd361e/SynthesisAccuracyAmulet.png", baseType: "翠玉护身符" }, { name: "西里的真相【仿品】 翠玉护身符", href: "https://poedb.tw/cn/Replica_Hyrris_Truth", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TeW50aGVzaXNBY2N1cmFjeUFtdWxldCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/6062fd361e/SynthesisAccuracyAmulet.png", baseType: "翠玉护身符" }, { name: "拉兹瓦的灵石 海玉护身符", href: "https://poedb.tw/cn/Stone_of_Lazhwar", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQ1VW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/c7c2e9bfcf/Amulet5Unique.png", baseType: "海玉护身符" }, { name: "暴风之语 海玉护身符", href: "https://poedb.tw/cn/Choir_of_the_Storm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Wb2ljZU9mVGhlU3Rvcm1VcGdyYWRlIiwidyI6MSwiaCI6MSwic2NhbGUiOjEsInJlbGljIjo0fV0/c04c940123/VoiceOfTheStormUpgrade.png", limit: "「精华」联盟限定\n暴风之言 使用 艾许的祝福 升级", baseType: "海玉护身符" }, { name: "烈阳徽记 帝金护身符", href: "https://poedb.tw/cn/The_Ignomon", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQ2VW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/41a964dea4/Amulet6Unique.png", baseType: "帝金护身符" }, { name: "暴风之言 海玉护身符", href: "https://poedb.tw/cn/Voice_of_the_Storm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Wb2ljZU9mVGhlU3Rvcm0iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c5fb24dbbe/VoiceOfTheStorm.png", limit: "「艾许之域」限定掉落\n「精华」联盟限定\n使用 艾许的祝福 升级 暴风之语", baseType: "海玉护身符" }, { name: "群魔殿 翠玉护身符", href: "https://poedb.tw/cn/The_Pandemonius", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9HbGFjaWVyQ2Fjb29uVXBncmFkZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/f54aa988e2/GlacierCacoonUpgrade.png", limit: "「精华」联盟限定\n太平 使用 托沃的祝福 升级", baseType: "翠玉护身符" }, { name: "玛莉琳的护体之符 海玉护身符", href: "https://poedb.tw/cn/Marylenes_Fallacy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9NYXJ5bGVuZXNGYWxsYWN5IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/1665e40d51/MarylenesFallacy.png", baseType: "海玉护身符" }, { name: "比斯克的项圈 帝金护身符", href: "https://poedb.tw/cn/Biscos_Collar", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9CaXNjb3NDb2xsYXIiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/8aa730c40e/BiscosCollar.png", baseType: "帝金护身符" }, { name: "德瑞之舌 海玉护身符", href: "https://poedb.tw/cn/Doedres_Tongue", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Eb2VkcmVzVG9uZ3VlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/434403db05/DoedresTongue.png", baseType: "海玉护身符" }, { name: "短暂羁绊 海玉护身符", href: "https://poedb.tw/cn/The_Ephemeral_Bond", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9DaGFyZ2UgQW1wbGlmaWVyIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/a285d4c77a/Charge%20Amplifier.png", baseType: "海玉护身符" }, { name: "纯净之泪 海玉护身符", href: "https://poedb.tw/cn/Tear_of_Purity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9UZWFyT2ZQdXJpdHkiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/8a2e6d3c61/TearOfPurity.png", limit: "使用 瓦尔宝珠 升级 堕落之血", baseType: "海玉护身符" }, { name: "不动之魂 帝金护身符", href: "https://poedb.tw/cn/The_Untouched_Soul", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TdHJpbmdPZlJpbmdzIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/a79e77693d/StringOfRings.png", limit: "「禁咒荒林」限定掉落", baseType: "帝金护身符" }, { name: "均衡之符 黑曜护身符", href: "https://poedb.tw/cn/Astramentis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQzNiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/95da0d04a4/Amulet36.png", baseType: "黑曜护身符" }, { name: "冬之心 帝金护身符", href: "https://poedb.tw/cn/Winterheart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9XaW50ZXJIZWFydEFMVCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/ff8c8c67f2/WinterHeartALT.png", baseType: "帝金护身符" }, { name: "苦行 帝金护身符", href: "https://poedb.tw/cn/The_Ascetic", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQxMyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/8dd083062d/Amulet13.png", limit: "「预言」联盟限定", baseType: "帝金护身符" }, { name: "珀奎尔之趾 帝金护身符", href: "https://poedb.tw/cn/Perquils_Toe", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9QZXJxdWlsc1RvZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/7509c4517f/PerquilsToe.png", baseType: "帝金护身符" }, { name: "命运之抗争 海灵护身符", href: "https://poedb.tw/cn/Defiance_of_Destiny", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9IaW5la29yYUFtdWxldCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/d26f80f9c7/HinekoraAmulet.png", baseType: "海灵护身符" }, { name: "苦难羁绊 黑曜护身符", href: "https://poedb.tw/cn/Yoke_of_Suffering", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Zb2tlT2ZTdWZmZXJpbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/80cc716213/YokeOfSuffering.png", baseType: "黑曜护身符" }, { name: "原始锁链 珊瑚护身符", href: "https://poedb.tw/cn/The_Primordial_Chain", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9UaGVQcmltb3JkaWFsQ2hhaW4iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/cd566defdb/ThePrimordialChain.png", baseType: "珊瑚护身符" }, { name: "冬之心【仿品】 帝金护身符", href: "https://poedb.tw/cn/Replica_Winterheart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9XaW50ZXJIZWFydEFMVCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/ff8c8c67f2/WinterHeartALT.png", baseType: "帝金护身符" }, { name: "夏乌拉之印 黑曜护身符", href: "https://poedb.tw/cn/Presence_of_Chayula", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9QcmVzZW5jZU9mQ2hheXVsYSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/6460da7c94/PresenceOfChayula.png", limit: "「精华」联盟限定\n寻宝者的心眼 使用 夏乌拉的祝福 升级", baseType: "黑曜护身符" }, { name: "辛格拉的凝视 黑曜护身符", href: "https://poedb.tw/cn/Hinekoras_Sight", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9IaW5la29yYXNTaWdodCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/13820d857f/HinekorasSight.png", limit: "「Ancient Rivalries IV」限定掉落\n「预言」联盟限定", baseType: "黑曜护身符" }, { name: "隐逝 黑曜护身符", href: "https://poedb.tw/cn/Impresence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9FbGRlclBoeXNpY2FsIiwidyI6MSwiaCI6MSwic2NhbGUiOjEsImVsZGVyIjp0cnVlfV0/1f92ee434e/ElderPhysical.png", limit: "「裂界者」限定掉落", baseType: "黑曜护身符" }, { name: "寻宝者的心眼 黑曜护身符", href: "https://poedb.tw/cn/Eye_of_Chayula", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQ3VW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/6b059ec15d/Amulet7Unique.png", limit: "使用 夏乌拉的祝福 升级 夏乌拉之印", baseType: "黑曜护身符" }, { name: "至日不眠 黑曜护身符", href: "https://poedb.tw/cn/Solstice_Vigil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TaGFwZXJzUHJlc2VuY2UiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MSwic2hhcGVyIjp0cnVlfV0/5881f1f025/ShapersPresence.png", baseType: "黑曜护身符" }, { name: "领袖的代价 黑曜护身符", href: "https://poedb.tw/cn/Leaderships_Price", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9LdXJhaXNNYXN0ZXJ5IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/bf33f8013a/KuraisMastery.png", limit: "「契约：罪恶双生」限定掉落\n「夺宝奇兵」联盟限定", baseType: "黑曜护身符" }, { name: "绞杀之息 黑曜护身符", href: "https://poedb.tw/cn/Stranglegasp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9HaWZ0T2ZHbG9waCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/babc794c98/GiftOfGloph.png", limit: "「Blight-ravaged Map」限定掉落", baseType: "黑曜护身符" }, { name: "奥尔之兴 黑曜护身符", href: "https://poedb.tw/cn/Auls_Uprising", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BaG4gQXJ0aWZhY3QiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MSwicmVsaWMiOjR9XQ/63fca28a00/Ahn%20Artifact.png", limit: "「水晶之王奥尔」限定掉落\n「地心」联盟限定", baseType: "黑曜护身符" }, { name: "结晶全知 黑曜护身符", href: "https://poedb.tw/cn/Crystallised_Omniscience", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Bc2NlbmRhbmNlQW11bGV0IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/60368620d5/AscendanceAmulet.png", limit: "「灼督」限定掉落", baseType: "黑曜护身符" }, { name: "时空扭曲 青玉护身符", href: "https://poedb.tw/cn/Warped_Timepiece", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9XYXJwZWRUaW1lcGllY2UiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/abee67f17d/WarpedTimepiece.png", baseType: "青玉护身符" }, { name: "群星之灰 黑曜护身符", href: "https://poedb.tw/cn/Ashes_of_the_Stars", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9NYXN0ZXJPZkdlbXMiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/f6497cbdfe/MasterOfGems.png", limit: "「世界吞噬者」限定掉落", baseType: "黑曜护身符" }, { name: "恩吉尔的和谐 青玉护身符", href: "https://poedb.tw/cn/Ungils_Harmony", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9VbmdpbHNIYXJtb255IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/dfdaf30e66/UngilsHarmony.png", baseType: "青玉护身符" }, { name: "维多里奥的捷思 青玉护身符", href: "https://poedb.tw/cn/Victarios_Acuity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9UdXJxdW9pc2VBbXVsZXRVbmlxdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/8ba340b31f/TurquoiseAmuletUnique.png", limit: "「猛攻」联盟限定", baseType: "青玉护身符" }, { name: "屠戮之心 黑曜护身符", href: "https://poedb.tw/cn/Carnage_Heart", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQzNyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/451ac32a56/Amulet37.png", baseType: "黑曜护身符" }, { name: "兄弟会徽章 青玉护身符", href: "https://poedb.tw/cn/Badge_of_the_Brotherhood", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Bc3Nhc3NpblVuaXF1ZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/3616219d7d/AssassinUnique.png", limit: "「菌潮」联盟限定", baseType: "青玉护身符" }, { name: "龙牙之翔【仿品】 黑曜护身符", href: "https://poedb.tw/cn/Replica_Dragonfangs_Flight", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9NYWxhY2hhaSdzIEJyaWxsaWFuY2VBbXVsZXQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/a1548914e0/Malachai%27s%20BrillianceAmulet.png", baseType: "黑曜护身符" }, { name: "福尔的忠诚之符 玛瑙护身符", href: "https://poedb.tw/cn/Volls_Devotion", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BZ2F0ZUFtdWxldFVuaXF1ZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/a67e002c89/AgateAmuletUnique.png", limit: "「混乱/猛攻」联盟限定", baseType: "玛瑙护身符" }, { name: "埃拉黛丝 玛瑙护身符", href: "https://poedb.tw/cn/The_Aylardex", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9YZWRyYWx5YXMiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/d9ae7f380f/Xedralyas.png", baseType: "玛瑙护身符" }, { name: "塑界者之籽 玛瑙护身符", href: "https://poedb.tw/cn/Shapers_Seed", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TaGFwZXJzU2VlZCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/99265d5594/ShapersSeed.png", baseType: "玛瑙护身符" }, { name: "愤怒之阀 青玉护身符", href: "https://poedb.tw/cn/Fury_Valve", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9NZXRhbW9ycGhvc2lzQW11bGV0IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/f8bdb14091/MetamorphosisAmulet.png", limit: "「灾变」联盟限定", baseType: "青玉护身符" }, { name: "兄弟会徽章【仿品】 青玉护身符", href: "https://poedb.tw/cn/Replica_Badge_of_the_Brotherhood", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Bc3Nhc3NpblVuaXF1ZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/3616219d7d/AssassinUnique.png", limit: "「夺宝奇兵」限定掉落", baseType: "青玉护身符" }, { name: "永恒诅咒 玛瑙护身符", href: "https://poedb.tw/cn/Eternal_Damnation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbndlbnNBbXVsZXQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/1d40745e7d/AnwensAmulet.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "玛瑙护身符" }, { name: "费伯之牙 黄晶护身符", href: "https://poedb.tw/cn/The_Felbog_Fang", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TYWJlcnRvb3Roc1BlbmRhbnQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/bbb6f80324/SabertoothsPendant.png", limit: "「夜生之子囊赫利姆」限定掉落\n「庄园」联盟限定", baseType: "黄晶护身符" }, { name: "女武神 月光石戒指", href: "https://poedb.tw/cn/Valyrium", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvVmFseXJpdW0iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/dd9261042f/Valyrium.png", baseType: "月光石戒指" }, { name: "心灵抽取 玛瑙护身符", href: "https://poedb.tw/cn/Extractor_Mentis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9FeHRyYWN0b3JNZW50aXMiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/af5684bd74/ExtractorMentis.png", baseType: "玛瑙护身符" }, { name: "德瑞索的战礼 黄晶护身符", href: "https://poedb.tw/cn/Daressos_Salute", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9DaXRyaW5lQW11bGV0VW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/ea232d0123/CitrineAmuletUnique.png", limit: "「混乱」联盟限定", baseType: "黄晶护身符" }, { name: "昏暗之牙 碧珠护身符", href: "https://poedb.tw/cn/Gloomfang", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TaGFkb3dSYXkiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/9c05fb0b03/ShadowRay.png", baseType: "碧珠护身符" }, { name: "乌尔尼多之誓 潜能项链", href: "https://poedb.tw/cn/Uul-Netols_Vow", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9HaWZ0b2ZVdWxOZXRvbCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/6cabe4da33/GiftofUulNetol.png", limit: "「无暇裂隙石」限定掉落", baseType: "潜能项链" }, { name: "幻彩菱织 素布腰带", href: "https://poedb.tw/cn/Prismweave", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvUHJpc213ZWF2ZSIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/822582fe24/Prismweave.png", baseType: "素布腰带" }, { name: "自然组织 死羽魔符", href: "https://poedb.tw/cn/Natural_Hierarchy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9UYWxpc21hblVuaXF1ZTIiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/3783a100bf/TalismanUnique2.png", limit: "「魔符」联盟限定", baseType: "死羽魔符" }, { name: "巨狼之眼 狼王魔符", href: "https://poedb.tw/cn/Eyes_of_the_Greatwolf", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9SaWd3YWxkc1RhbGlzbWFuIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/4936fcad86/RigwaldsTalisman.png", limit: "「魔符」联盟限定", baseType: "狼王魔符" }, { name: "厄运护符 黄晶护身符", href: "https://poedb.tw/cn/The_Jinxed_Juju", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9KdWp1c1NvdWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/6d30276e6f/JujusSoul.png", baseType: "黄晶护身符" }, { name: "复仇的魅力 黄晶护身符", href: "https://poedb.tw/cn/Retaliation_Charm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9TaGFyZWRVbnNpZ2h0IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/d12260a7ac/SharedUnsight.png", baseType: "黄晶护身符" }, { name: "枯井 咒箍魔符", href: "https://poedb.tw/cn/Blightwell", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9UYWludGVkU3ByaW5ncyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/a95bad91d3/TaintedSprings.png", limit: "「魔符」联盟限定", baseType: "咒箍魔符" }, { name: "夜守 黑牙魔符", href: "https://poedb.tw/cn/Nights_Hold", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Tb2NrZXRlZFRhbGlzbWFuIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/89ef47ed1c/SocketedTalisman.png", limit: "「魔符」联盟限定", baseType: "黑牙魔符" }, { name: "虚空慧眼【仿品】 潜能之戒", href: "https://poedb.tw/cn/Replica_Voideye", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvdW51c2VkNCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/6f0e76fbbb/unused4.png", baseType: "潜能之戒" }, { name: "饥荒之结 素布腰带", href: "https://poedb.tw/cn/Faminebind", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvRmFtaW5lYmluZCIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/a790722613/Faminebind.png", limit: "「魔符」联盟限定", baseType: "素布腰带" }, { name: "瑞佛诅咒 亡爪魔符", href: "https://poedb.tw/cn/Rigwalds_Curse", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9VbmlxdWVEaXJlQ2xhd1RhbGlzbWFuIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/e8cd3f0898/UniqueDireClawTalisman.png", limit: "「魔符」联盟限定", baseType: "亡爪魔符" }, { name: "鲜血支配 大理石护身符", href: "https://poedb.tw/cn/Bloodgrip", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9CbG9vZEFtdWxldCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/546826e52b/BloodAmulet.png", baseType: "大理石护身符" }, { name: "凝息 扣链腰带", href: "https://poedb.tw/cn/Bated_Breath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmF0ZWRCcmVhdGgiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/0a8cc4529f/BatedBreath.png", baseType: "扣链腰带" }, { name: "懦夫之链 扣链腰带", href: "https://poedb.tw/cn/Cowards_Chains", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQ293YXJkJ3MgQ2hhaW5zIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/b1cb3d3a26/Coward%27s%20Chains.png", limit: "「混化之间」限定掉落\n「穿越」联盟限定\n使用 结论魔瓶 升级 懦夫之遗", baseType: "扣链腰带" }, { name: "马雷格罗的染血之环 扣链腰带", href: "https://poedb.tw/cn/Maligaros_Restraint", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvTWFsaWdhcm9zUmVzdHJhaW50IiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/17a500cb6f/MaligarosRestraint.png", baseType: "扣链腰带" }, { name: "幻彩菱织【仿品】 素布腰带", href: "https://poedb.tw/cn/Replica_Prismweave", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvUHJpc213ZWF2ZSIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/822582fe24/Prismweave.png", baseType: "素布腰带" }, { name: "脱缚之锁 扣链腰带", href: "https://poedb.tw/cn/Chains_of_Emancipation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvU2xhdmVyc0JlbHQiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/0b8d818fbb/SlaversBelt.png", limit: "「契约：贩奴之王」限定掉落\n「夺宝奇兵」联盟限定", baseType: "扣链腰带" }, { name: "变节者 扣链腰带", href: "https://poedb.tw/cn/Ascent_From_Flesh", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvVHVybmNvYXRzZm9ydHVuZSIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/3adba0ad35/Turncoatsfortune.png", limit: "「预言」联盟限定", baseType: "扣链腰带" }, { name: "马雷格罗的残酷 青玉护身符", href: "https://poedb.tw/cn/Maligaros_Cruelty", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9BbXVsZXQxNSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/f1b938bbd1/Amulet15.png", baseType: "青玉护身符" }, { name: "坚韧之链 扣链腰带", href: "https://poedb.tw/cn/Chain_of_Endurance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvVW5oZWFsdGh5QnVyZGVuIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/d59c2c2bc9/UnhealthyBurden.png", baseType: "扣链腰带" }, { name: "瓦尔克拉斯之星 血色护身符", href: "https://poedb.tw/cn/Star_of_Wraeclast", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9EaXJnZU9mVmljdG9yeSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/e30fe7839f/DirgeOfVictory.png", limit: "「Vendor recipe system」限定掉落", baseType: "血色护身符" }, { name: "永恒之战 黑曜护身符", href: "https://poedb.tw/cn/The_Eternal_Struggle", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9Wb2lkY29yZUFtdWxldCIsInciOjEsImgiOjEsInNjYWxlIjoxLCJzZWFyaW5nIjp0cnVlLCJ0YW5nbGVkIjp0cnVlfV0/3ca1f8ecb5/VoidcoreAmulet.png", limit: "「漆黑之星」限定掉落", baseType: "黑曜护身符" }, { name: "呕吐 素布腰带", href: "https://poedb.tw/cn/The_Retch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvVGhlUmV0Y2giLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/4d93673157/TheRetch.png", limit: "「Vendor recipe system」限定掉落\n「魔符」联盟限定", baseType: "素布腰带" }, { name: "懦夫之遗 扣链腰带", href: "https://poedb.tw/cn/Cowards_Legacy", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQ293YXJkJ3MgTGVnYWN5IiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/2325fc7213/Coward%27s%20Legacy.png", limit: "「穿越」联盟限定\n懦夫之链 使用 结论魔瓶 升级", baseType: "扣链腰带" }, { name: "不朽系命 皮革腰带", href: "https://poedb.tw/cn/Umbilicus_Immortalis", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvVW1iaWxpY3VzSW1tb3J0YWxpcyIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/822946a168/UmbilicusImmortalis.png", baseType: "皮革腰带" }, { name: "圣体之绳 皮革腰带", href: "https://poedb.tw/cn/Leash_of_Oblation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvTGVhc2hPZk9ibGF0aW9uIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/f865c7f643/LeashOfOblation.png", limit: "「舆图战记」限定掉落", baseType: "皮革腰带" }, { name: "熊之束腰 皮革腰带", href: "https://poedb.tw/cn/Bears_Girdle", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmVhcnNDbHV0Y2giLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/31930452e4/BearsClutch.png", limit: "「荆棘之母厄稀」限定掉落\n「庄园」联盟限定", baseType: "皮革腰带" }, { name: "永生 皮革腰带", href: "https://poedb.tw/cn/Immortal_Flesh", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvSW1tb3J0YWxGbGVzaCIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/fceb1b8f8c/ImmortalFlesh.png", baseType: "皮革腰带" }, { name: "火爆之拥 皮革腰带", href: "https://poedb.tw/cn/Pyroshock_Clasp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvUHlyb3Nob2NrQ2xhc3AiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/42b1bcc3c8/PyroshockClasp.png", baseType: "皮革腰带" }, { name: "暴食 皮革腰带", href: "https://poedb.tw/cn/Gluttony", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvR2x1dHRvbnkiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/850a3a646d/Gluttony.png", baseType: "皮革腰带" }, { name: "猎首 皮革腰带", href: "https://poedb.tw/cn/Headhunter", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvSGVhZGh1bnRlciIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/e9542ec6ee/Headhunter.png", baseType: "皮革腰带" }, { name: "无罪之眼 黄晶护身符", href: "https://poedb.tw/cn/Eye_of_Innocence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQW11bGV0cy9FeWVPZklubm9jZW5jZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/9544014b69/EyeOfInnocence.png", baseType: "黄晶护身符" }, { name: "极北 皮革腰带", href: "https://poedb.tw/cn/Hyperboreus", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmV0cmF5YWxfVW5pcXVlX1RyYW5zcG9ydF9CZWx0IiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/52b9b09a12/Betrayal_Unique_Transport_Belt.png", limit: "「背叛者」联盟限定", baseType: "皮革腰带" }, { name: "龙蜕之带 皮革腰带", href: "https://poedb.tw/cn/Wurms_Molt", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmVsdDZVbmlxdWUiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/3307668b96/Belt6Unique.png", baseType: "皮革腰带" }, { name: "巨岩指套 皮革腰带", href: "https://poedb.tw/cn/Cyclopean_Coil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvRWxkZXJCZWx0IiwidyI6MiwiaCI6MSwic2NhbGUiOjEsImVsZGVyIjp0cnVlfV0/e933baf49d/ElderBelt.png", limit: "「裂界者」限定掉落", baseType: "皮革腰带" }, { name: "屈服印记 潜能之戒", href: "https://poedb.tw/cn/Mark_of_Submission", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvUmVkQnJhbmRSaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/8f15300177/RedBrandRing.png", baseType: "潜能之戒" }, { name: "努葛玛呼之印 红玉戒指", href: "https://poedb.tw/cn/Ngamahus_Sign", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmluZ3MvTmdhbWFodXNTaWduIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/4323574c5a/NgamahusSign.png", limit: "「血族」联盟限定", baseType: "红玉戒指" }, { name: "猎首【仿品】 皮革腰带", href: "https://poedb.tw/cn/Replica_Headhunter", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvSGVhZGh1bnRlciIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/e9542ec6ee/Headhunter.png", baseType: "皮革腰带" }, { name: "戴亚迪安的晨曦 重革腰带", href: "https://poedb.tw/cn/Dyadian_Dawn", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvTW90aGVyRHlhZHVzIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/ca299e5015/MotherDyadus.png", baseType: "重革腰带" }, { name: "多里亚尼之约 重革腰带", href: "https://poedb.tw/cn/Doryanis_Invitation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvRG9yeWFuaXNJbnZpdGF0aW9uIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/d0085639cc/DoryanisInvitation.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "重革腰带" }, { name: "突围者 重革腰带", href: "https://poedb.tw/cn/Siegebreaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvODU0ODIiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/ee893f3cb8/85482.png", baseType: "重革腰带" }, { name: "母亲的拥抱 重革腰带", href: "https://poedb.tw/cn/Mothers_Embrace", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvTW90aGVyc0VtYnJhY2UiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/e576fccc3e/MothersEmbrace.png", limit: "「灾变」联盟限定", baseType: "重革腰带" }, { name: "比斯克的缰绳 重革腰带", href: "https://poedb.tw/cn/Biscos_Leash", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmlzY29zTGVhc2giLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/87b17c98e7/BiscosLeash.png", baseType: "重革腰带" }, { name: "突围者【仿品】 重革腰带", href: "https://poedb.tw/cn/Replica_Siegebreaker", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvODU0ODIiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/ee893f3cb8/85482.png", baseType: "重革腰带" }, { name: "冈姆之束缚 重革腰带", href: "https://poedb.tw/cn/Kaoms_Binding", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvS2FvbUJlbHQiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/94edbfb12d/KaomBelt.png", baseType: "重革腰带" }, { name: "盛宴之结 素布腰带", href: "https://poedb.tw/cn/Feastbind", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvRmVhc3RiaW5kIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/f5d1f232d6/Feastbind.png", limit: "「魔符」联盟限定", baseType: "素布腰带" }, { name: "法师之血 重革腰带", href: "https://poedb.tw/cn/Mageblood", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvSW5qZWN0b3JCZWx0IiwidyI6MiwiaCI6MSwic2NhbGUiOjEsInJlbGljIjozfV0/804570c5af/InjectorBelt.png", baseType: "重革腰带" }, { name: "普兰德斯之印 饰布腰带", href: "https://poedb.tw/cn/Perandus_Blazon", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQnVja2xlZEJlbHRVbmlxdWUyIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/b67e6fa4a9/BuckledBeltUnique2.png", baseType: "饰布腰带" }, { name: "幸存者的愧疚 重革腰带", href: "https://poedb.tw/cn/Survivors_Guilt", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvSW1iYWxhbmNlZENvcmQiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/0560075a4c/ImbalancedCord.png", limit: "「驱灵仪式」联盟限定", baseType: "重革腰带" }, { name: "日炎 饰布腰带", href: "https://poedb.tw/cn/Sunblast", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmVsdDgiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/c50a807f09/Belt8.png", baseType: "饰布腰带" }, { name: "嗜魂 饰布腰带", href: "https://poedb.tw/cn/Soulthirst", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvU291bHRoaXJzdCIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/ee53d9c1ef/Soulthirst.png", baseType: "饰布腰带" }, { name: "复苏之药 饰布腰带", href: "https://poedb.tw/cn/The_Druggery", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvVGhlRHJ1Z2dlcnkiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/136b59f839/TheDruggery.png", baseType: "饰布腰带" }, { name: "仁德腰带 饰布腰带", href: "https://poedb.tw/cn/Ceinture_of_Benevolence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvTGlua21hc3RlcnNDb2lsIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/19af94314e/LinkmastersCoil.png", baseType: "饰布腰带" }, { name: "奥莱西亚的喜悦 饰布腰带", href: "https://poedb.tw/cn/Olesyas_Delight", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQWx0Q2hhcmdlRGV4IiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/caa418edee/AltChargeDex.png", limit: "「贤主」限定掉落", baseType: "饰布腰带" }, { name: "灵魂羁绊 饰布腰带", href: "https://poedb.tw/cn/Soul_Tether", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmVsdDMiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/93af17affd/Belt3.png", baseType: "饰布腰带" }, { name: "既定命途 饰布腰带", href: "https://poedb.tw/cn/Bound_Fate", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvSGluZWtvcmFCZWx0IiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/0ffa60853d/HinekoraBelt.png", baseType: "饰布腰带" }, { name: "葛拉文的秘宝 饰布腰带", href: "https://poedb.tw/cn/Gravens_Secret", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQWx0Q2hhcmdlSW50IiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/1300aed2ac/AltChargeInt.png", limit: "「贤主」限定掉落", baseType: "饰布腰带" }, { name: "流逝之时 饰布腰带", href: "https://poedb.tw/cn/The_Flow_Untethered", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvSGFyYmluZ2VyQmVsdCIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/805aeb48f1/HarbingerBelt.png", limit: "「降临之地」限定掉落\n「先驱」联盟限定\n使用 时光卷轴 升级 沧海桑田", baseType: "饰布腰带" }, { name: "瑞斯拉萨的线圈 扣钉腰带", href: "https://poedb.tw/cn/Ryslathas_Coil", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvUnl1c2xhdGhhc0NsdXRjaGVzIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/5b990decd3/RyuslathasClutches.png", baseType: "扣钉腰带" }, { name: "阿恩的痛苦 饰布腰带", href: "https://poedb.tw/cn/Arns_Anguish", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQWx0Q2hhcmdlU3RyIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/c07eed602e/AltChargeStr.png", limit: "「贤主」限定掉落", baseType: "饰布腰带" }, { name: "坚毅之环 扣钉腰带", href: "https://poedb.tw/cn/The_Magnate", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQnVja2xlZEJlbHRVbmlxdWUiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/10d87b7baf/BuckledBeltUnique.png", baseType: "扣钉腰带" }, { name: "沧海桑田 饰布腰带", href: "https://poedb.tw/cn/The_Torrents_Reclamation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvSGFyYmluZ2VyQmVsdFVwZ3JhZGVkIiwidyI6MiwiaCI6MSwic2NhbGUiOjEsInJlbGljIjoyfV0/222510f201/HarbingerBeltUpgraded.png", limit: "「灌注的降临之地」限定掉落\n「庄园」联盟限定\n流逝之时 使用 时光卷轴 升级", baseType: "饰布腰带" }, { name: "德瑞的妙药 良质魔力药剂", href: "https://poedb.tw/cn/Doedres_Elixir", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MveUZsYXNrNCIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/59c415efed/yFlask4.png", baseType: "良质魔力药剂" }, { name: "泽佛伊的终息 优质魔力药剂", href: "https://poedb.tw/cn/Zerphis_Last_Breath", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvWmVycGhpc0xhc3RCcmVhdGgiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/bf8cb7b943/ZerphisLastBreath.png", baseType: "优质魔力药剂" }, { name: "拉维安加之泉 圣化魔力药剂", href: "https://poedb.tw/cn/Laviangas_Spirit", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvTGF2aWFuZ2FzT2lsIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/44f064d737/LaviangasOil.png", limit: "「支配/复仇」联盟限定", baseType: "圣化魔力药剂" }, { name: "奥术之符 水晶腰带", href: "https://poedb.tw/cn/Auxium", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQXV4aXVtIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/acf784e82e/Auxium.png", baseType: "水晶腰带" }, { name: "扭曲之罐 祝福复合药剂", href: "https://poedb.tw/cn/The_Writhing_Jar", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvV3JpdGhpbmdKYXIiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/6d3e384036/WrithingJar.png", baseType: "祝福复合药剂" }, { name: "宝视精华 大型复合药剂", href: "https://poedb.tw/cn/Divination_Distillate", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MveUZsYXNrczE3IiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/df28fc612b/yFlasks17.png", baseType: "大型复合药剂" }, { name: "克拉里多之名 宝钻药剂", href: "https://poedb.tw/cn/Coralitos_Signature", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvR29yZ29uc0ZsYXNrIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/8fa50a1974/GorgonsFlask.png", baseType: "宝钻药剂" }, { name: "逝日 红玉药剂", href: "https://poedb.tw/cn/Dying_Sun", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvU2hhcGVyc0ZsYXNrIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/c6e2f8118d/ShapersFlask.png", limit: "「塑界者」限定掉落", baseType: "红玉药剂" }, { name: "梅吉诺德的力量泉源 重革腰带", href: "https://poedb.tw/cn/Meginords_Girdle", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmVsdDdVbmlxdWUiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/59718aca01/Belt7Unique.png", baseType: "重革腰带" }, { name: "鲁米的灵药 坚岩药剂", href: "https://poedb.tw/cn/Rumis_Concoction", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQmxvY2tGbGFzayIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/3bc27f19d5/BlockFlask.png", baseType: "坚岩药剂" }, { name: "狮吼精华 坚岩药剂", href: "https://poedb.tw/cn/Lions_Roar", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MveUZsYXNrNSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/69fe070e32/yFlask5.png", baseType: "坚岩药剂" }, { name: "伤胃酒 水银药剂", href: "https://poedb.tw/cn/Rotgut", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvUm90Z3V0IiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/80c2799242/Rotgut.png", baseType: "水银药剂" }, { name: "恨意 蓝玉药剂", href: "https://poedb.tw/cn/Taste_of_Hate", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvVGFzdGVPZkhhdGUiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/37ff43c7ff/TasteOfHate.png", baseType: "蓝玉药剂" }, { name: "鲁米的灵药【仿品】 坚岩药剂", href: "https://poedb.tw/cn/Replica_Rumis_Concoction", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQmxvY2tGbGFzayIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/3bc27f19d5/BlockFlask.png", baseType: "坚岩药剂" }, { name: "阿兹里的诺言 紫晶药剂", href: "https://poedb.tw/cn/Atziris_Promise", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQXR6aXJpc1Byb21pc2UiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/8a5f4f13b4/AtzirisPromise.png", limit: "「瓦尔女王阿兹里」限定掉落", baseType: "紫晶药剂" }, { name: "茁育助长 紫晶药剂", href: "https://poedb.tw/cn/Progenesis", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvVWJlck1hdmVuRmxhc2siLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/b82c247a54/UberMavenFlask.png", limit: "「Uber The Maven」限定掉落", baseType: "紫晶药剂" }, { name: "维克塔血器 黄玉药剂", href: "https://poedb.tw/cn/Vessel_of_Vinktar", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvVmlua3RhckZsYXNrIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/caf5220901/VinktarFlask.png", baseType: "黄玉药剂" }, { name: "禁果 石英药剂", href: "https://poedb.tw/cn/Forbidden_Taste", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvUGhhbnRvbUJsb29kIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/d04fc2ce16/PhantomBlood.png", baseType: "石英药剂" }, { name: "巫酿之水 迷雾药剂", href: "https://poedb.tw/cn/Witchfire_Brew", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvV2l0Y2hGaXJlQnJldyIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/1696a739f5/WitchFireBrew.png", baseType: "迷雾药剂" }, { name: "神圣哀悼 硫磺药剂", href: "https://poedb.tw/cn/The_Sorrow_of_the_Divine", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvU29ycm93T2ZUaGVEaXZpbmUiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/5d9eb26bd6/SorrowOfTheDivine.png", baseType: "硫磺药剂" }, { name: "裂魂者 石英药剂", href: "https://poedb.tw/cn/Soul_Ripper", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvU291bFJpcHBlciIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/f74d277e1d/SoulRipper.png", limit: "「穿越」联盟限定\n捕魂者 使用 鬼魂魔瓶 升级", baseType: "石英药剂" }, { name: "高洁圣杯 硫磺药剂", href: "https://poedb.tw/cn/The_Overflowing_Chalice", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvT3ZlcmZsb3dpbmdDaGFsaWNlIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/ff0069d957/OverflowingChalice.png", baseType: "硫磺药剂" }, { name: "灵魂羁绊【仿品】 饰布腰带", href: "https://poedb.tw/cn/Replica_Soul_Tether", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvU291bFRldGhlciIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/a2b7447a4a/SoulTether.png", baseType: "饰布腰带" }, { name: "瓶中信仰 硫磺药剂", href: "https://poedb.tw/cn/Bottled_Faith", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQm90dGxlZFB1cml0eSIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/b2ef237bf3/BottledPurity.png", limit: "「维纳留斯」限定掉落\n「虚空忆境」联盟限定", baseType: "硫磺药剂" }, { name: "奥瑞亚的尽头 灰岩药剂", href: "https://poedb.tw/cn/Oriaths_End", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvVWJlclNpcnVzRmxhc2siLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/8758d70627/UberSirusFlask.png", limit: "「Uber Sirus, Awakener of Worlds」限定掉落", baseType: "灰岩药剂" }, { name: "神圣哀悼【仿品】 硫磺药剂", href: "https://poedb.tw/cn/Replica_Sorrow_of_the_Divine", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvU29ycm93T2ZUaGVEaXZpbmUiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/5d9eb26bd6/SorrowOfTheDivine.png", baseType: "硫磺药剂" }, { name: "奇亚拉的决心 真银药剂", href: "https://poedb.tw/cn/Kiaras_Determination", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvS2lhcmFzRGV0ZXJtaW5hdGlvbiIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/591dcd7979/KiarasDetermination.png", baseType: "真银药剂" }, { name: "灰烬之瓮 真银药剂", href: "https://poedb.tw/cn/Cinderswallow_Urn", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvVmlhbG9mVW5saWZlIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/9911226887/VialofUnlife.png", limit: "「亡灵大师卡塔莉娜」限定掉落\n「背叛者」联盟限定", baseType: "真银药剂" }, { name: "不坏圣环灵药 坚铁药剂", href: "https://poedb.tw/cn/Elixir_of_the_Unbroken_Circle", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvV2FyZEZsYXNrMDMiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/d78b003b9a/WardFlask03.png", limit: "「英雄伙伴梅德维德」限定掉落\n「先祖秘藏」联盟限定", baseType: "坚铁药剂" }, { name: "卡鲁之血 圣化生命药剂", href: "https://poedb.tw/cn/Blood_of_the_Karui", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQmxvb2RPZlRoZUthcnVpIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/f70bd57e9f/BloodOfTheKarui.png", limit: "「支配/复仇」联盟限定", baseType: "圣化生命药剂" }, { name: "星光圣杯 坚铁药剂", href: "https://poedb.tw/cn/Starlight_Chalice", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQWRhcHRhdGlvbkZsYXNrMDIiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/e2a95fa6e6/AdaptationFlask02.png", limit: "「贪婪叛徒乌崔德」限定掉落\n「先祖秘藏」联盟限定", baseType: "坚铁药剂" }, { name: "马洛尼的技巧 华美箭袋", href: "https://poedb.tw/cn/Maloneys_Mechanism", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9UcmlnZ2VyUXVpdmVyQmFzZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/1f3958bdb3/TriggerQuiverBase.png", baseType: "华美箭袋" }, { name: "欧罗什的决心 坚铁药剂", href: "https://poedb.tw/cn/Olroths_Resolve", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvV2FyZEZsYXNrMDIiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/b6f390075a/WardFlask02.png", limit: "「堕落之源欧罗什」限定掉落\n「先祖秘藏」联盟限定", baseType: "坚铁药剂" }, { name: "真相之担 水晶腰带", href: "https://poedb.tw/cn/The_Burden_of_Truth", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvU2lydXNCZWx0IiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/757f213691/SirusBelt.png", limit: "「诸界觉者希鲁斯」限定掉落", baseType: "水晶腰带" }, { name: "捕魂者 石英药剂", href: "https://poedb.tw/cn/Soul_Catcher", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvU291bENhdGNoZXIiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/00e2d0f2b5/SoulCatcher.png", limit: "「瓦尔妖塔」限定掉落\n「穿越」联盟限定\n使用 鬼魂魔瓶 升级 裂魂者", baseType: "石英药剂" }, { name: "凝息【仿品】 扣链腰带", href: "https://poedb.tw/cn/Replica_Bated_Breath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvQmF0ZWRCcmVhdGgiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/0a8cc4529f/BatedBreath.png", baseType: "扣链腰带" }, { name: "拉维安加之泉【仿品】 圣化魔力药剂", href: "https://poedb.tw/cn/Replica_Laviangas_Spirit", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvTGF2aWFuZ2FzT2lsIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/44f064d737/LaviangasOil.png", baseType: "圣化魔力药剂" }, { name: "马洛尼的技巧【仿品】 华美箭袋", href: "https://poedb.tw/cn/Replica_Maloneys_Mechanism", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9UcmlnZ2VyUXVpdmVyQmFzZSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/1f3958bdb3/TriggerQuiverBase.png", baseType: "华美箭袋" }, { name: "岩头 锯齿箭袋", href: "https://poedb.tw/cn/Craghead", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9RdWl2ZXJVbmlxdWU0IiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/dfccecb2ae/QuiverUnique4.png", baseType: "锯齿箭袋" }, { name: "恒毅意志 先锋腰带", href: "https://poedb.tw/cn/Perseverance", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvUGVyc2VydmVyYW5jZSIsInciOjIsImgiOjEsInNjYWxlIjoxfV0/1ff634248a/Perserverance.png", baseType: "先锋腰带" }, { name: "西里的嗜血之矢 鲨齿箭袋", href: "https://poedb.tw/cn/Hyrris_Bite", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9Icnl5aXNCaXRlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/91937737c4/HryyisBite.png", baseType: "鲨齿箭袋" }, { name: "穿心 穿射箭袋", href: "https://poedb.tw/cn/Drillneck", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9EcmlsbG5lY2siLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/2e0770a7b1/Drillneck.png", baseType: "穿射箭袋" }, { name: "夜临 深渊腰带", href: "https://poedb.tw/cn/Darkness_Enthroned", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQmVsdHMvRGFya25lc3NFbnRocm9uZWQiLCJ3IjoyLCJoIjoxLCJzY2FsZSI6MX1d/2e418e2c4d/DarknessEnthroned.png", limit: "「Abyss Lich」限定掉落\n「深渊」联盟限定", baseType: "深渊腰带" }, { name: "勇者之礼 飞羽箭袋", href: "https://poedb.tw/cn/Saemus_Gift", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9TZWFtdXNHaWZ0IiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/7da61eeb8e/SeamusGift.png", baseType: "飞羽箭袋" }, { name: "闪耀精华 红玉药剂", href: "https://poedb.tw/cn/Coruscating_Elixir", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQ29ydXNFbGl4aXIiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/26769c58f3/CorusElixir.png", baseType: "红玉药剂" }, { name: "瑞佛之羽 双锋箭袋", href: "https://poedb.tw/cn/Rigwalds_Quills", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9SaWd3YWxkc1F1aWxscyIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/b8325e5214/RigwaldsQuills.png", baseType: "双锋箭袋" }, { name: "小会战 双锋箭袋", href: "https://poedb.tw/cn/Skirmish", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9UaGVTa2lybWlzaCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/9fe8813a15/TheSkirmish.png", baseType: "双锋箭袋" }, { name: "寒锋之卫 钝矢箭袋", href: "https://poedb.tw/cn/Rearguard", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9SZWFyZ3VhcmQiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/9b285161a6/Rearguard.png", baseType: "钝矢箭袋" }, { name: "灵魂打击 刺锋箭袋", href: "https://poedb.tw/cn/Soul_Strike", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9Tb3Vsc3RyaWtlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/ecea242a12/Soulstrike.png", baseType: "刺锋箭袋" }, { name: "神性破碎 钝矢箭袋", href: "https://poedb.tw/cn/The_Shattered_Divinity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9IYXJiaW5nZXJRdWl2ZXJVcGdyYWRlZCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/866d1ab1b7/HarbingerQuiverUpgraded.png", limit: "「灌注的降临之地」限定掉落\n「庄园」联盟限定\n爆裂之射 使用 破碎卷轴 升级", baseType: "钝矢箭袋" }, { name: "冰灵之吼 飞羽箭袋", href: "https://poedb.tw/cn/Asphyxias_Wrath", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9Bc3BoeXhpYXNXcmF0aCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/e33bd46903/AsphyxiasWrath.png", baseType: "飞羽箭袋" }, { name: "黑炎之芒 燃矢箭袋", href: "https://poedb.tw/cn/Blackgleam", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9RdWl2ZXJVbmlxdWUxIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/797ce777ed/QuiverUnique1.png", baseType: "燃矢箭袋" }, { name: "马洛尼的暮光 恶矢箭袋", href: "https://poedb.tw/cn/Maloneys_Nightfall", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9NYWxvbmV5c05pZ2h0ZmFsbCIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/aad4bc5b10/MaloneysNightfall.png", baseType: "恶矢箭袋" }, { name: "惯性 赤红珠宝", href: "https://poedb.tw/cn/Inertia", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0RFWHRvU1RSIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/2fc9d85725/DEXtoSTR.png", baseType: "赤红珠宝" }, { name: "平衡棱镜 原矢箭袋", href: "https://poedb.tw/cn/The_Poised_Prism", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9QcmlzbWF0aWNHbGVhbSIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/25341c4e59/PrismaticGleam.png", baseType: "原矢箭袋" }, { name: "求知的热情 赤红珠宝", href: "https://poedb.tw/cn/Inspired_Learning", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL3VuaXF1ZTciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/05e61f124f/unique7.png", baseType: "赤红珠宝" }, { name: "爆裂之射 钝矢箭袋", href: "https://poedb.tw/cn/The_Fracturing_Spinner", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9IYXJiaW5nZXJRdWl2ZXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/288bd960f9/HarbingerQuiver.png", limit: "「降临之地」限定掉落\n「先驱」联盟限定\n使用 破碎卷轴 升级 神性破碎", baseType: "钝矢箭袋" }, { name: "碎镞雨 赤红珠宝", href: "https://poedb.tw/cn/Rain_of_Splinters", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1JlZEthcnVpIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/283aad3d25/RedKarui.png", baseType: "赤红珠宝" }, { name: "再生的罪恶 迷雾药剂", href: "https://poedb.tw/cn/Sins_Rebirth", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvU2luIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsImxldmVsIjoxfV0/897bffaad1/Sin.png", baseType: "迷雾药剂" }, { name: "阿兹里之权 赤红珠宝", href: "https://poedb.tw/cn/Atziris_Reign", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1JlZENvcnJ1cHQxIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/b14eb2eeb7/RedCorrupt1.png", baseType: "赤红珠宝" }, { name: "钢铁蠕虫 宽矢箭袋", href: "https://poedb.tw/cn/Steelworm", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9TaGFyZFF1aXZlciIsInciOjIsImgiOjMsInNjYWxlIjoxfV0/f531e46359/ShardQuiver.png", limit: "「帝王试炼迷宫」限定掉落", baseType: "宽矢箭袋" }, { name: "充分训练 赤红珠宝", href: "https://poedb.tw/cn/Efficient_Training", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0lOVHRvU1RSIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/3631faae6d/INTtoSTR.png", baseType: "赤红珠宝" }, { name: "聚光之石 赤红珠宝", href: "https://poedb.tw/cn/Grand_Spectrum", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dyYW5kU3BlY3RydW0yX0dyZWVuIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/e45dcaecc4/GrandSpectrum2_Green.png", limit: "「帝王试炼迷宫」限定掉落", baseType: "赤红珠宝" }, { name: "虚空制箭者 原矢箭袋", href: "https://poedb.tw/cn/Voidfletcher", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9FbGRhclF1aXZlciIsInciOjIsImgiOjMsInNjYWxlIjoxLCJlbGRlciI6dHJ1ZSwic2hhcGVyIjp0cnVlfV0/bd739c33ef/EldarQuiver.png", limit: "「裂界者」限定掉落", baseType: "原矢箭袋" }, { name: "起源力量 赤红珠宝", href: "https://poedb.tw/cn/Primordial_Might", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dvbGVtSW5mZXJuYWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/a50b1917f5/GolemInfernal.png", baseType: "赤红珠宝" }, { name: "脆弱 赤红珠宝", href: "https://poedb.tw/cn/Fragility", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1JlZENvcnJ1cHQ2IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/161d0c411c/RedCorrupt6.png", baseType: "赤红珠宝" }, { name: "能量坚甲 赤红珠宝", href: "https://poedb.tw/cn/Energised_Armour", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1JlZEpld2VsNSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/5d09a69cbc/RedJewel5.png", baseType: "赤红珠宝" }, { name: "聪明的欧克 灰岩药剂", href: "https://poedb.tw/cn/The_Wise_Oak", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvVGhlV2lzZU9hayIsInciOjEsImgiOjIsInNjYWxlIjoxLCJsZXZlbCI6MX1d/80a47134d5/TheWiseOak.png", baseType: "灰岩药剂" }, { name: "赤影梦境 赤红珠宝", href: "https://poedb.tw/cn/The_Red_Dream", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RoZVJlZERyZWFtIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/5fc736ec75/TheRedDream.png", limit: "「夏乌拉之域」限定掉落\n「精华」联盟限定\n使用 夏乌拉的祝福 升级 赤影梦魇", baseType: "赤红珠宝" }, { name: "沃拉娜的准备 坚铁药剂", href: "https://poedb.tw/cn/Voranas_Preparation", icon: "https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvQWRhcHRhdGlvbkZsYXNrMDMiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MSwibGV2ZWwiOjF9XQ/f67d3bf6f2/AdaptationFlask03.png", limit: "「坚持到底的沃拉娜」限定掉落\n「先祖秘藏」联盟限定", baseType: "坚铁药剂" }, { name: "温柔之力 赤红珠宝", href: "https://poedb.tw/cn/Might_of_the_Meek", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1BvdGVuY3lPZlRoZVVucmVtYXJrYWJsZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/10117c9173/PotencyOfTheUnremarkable.png", baseType: "赤红珠宝" }, { name: "阿华纳之牙 鲨齿箭袋", href: "https://poedb.tw/cn/Ahuanas_Bite", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9BaHVhbmFRdWl2ZXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/4cc0ef813d/AhuanaQuiver.png", baseType: "鲨齿箭袋" }, { name: "血肉分崩 赤红珠宝", href: "https://poedb.tw/cn/Dissolution_of_the_Flesh", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1Jlc2VydmVkQmxvb2RKZXdlbCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/1a4688f335/ReservedBloodJewel.png", limit: "「灼督」限定掉落", baseType: "赤红珠宝" }, { name: "永恒之力 赤红珠宝", href: "https://poedb.tw/cn/Immutable_Force", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1JlZEpld2VsMiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/87ba4f5e53/RedJewel2.png", baseType: "赤红珠宝" }, { name: "起源力量【仿品】 赤红珠宝", href: "https://poedb.tw/cn/Replica_Primordial_Might", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dvbGVtSW5mZXJuYWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/a50b1917f5/GolemInfernal.png", baseType: "赤红珠宝" }, { name: "灵魂打击【仿品】 刺锋箭袋", href: "https://poedb.tw/cn/Replica_Soul_Strike", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9Tb3Vsc3RyaWtlIiwidyI6MiwiaCI6Mywic2NhbGUiOjF9XQ/ecea242a12/Soulstrike.png", baseType: "刺锋箭袋" }, { name: "希望之线 赤红珠宝", href: "https://poedb.tw/cn/Thread_of_Hope", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0Nvbm5lY3RlZEpld2VsIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/1d2c1f698a/ConnectedJewel.png", limit: "「诸界觉者希鲁斯」限定掉落", baseType: "赤红珠宝" }, { name: "流畅行动 翠绿珠宝", href: "https://poedb.tw/cn/Fluid_Motion", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1NUUnRvREVYIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/f5a4ea844d/STRtoDEX.png", baseType: "翠绿珠宝" }, { name: "浮华 赤红珠宝", href: "https://poedb.tw/cn/The_Adorned", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RyaWFsbWFzdGVySmV3IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/f04386d454/TrialmasterJew.png", baseType: "赤红珠宝" }, { name: "血痕 赤红珠宝", href: "https://poedb.tw/cn/Bloodnotch", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0lnbm9yZVBhaW4iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/191f378925/IgnorePain.png", baseType: "赤红珠宝" }, { name: "狮眼的陨落 翠绿珠宝", href: "https://poedb.tw/cn/Lioneyes_Fall", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0xpb25leWVzRmFsbCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/164c5c1080/LioneyesFall.png", baseType: "翠绿珠宝" }, { name: "和平主义 翠绿珠宝", href: "https://poedb.tw/cn/Pacifism", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dyZWVuQ29ycnVwdDYiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/1b1c1912b2/GreenCorrupt6.png", baseType: "翠绿珠宝" }, { name: "帝王的诡计 翠绿珠宝", href: "https://poedb.tw/cn/Emperors_Cunning", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0N1bm5pbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/4b5d857ef3/Cunning.png", limit: "「Labyrinth Chest」限定掉落", baseType: "翠绿珠宝" }, { name: "魔蝎的呼唤 重矢箭袋", href: "https://poedb.tw/cn/Scorpions_Call", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUXVpdmVycy9CbG9vZFNhbmRRdWl2ZXIiLCJ3IjoyLCJoIjozLCJzY2FsZSI6MX1d/57b1387b43/BloodSandQuiver.png", baseType: "重矢箭袋" }, { name: "直觉之跃 翠绿珠宝", href: "https://poedb.tw/cn/Intuitive_Leap", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL3VuaXF1ZTYiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/f2dc5c37a5/unique6.png", baseType: "翠绿珠宝" }, { name: "青影梦境 翠绿珠宝", href: "https://poedb.tw/cn/The_Green_Dream", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RoZUdyZWVuRHJlYW0iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/1a25683711/TheGreenDream.png", limit: "「夏乌拉之域」限定掉落\n「精华」联盟限定\n使用 夏乌拉的祝福 升级 青影梦魇", baseType: "翠绿珠宝" }, { name: "黄金法则 翠绿珠宝", href: "https://poedb.tw/cn/The_Golden_Rule", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RoZUdvbGRlblJ1bGUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/3c5f6382fc/TheGoldenRule.png", baseType: "翠绿珠宝" }, { name: "赤影梦魇 赤红珠宝", href: "https://poedb.tw/cn/The_Red_Nightmare", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RoZVJlZERyZWFtVXBncmFkZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/69a20aa6e0/TheRedDreamUpgrade.png", limit: "「精华」联盟限定\n赤影梦境 使用 夏乌拉的祝福 升级", baseType: "赤红珠宝" }, { name: "帝王的霸权 赤红珠宝", href: "https://poedb.tw/cn/Emperors_Might", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL01pZ2h0IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/d1507b1ec4/Might.png", limit: "「Labyrinth Chest」限定掉落", baseType: "赤红珠宝" }, { name: "加速誓约 翠绿珠宝", href: "https://poedb.tw/cn/Quickening_Covenant", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL3VuaXF1ZTEwIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/46d92a634d/unique10.png", baseType: "翠绿珠宝" }, { name: "超自然本能 翠绿珠宝", href: "https://poedb.tw/cn/Unnatural_Instinct", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1VubmF0dXJhbEluc3RpbmN0IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/c37fa5c2b6/UnnaturalInstinct.png", baseType: "翠绿珠宝" }, { name: "先祖的远视 翠绿珠宝", href: "https://poedb.tw/cn/Ancestral_Vision", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1ByaXN0aW5lQ29uZGl0aW9uaW5nIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/5ad58d3a2e/PristineConditioning.png", baseType: "翠绿珠宝" }, { name: "尘埃落定 钴蓝珠宝", href: "https://poedb.tw/cn/To_Dust", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL3VuaXF1ZTgiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/50417e8914/unique8.png", baseType: "钴蓝珠宝" }, { name: "升华之躯 赤红珠宝", href: "https://poedb.tw/cn/Transcendent_Flesh", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RyYW5zY2VuZGVudFJlZCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/7dcf8933ad/TranscendentRed.png", limit: "「穿越」联盟限定\n淬火之躯 使用 超越魔瓶 升级", baseType: "赤红珠宝" }, { name: "丰富心灵 钴蓝珠宝", href: "https://poedb.tw/cn/Fertile_Mind", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0RFWHRvSU5UIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/b363fdbd52/DEXtoINT.png", baseType: "钴蓝珠宝" }, { name: "灵体转换 钴蓝珠宝", href: "https://poedb.tw/cn/Healthy_Mind", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0JsdWVKZXdlbDciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/73584bc29e/BlueJewel7.png", baseType: "钴蓝珠宝" }, { name: "人格分裂 赤红珠宝", href: "https://poedb.tw/cn/Split_Personality", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1VuaXF1ZUpld2VsQmFzZTEiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/166fecc863/UniqueJewelBase1.png", limit: "「梦魇拟像」限定掉落\n「惊悸迷雾」联盟限定", baseType: "赤红珠宝" }, { name: "淬火之躯 赤红珠宝", href: "https://poedb.tw/cn/Tempered_Flesh", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RlbXBlcmVkUmVkIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/66e750a720/TemperedRed.png", limit: "「瓦尔妖塔」限定掉落\n「穿越」联盟限定\n使用 超越魔瓶 升级 升华之躯", baseType: "赤红珠宝" }, { name: "烈火之歌 赤红珠宝", href: "https://poedb.tw/cn/Firesong", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1JlZEpld2VsNyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/dd6b13c77c/RedJewel7.png", baseType: "赤红珠宝" }, { name: "战斗专注 赤红珠宝", href: "https://poedb.tw/cn/Combat_Focus", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0VsZW1lbnRhbEhpdExpZ2h0ZW5pbmciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/e913bb8301/ElementalHitLightening.png", baseType: "赤红珠宝" }, { name: "潜能防护 钴蓝珠宝", href: "https://poedb.tw/cn/Energy_From_Within", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0JsdWVKZXdlbDYiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/43c313a2c4/BlueJewel6.png", baseType: "钴蓝珠宝" }, { name: "鲁莽防御 钴蓝珠宝", href: "https://poedb.tw/cn/Reckless_Defence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1JlY2tsZXNzRGVmZW5zZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/923e6cb6b5/RecklessDefense.png", baseType: "钴蓝珠宝" }, { name: "无尽渴望 钴蓝珠宝", href: "https://poedb.tw/cn/Unending_Hunger", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1NwZWN0cmVKZXdlbCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/4e2d72df55/SpectreJewel.png", baseType: "钴蓝珠宝" }, { name: "禁断之火 赤红珠宝", href: "https://poedb.tw/cn/Forbidden_Flame", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1B1enpsZVBpZWNlSmV3ZWxfQ2xlYW5zaW5nRmlyZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/ddfe57ac90/PuzzlePieceJewel_CleansingFire.png", limit: "「灼督」限定掉落", baseType: "赤红珠宝" }, { name: "战士的史诗 赤红珠宝", href: "https://poedb.tw/cn/Warriors_Tale", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0hpbmVrb3JhSmV3ZWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/50c0f1161a/HinekoraJewel.png", limit: "「Ancestor Tournament」限定掉落", baseType: "赤红珠宝" }, { name: "帝王的智慧 钴蓝珠宝", href: "https://poedb.tw/cn/Emperors_Wit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1dpdCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/bc537c241b/Wit.png", limit: "「Labyrinth Chest」限定掉落", baseType: "钴蓝珠宝" }, { name: "残虐之欢愉 翠绿珠宝", href: "https://poedb.tw/cn/Self-Flagellation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dyZWVuQ29ycnVwdDUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/6aa93279b6/GreenCorrupt5.png", baseType: "翠绿珠宝" }, { name: "审慎计划 翠绿珠宝", href: "https://poedb.tw/cn/Careful_Planning", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0lOVHRvREVYIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/e30df474e0/INTtoDEX.png", baseType: "翠绿珠宝" }, { name: "要塞誓约 钴蓝珠宝", href: "https://poedb.tw/cn/Fortress_Covenant", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0JsdWVKZXdlbDQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/5801f4441d/BlueJewel4.png", baseType: "钴蓝珠宝" }, { name: "深藏的潜能 翠绿珠宝", href: "https://poedb.tw/cn/Hidden_Potential", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL3VuaXF1ZTE3IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/c445828c50/unique17.png", baseType: "翠绿珠宝" }, { name: "升华之心 钴蓝珠宝", href: "https://poedb.tw/cn/Transcendent_Mind", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RyYW5zY2VuZGVudEJsdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/d02c69b7dc/TranscendentBlue.png", limit: "「穿越」联盟限定\n淬火之心 使用 超越魔瓶 升级", baseType: "钴蓝珠宝" }, { name: "鲁莽防御【仿品】 钴蓝珠宝", href: "https://poedb.tw/cn/Replica_Reckless_Defence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1JlY2tsZXNzRGVmZW5zZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/923e6cb6b5/RecklessDefense.png", baseType: "钴蓝珠宝" }, { name: "青影梦魇 翠绿珠宝", href: "https://poedb.tw/cn/The_Green_Nightmare", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RoZUdyZWVuRHJlYW1VcGdyYWRlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/2a2234606a/TheGreenDreamUpgrade.png", limit: "「精华」联盟限定\n青影梦境 使用 夏乌拉的祝福 升级", baseType: "翠绿珠宝" }, { name: "腐化寒息 翠绿珠宝", href: "https://poedb.tw/cn/Chill_of_Corruption", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dyZWVuQ29ycnVwdDIiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/567ed38e5d/GreenCorrupt2.png", baseType: "翠绿珠宝" }, { name: "起源卓越 翠绿珠宝", href: "https://poedb.tw/cn/Primordial_Eminence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dvbGVtQXJjdGljIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/8461900064/GolemArctic.png", baseType: "翠绿珠宝" }, { name: "女巫克星 钴蓝珠宝", href: "https://poedb.tw/cn/Witchbane", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL3VuaXF1ZTEzIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/9cc73bdf26/unique13.png", baseType: "钴蓝珠宝" }, { name: "淬火之魂 翠绿珠宝", href: "https://poedb.tw/cn/Tempered_Spirit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RlbXBlcmVkR3JlZW4iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/29ecf43831/TemperedGreen.png", limit: "「瓦尔妖塔」限定掉落\n「穿越」联盟限定\n使用 超越魔瓶 升级 升华之魂", baseType: "翠绿珠宝" }, { name: "低谷状态 钴蓝珠宝", href: "https://poedb.tw/cn/Nadir_Mode", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0ludGVuc2l0eUpld2VsMiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/dd6952365a/IntensityJewel2.png", limit: "「契约：牢不可破」限定掉落\n「夺宝奇兵」联盟限定", baseType: "钴蓝珠宝" }, { name: "理性主义 钴蓝珠宝", href: "https://poedb.tw/cn/Rational_Doctrine", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1ViZXJDb3J0ZXhKZXdlbCIsInciOjEsImgiOjEsInNjYWxlIjoxLCJzeW50aGVzaXNlZCI6dHJ1ZX1d/75a97b9ff9/UberCortexJewel.png", limit: "「Uber Venarius」限定掉落", baseType: "钴蓝珠宝" }, { name: "纯才 翠绿珠宝", href: "https://poedb.tw/cn/Pure_Talent", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1B1cmVUYWxlbnQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/64b53e536e/PureTalent.png", baseType: "翠绿珠宝" }, { name: "禁断之肉 钴蓝珠宝", href: "https://poedb.tw/cn/Forbidden_Flesh", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1B1enpsZVBpZWNlSmV3ZWxfR3JlYXRUYW5nbGUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/9035b9ffd4/PuzzlePieceJewel_GreatTangle.png", limit: "「世界吞噬者」限定掉落", baseType: "钴蓝珠宝" }, { name: "怒火中烧 翠绿珠宝", href: "https://poedb.tw/cn/Seething_Fury", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1NwZWN0cmFsVGhyb3dUaHJlc2hvbGQiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/6de1cd92c9/SpectralThrowThreshold.png", baseType: "翠绿珠宝" }, { name: "升华之魂 翠绿珠宝", href: "https://poedb.tw/cn/Transcendent_Spirit", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RyYW5zY2VuZGVudEdyZWVuIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/6eb091ee7a/TranscendentGreen.png", limit: "「穿越」联盟限定\n淬火之魂 使用 超越魔瓶 升级", baseType: "翠绿珠宝" }, { name: "特克罗的凝视 凶残之凝珠宝", href: "https://poedb.tw/cn/Tecrods_Gaze", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL011cmRlcm91c0V5ZVVuaXF1ZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/f54f211029/MurderousEyeUnique.png", limit: "「Abyss Lich」限定掉落\n「深渊」联盟限定", baseType: "凶残之凝珠宝" }, { name: "崇高愿景 三相珠宝", href: "https://poedb.tw/cn/Sublime_Vision", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1N1YmxpbWVWaXNpb24iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MSwicmVsaWMiOjYsInNoYXBlciI6dHJ1ZX1d/4b478cc9ff/SublimeVision.png", limit: "「Uber The Shaper」限定掉落", baseType: "三相珠宝" }, { name: "暴风遮罩 翠绿珠宝", href: "https://poedb.tw/cn/Stormshroud", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dyZWVuSmV3ZWwyIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/75f171fff6/GreenJewel2.png", baseType: "翠绿珠宝" }, { name: "薛乌勒曼的凝视 锐利之凝珠宝", href: "https://poedb.tw/cn/Ulamans_Gaze", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1NlYXJjaGluZ0V5ZVVuaXF1ZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/fd2beeb2ad/SearchingEyeUnique.png", limit: "「Abyss Lich」限定掉落\n「深渊」联盟限定", baseType: "锐利之凝珠宝" }, { name: "无所遁形 翠绿珠宝", href: "https://poedb.tw/cn/Impossible_Escape", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL01pbmRib3JlUGVhcmwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/367683a1bb/MindborePearl.png", limit: "「贤主」限定掉落", baseType: "翠绿珠宝" }, { name: "光彩夺目 永恒珠宝", href: "https://poedb.tw/cn/Glorious_Vanity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1ZhYWxDaXZpbGl6YXRpb24iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/568c0e7c98/VaalCivilization.png", baseType: "永恒珠宝" }, { name: "蛮力冲撞 钴蓝珠宝", href: "https://poedb.tw/cn/Brute_Force_Solution", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1NUUnRvSU5UIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/d8b66f795b/STRtoINT.png", baseType: "钴蓝珠宝" }, { name: "自然之喜 小型星团珠宝", href: "https://poedb.tw/cn/Natural_Affinity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL05hdHVyZXNQYXRpZW5jZUpld2VsIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/1f4e80dd70/NaturesPatienceJewel.png", limit: "「惊悸迷雾」联盟限定", baseType: "小型星团珠宝" }, { name: "守望之眼 三相珠宝", href: "https://poedb.tw/cn/Watchers_Eye", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0VsZGVySmV3ZWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/278c673716/ElderJewel.png", limit: "「裂界者」限定掉落", baseType: "三相珠宝" }, { name: "前线 小型星团珠宝", href: "https://poedb.tw/cn/The_Front_Line", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1ZldGVyYW4nc0F3YXJlbmVzc0pld2VsIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7912a0c702/Veteran%27sAwarenessJewel.png", limit: "「惊悸迷雾」联盟限定", baseType: "小型星团珠宝" }, { name: "狂热之心 钴蓝珠宝", href: "https://poedb.tw/cn/Fevered_Mind", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0JsdWVDb3JydXB0NCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/ad8d514185/BlueCorrupt4.png", baseType: "钴蓝珠宝" }, { name: "审讯 小型星团珠宝", href: "https://poedb.tw/cn/The_Interrogation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1NlY3JldHNPZkFnb255SmV3ZWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/fbc829657e/SecretsOfAgonyJewel.png", limit: "「惊悸迷雾」联盟限定", baseType: "小型星团珠宝" }, { name: "徒手空拳 小型星团珠宝", href: "https://poedb.tw/cn/One_With_Nothing", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0RyYWdvblN0eWxlSmV3ZWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/fa9a94b12e/DragonStyleJewel.png", limit: "「惊悸迷雾」联盟限定", baseType: "小型星团珠宝" }, { name: "灾祸异象 小型星团珠宝", href: "https://poedb.tw/cn/Calamitous_Visions", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0xvbmVNZXNzZW5nZXJKZXdlbCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/46f8de709e/LoneMessengerJewel.png", limit: "「惊悸迷雾」联盟限定", baseType: "小型星团珠宝" }, { name: "无力 钴蓝珠宝", href: "https://poedb.tw/cn/Powerlessness", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0JsdWVDb3JydXB0NiIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/281293a0c5/BlueCorrupt6.png", baseType: "钴蓝珠宝" }, { name: "奇塔弗的指教 小型星团珠宝", href: "https://poedb.tw/cn/Kitavas_Teachings", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0Rpc2NpcGxlT2ZLaXRhdmFKZXdlbCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/43d818445c/DiscipleOfKitavaJewel.png", limit: "「惊悸迷雾」联盟限定", baseType: "小型星团珠宝" }, { name: "致命的骄傲 永恒珠宝", href: "https://poedb.tw/cn/Lethal_Pride", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0thcnVpQ2l2aWxpemF0aW9uIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/04aefd20e6/KaruiCivilization.png", baseType: "永恒珠宝" }, { name: "起源和谐 钴蓝珠宝", href: "https://poedb.tw/cn/Primordial_Harmony", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dvbGVtVGVtcGVzdCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/aac7579ae7/GolemTempest.png", baseType: "钴蓝珠宝" }, { name: "死亡清算 钴蓝珠宝", href: "https://poedb.tw/cn/Dead_Reckoning", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0FkZGl0aW9uYWxTa2VsZXRvbk1hZ2VzTW9kaWZpZXIiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/64b5aa8a03/AdditionalSkeletonMagesModifier.png", baseType: "钴蓝珠宝" }, { name: "优雅的狂妄 永恒珠宝", href: "https://poedb.tw/cn/Elegant_Hubris", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0V0ZXJuYWxFbXBpcmVDaXZpbGl6YXRpb24iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/8d1d098584/EternalEmpireCivilization.png", baseType: "永恒珠宝" }, { name: "碧影梦境 钴蓝珠宝", href: "https://poedb.tw/cn/The_Blue_Dream", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RoZUJsdWVEcmVhbSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/1cb1c74958/TheBlueDream.png", limit: "「夏乌拉之域」限定掉落\n「精华」联盟限定\n使用 夏乌拉的祝福 升级 碧影梦魇", baseType: "钴蓝珠宝" }, { name: "帝王的纯熟 三相珠宝", href: "https://poedb.tw/cn/Emperors_Mastery", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL01hc3RlcnkiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/eb1cf5699e/Mastery.png", limit: "「Labyrinth Chest」限定掉落", baseType: "三相珠宝" }, { name: "魔诅之域 晨曦墓地", href: "https://poedb.tw/cn/Hallowed_Ground", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9IYWxsb3dlZEdyb3VuZCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/0dfbdc7da9/HallowedGround.png", baseType: "晨曦墓地" }, { name: "碧影梦魇 钴蓝珠宝", href: "https://poedb.tw/cn/The_Blue_Nightmare", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RoZUJsdWVEcmVhbVVwZ3JhZGUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/e2474acca0/TheBlueDreamUpgrade.png", limit: "「精华」联盟限定\n碧影梦境 使用 夏乌拉的祝福 升级", baseType: "钴蓝珠宝" }, { name: "多利亚尼的迷城 冥神之域", href: "https://poedb.tw/cn/Doryanis_Machinarium", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9Eb3J5YW5pcyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/581444be53/Doryanis.png", limit: "「盲目者亚华托提利」限定掉落\n「地心」联盟限定", baseType: "冥神之域" }, { name: "好战的信仰 永恒珠宝", href: "https://poedb.tw/cn/Militant_Faith", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RlbXBsYXJDaXZpbGl6YXRpb24iLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/09ecf8ac86/TemplarCivilization.png", baseType: "永恒珠宝" }, { name: "残酷的约束 永恒珠宝", href: "https://poedb.tw/cn/Brutal_Restraint", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL01hcmFrZXRoQ2l2aWxpemF0aW9uIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/8e18d378b4/MarakethCivilization.png", baseType: "永恒珠宝" }, { name: "淬火之心 钴蓝珠宝", href: "https://poedb.tw/cn/Tempered_Mind", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1RlbXBlcmVkQmx1ZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/995f6d4810/TemperedBlue.png", limit: "「瓦尔妖塔」限定掉落\n「穿越」联盟限定\n使用 超越魔瓶 升级 升华之心", baseType: "钴蓝珠宝" }, { name: "妄想症 中型星团珠宝", href: "https://poedb.tw/cn/Megalomaniac", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1VuaXF1ZUpld2VsQmFzZTIiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MSwicmVsaWMiOjF9XQ/6a250ab82e/UniqueJewelBase2.png", limit: "「梦魇拟像」限定掉落\n「惊悸迷雾」联盟限定", baseType: "中型星团珠宝" }, { name: "血肉融合 钴蓝珠宝", href: "https://poedb.tw/cn/Melding_of_the_Flesh", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0VudGFuZ2xlZEVsZW1lbnRzSmV3ZWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/781ab651c4/EntangledElementsJewel.png", limit: "「世界吞噬者」限定掉落", baseType: "钴蓝珠宝" }, { name: "禁闭祭坛 致命岩滩", href: "https://poedb.tw/cn/Whakawairua_Tuahu", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9VbmlxdWVNYXBFeWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/7c20a66814/UniqueMapEye.png", baseType: "致命岩滩" }, { name: "欧霸的咒怨宝库 滨海幽穴", href: "https://poedb.tw/cn/Obas_Cursed_Trove", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9vYmEiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/c94e09c1a8/oba.png", baseType: "滨海幽穴" }, { name: "混沌之渊 滨海山丘", href: "https://poedb.tw/cn/Maelstr%C3%B6m_of_Chaos", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9NYWVsc3Ryb21vZkNoYW9zIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7772c4e971/MaelstromofChaos.png", baseType: "滨海山丘" }, { name: "暮光古庙 月影神殿", href: "https://poedb.tw/cn/The_Twilight_Temple", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9DZWxlc3RpYWwiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/2b43e37784/Celestial.png", baseType: "月影神殿" }, { name: "阿尔伦神柱 暮色沙丘", href: "https://poedb.tw/cn/Pillars_of_Arun", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9QaWxsYXJzT2ZWYXN0aXJpIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/f030aac473/PillarsOfVastiri.png", baseType: "暮色沙丘" }, { name: "阿尔伦神柱【仿品】 暮色沙丘", href: "https://poedb.tw/cn/Replica_Pillars_of_Arun", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9QaWxsYXJzT2ZWYXN0aXJpIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/f030aac473/PillarsOfVastiri.png", baseType: "暮色沙丘" }, { name: "改变的遥远回忆 幻境地图", href: "https://poedb.tw/cn/Altered_Distant_Memory", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9TeW50aGVzaXNDb2xkR3VhcmRpYW5NYXAiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/5800fc91db/SynthesisColdGuardianMap.png", limit: "「奇拉克」限定掉落\n「虚空忆境」联盟限定", baseType: "幻境地图" }, { name: "恐惧之平衡 钴蓝珠宝", href: "https://poedb.tw/cn/The_Balance_of_Terror", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL3VuaXF1ZTE5IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/72dbd8bd3d/unique19.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "钴蓝珠宝" }, { name: "远古之印 古石陵墓", href: "https://poedb.tw/cn/Olmecs_Sanctum", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9vbG1lYyIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/844fea2e54/olmec.png", baseType: "古石陵墓" }, { name: "聚魂石 三相珠宝", href: "https://poedb.tw/cn/The_Anima_Stone", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0dvbGVtQ2hhb3MiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/2daa0c1149/GolemChaos.png", limit: "「Vendor recipe system」限定掉落", baseType: "三相珠宝" }, { name: "巅峰状态 钴蓝珠宝", href: "https://poedb.tw/cn/Apex_Mode", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0ludGVuc2l0eUpld2VsMSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/2b116c20d2/IntensityJewel1.png", limit: "「契约：牢不可破」限定掉落\n「夺宝奇兵」联盟限定", baseType: "钴蓝珠宝" }, { name: "库加尔的凝视 安睡之凝珠宝", href: "https://poedb.tw/cn/Kurgals_Gaze", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0h5cG5vdGljRXllVW5pcXVlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/f909ca8b69/HypnoticEyeUnique.png", limit: "「Abyss Lich」限定掉落\n「深渊」联盟限定", baseType: "安睡之凝珠宝" }, { name: "懦者的试验 咒怨陵墓", href: "https://poedb.tw/cn/The_Cowards_Trial", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9VbmRlYWRTaWVnZSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/53f1dbdcb4/UndeadSiege.png", baseType: "咒怨陵墓" }, { name: "亡者之财 魔影墓场", href: "https://poedb.tw/cn/Death_and_Taxes", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9EZWF0aGFuZFRheGVzIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/0cc72adc19/DeathandTaxes.png", baseType: "魔影墓场" }, { name: "轮回的梦魇 密草神殿", href: "https://poedb.tw/cn/Actons_Nightmare", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9tdXNpY2JveCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/765ebfd00f/musicbox.png", baseType: "密草神殿" }, { name: "Victorious Fate 瓦尔之相", href: "https://poedb.tw/cn/Victorious_Fate", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9UcmlhbG1hc3RlckxlZnRGcmFnbWVudCIsInciOjEsImgiOjIsInNjYWxlIjoxfV0/ec9e7257ef/TrialmasterLeftFragment.png", baseType: "" }, { name: "埃曼纳姆的凝视 苍白之凝珠宝", href: "https://poedb.tw/cn/Amanamus_Gaze", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0doYXN0bHlFeWVVbmlxdWUiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/301d98e6cb/GhastlyEyeUnique.png", limit: "「Abyss Lich」限定掉落\n「深渊」联盟限定", baseType: "苍白之凝珠宝" }, { name: "Deadly End 瓦尔之相", href: "https://poedb.tw/cn/Deadly_End", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9UcmlhbG1hc3RlckJvdHRvbUZyYWdtZW50IiwidyI6MywiaCI6MSwic2NhbGUiOjF9XQ/78cddd2ad4/TrialmasterBottomFragment.png", baseType: "" }, { name: "Will of Chaos 瓦尔之相", href: "https://poedb.tw/cn/Will_of_Chaos", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9UcmlhbG1hc3Rlck1pZGRsZUZyYWdtZW50IiwidyI6MSwiaCI6Miwic2NhbGUiOjF9XQ/ce938362fd/TrialmasterMiddleFragment.png", baseType: "" }, { name: "天神之音 大型星团珠宝", href: "https://poedb.tw/cn/Voices", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL1VuaXF1ZUpld2VsQmFzZTMiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/314c9905c8/UniqueJewelBase3.png", limit: "「梦魇拟像」限定掉落\n「惊悸迷雾」联盟限定", baseType: "大型星团珠宝" }, { name: "契约：贩奴之王 义警契约", href: "https://poedb.tw/cn/Contract%3A_The_Slaver_King", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvSGVpc3QvU2xhdmVNZXJjaGFudEZpZ2h0Q29udHJhY3QiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/05c788361c/SlaveMerchantFightContract.png", baseType: "义警契约" }, { name: "幽秘博物馆 古博物馆", href: "https://poedb.tw/cn/The_Putrid_Cloister", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9QdXRyaWRDbG9pc3RlciIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/4113992f12/PutridCloister.png", baseType: "古博物馆" }, { name: "Ignominious Fate 瓦尔之相", href: "https://poedb.tw/cn/Ignominious_Fate", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9UcmlhbG1hc3RlclJpZ2h0RnJhZ21lbnQiLCJ3IjoxLCJoIjoyLCJzY2FsZSI6MX1d/923a1f4d20/TrialmasterRightFragment.png", baseType: "" }, { name: "纯净之血 香炉遗物", href: "https://poedb.tw/cn/The_Blood_of_Innocence", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL0NvcmVSZWxpY1VuaXF1ZTF4MiIsInciOjEsImgiOjIsInNjYWxlIjoxfV0/a9230e3b96/CoreRelicUnique1x2.png", baseType: "香炉遗物" }, { name: "重著的遥远回忆 幻境地图", href: "https://poedb.tw/cn/Rewritten_Distant_Memory", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9TeW50aGVzaXNHb2xlbUd1YXJkaWFuTWFwIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/f4fd693221/SynthesisGolemGuardianMap.png", limit: "「奇拉克」限定掉落\n「虚空忆境」联盟限定", baseType: "幻境地图" }, { name: "沉沦之间 夺魂之殿", href: "https://poedb.tw/cn/Poorjoys_Asylum", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9Qb29yam95c0FzeWx1bSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/d7e9aba922/PoorjoysAsylum.png", baseType: "夺魂之殿" }, { name: "围攻 小型星团珠宝", href: "https://poedb.tw/cn/The_Siege", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvSmV3ZWxzL0tpbmV0aWNpc21KZXdlbCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/d748a39b2e/KineticismJewel.png", limit: "「惊悸迷雾」联盟限定", baseType: "小型星团珠宝" }, { name: "苦刑之链 圣歌遗物", href: "https://poedb.tw/cn/The_Chains_of_Castigation", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL0NvcmVSZWxpY1VuaXF1ZTF4MyIsInciOjEsImgiOjMsInNjYWxlIjoxfV0/0640b266e6/CoreRelicUnique1x3.png", baseType: "圣歌遗物" }, { name: "脑层【仿品】 幻境地图", href: "https://poedb.tw/cn/Replica_Cortex", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9TeW50aGVzaXNCb3NzR3VhcmRpYW5NYXAiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/542f2635c7/SynthesisBossGuardianMap.png", baseType: "幻境地图" }, { name: "神圣之刻 香炉遗物", href: "https://poedb.tw/cn/The_Hour_of_Divinity", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL1JlbGljVW5pcXVlMXgyIiwidyI6MSwiaCI6Miwic2NhbGUiOjF9XQ/f39ebcc337/RelicUnique1x2.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "香炉遗物" }, { name: "镀金圣杯 圣歌遗物", href: "https://poedb.tw/cn/The_Gilded_Chalice", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL1JlbGljVW5pcXVlMXgzIiwidyI6MSwiaCI6Mywic2NhbGUiOjF9XQ/7a0ff8a041/RelicUnique1x3.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "圣歌遗物" }, { name: "第二圣誓 烛台遗物", href: "https://poedb.tw/cn/The_Second_Sacrament", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL1JlbGljVW5pcXVlMXg0IiwidyI6MSwiaCI6NCwic2NhbGUiOjF9XQ/adaa7ec07c/RelicUnique1x4.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "烛台遗物" }, { name: "降临之地 先驱者地图", href: "https://poedb.tw/cn/The_Beachhead", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9IYXJiaW5nZXJZZWxsb3ciLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/e98c7f846e/HarbingerYellow.png", limit: "「先驱」联盟限定", baseType: "先驱者地图" }, { name: "阿兹里的秘宝库 瓦尔金字塔", href: "https://poedb.tw/cn/Vaults_of_Atziri", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9VbmlxdWVNYXAxIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/7612528d07/UniqueMap1.png", baseType: "瓦尔金字塔" }, { name: "残破香炉 典籍遗物", href: "https://poedb.tw/cn/The_Broken_Censer", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL1JlbGljVW5pcXVlM3gxIiwidyI6MywiaCI6MSwic2NhbGUiOjF9XQ/97c059a9f1/RelicUnique3x1.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "典籍遗物" }, { name: "维克塔广场 奇术之庭", href: "https://poedb.tw/cn/The_Vinktar_Square", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9UaGVWaW5rdGFyU3F1YXJlIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/d26b82ca56/TheVinktarSquare.png", baseType: "奇术之庭" }, { name: "原初经书 纸草遗物", href: "https://poedb.tw/cn/The_Original_Scripture", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL1JlbGljVW5pcXVlNHgxIiwidyI6NCwiaCI6MSwic2NhbGUiOjF9XQ/e6e8bfb6e4/RelicUnique4x1.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "纸草遗物" }, { name: "沉沦之间【仿品】 夺魂之殿", href: "https://poedb.tw/cn/Replica_Poorjoys_Asylum", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9Qb29yam95c0FzeWx1bSIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/d7e9aba922/PoorjoysAsylum.png", baseType: "夺魂之殿" }, { name: "塞尔.布雷德狼穴 地底之河", href: "https://poedb.tw/cn/Caer_Blaidd%2C_Wolfpacks_Den", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9Xb2xmTWFwIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/db94bff258/WolfMap.png", baseType: "地底之河" }, { name: "贼窝 暮光海滩", href: "https://poedb.tw/cn/Mao_Kun", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9GYWlyZ3JhdmVzTWFwMDEiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/e1c1de7d51/FairgravesMap01.png", baseType: "暮光海滩" }, { name: "契约：达诺的覆灭 海军契约", href: "https://poedb.tw/cn/Contract%3A_Death_to_Darnaw", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvSGVpc3QvQWRtaXJhbERhcm5hd0ZpZ2h0Q29udHJhY3QiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/d3d9bf5da6/AdmiralDarnawFightContract.png", baseType: "海军契约" }, { name: "脑层 幻境地图", href: "https://poedb.tw/cn/Cortex", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9TeW50aGVzaXNCb3NzR3VhcmRpYW5NYXAiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/542f2635c7/SynthesisBossGuardianMap.png", limit: "「奇拉克」限定掉落\n「虚空忆境」联盟限定", baseType: "幻境地图" }, { name: "扭曲的遥远回忆 幻境地图", href: "https://poedb.tw/cn/Twisted_Distant_Memory", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9TeW50aGVzaXNMaWdodG5pbmdHdWFyZGlhbk1hcCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/30f4dc76de/SynthesisLightningGuardianMap.png", limit: "「奇拉克」限定掉落\n「虚空忆境」联盟限定", baseType: "幻境地图" }, { name: "增强的遥远回忆 幻境地图", href: "https://poedb.tw/cn/Augmented_Distant_Memory", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9TeW50aGVzaXNGaXJlR3VhcmRpYW5NYXAiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/924cb164d0/SynthesisFireGuardianMap.png", limit: "「奇拉克」限定掉落\n「虚空忆境」联盟限定", baseType: "幻境地图" }, { name: "元帅殿堂 月色回廊", href: "https://poedb.tw/cn/Hall_of_Grandmasters", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9IYWxsT2ZHcmFuZG1hc3RlcnMiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/73778c0f28/HallOfGrandmasters.png", baseType: "月色回廊" }, { name: "灌注的降临之地 先驱者地图", href: "https://poedb.tw/cn/Infused_Beachhead", icon: "https://web.poecdn.com/gen/image/WzI4LDE0LHsiZiI6IjJESXRlbXMvTWFwcy9IYXJiaW5nZXJVYmVyIiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/91398360e4/HarbingerUber.png", limit: "「庄园」联盟限定", baseType: "先驱者地图" }, { name: "契约：牢不可破 预防契约", href: "https://poedb.tw/cn/Contract%3A_Breaking_the_Unbreakable", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvSGVpc3QvVW5icmVha2FibGVGaWdodENvbnRyYWN0IiwidyI6MSwiaCI6MSwic2NhbGUiOjF9XQ/4e50a5f0ae/UnbreakableFightContract.png", baseType: "预防契约" }, { name: "契约：罪恶双生 复仇契约", href: "https://poedb.tw/cn/Contract%3A_The_Twins", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvSGVpc3QvVm94RmFtaWx5RmlnaHRDb250cmFjdCIsInciOjEsImgiOjEsInNjYWxlIjoxfV0/28f9230b0b/VoxFamilyFightContract.png", baseType: "复仇契约" }, { name: "契约：荣誉之心 家族契约", href: "https://poedb.tw/cn/Contract%3A_Heart_of_Glory", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvSGVpc3QvVXN1cnBlckZpZ2h0Q29udHJhY3QiLCJ3IjoxLCJoIjoxLCJzY2FsZSI6MX1d/46d7ba4bf9/UsurperFightContract.png", baseType: "家族契约" }, { name: "初始荣冠 匣柜遗物", href: "https://poedb.tw/cn/The_First_Crest", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL1JlbGljVW5pcXVlMngyIiwidyI6MiwiaCI6Miwic2NhbGUiOjF9XQ/15bd9eec94/RelicUnique2x2.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "匣柜遗物" }, { name: "力量与誓言 典籍遗物", href: "https://poedb.tw/cn/The_Power_and_the_Promise", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL0NvcmVSZWxpY1VuaXF1ZTN4MSIsInciOjMsImgiOjEsInNjYWxlIjoxfV0/b7de2a9095/CoreRelicUnique3x1.png", baseType: "典籍遗物" }, { name: "黑夜明灯 壶瓮遗物", href: "https://poedb.tw/cn/The_Night_Lamp", icon: "https://web.poecdn.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvUmVsaWNzL1JlbGljVW5pcXVlMngxIiwidyI6MiwiaCI6MSwic2NhbGUiOjF9XQ/2a6a7e317d/RelicUnique2x1.png", limit: "「天灾先驱利西亚」限定掉落", baseType: "壶瓮遗物" }];
-  const _withScopeId = (n) => (vue.pushScopeId("data-v-31329ef8"), n = n(), vue.popScopeId(), n);
+  const PRICE_MESSAGE = "PRICE_MESSAGE";
+  const PRICE_TIME_STAMP = "PRICE_TIME_STAMP";
+  const PriceDataKey = Symbol();
   const _hoisted_1 = { class: "unique-cell__icon" };
   const _hoisted_2 = ["src"];
   const _hoisted_3 = { class: "unique-cell__body" };
   const _hoisted_4 = { class: "name" };
   const _hoisted_5 = { class: "limit" };
   const _hoisted_6 = ["innerHTML"];
-  const _hoisted_7 = /* @__PURE__ */ _withScopeId(() => /* @__PURE__ */ vue.createElementVNode("div", { class: "unique-cell__price" }, null, -1));
+  const _hoisted_7 = { class: "unique-cell__price" };
   const _hoisted_8 = {
     key: 0,
     class: "empty"
@@ -136,11 +6738,22 @@
     },
     setup(__props) {
       const props = __props;
-      const current = vue.computed(() => UNIQUE_POOL.filter((e) => e.baseType === props.name).map((item) => ({
-        ...item,
-        // 原来的符号换行对不齐
-        limit: item.limit ? item.limit.replace(/「/g, "[").replace(/」/g, "] ").trim() : ""
-      })));
+      const priceData = vue.inject(PriceDataKey);
+      const current = vue.computed(() => {
+        const currentList = UNIQUE_POOL.filter((e) => e.baseType === props.name).map((item) => {
+          if (item.limit) {
+            item.limit = item.limit.replace(/「/g, "[").replace(/」/g, "] ").trim().replace("限定掉落", '<span style="color: #f00">限定掉落</span>');
+          }
+          if (priceData == null ? void 0 : priceData.value) {
+            const data = priceData.value.find((d) => `${d.name} ${d.baseType}` === item.name);
+            if (data) {
+              item.calculated = !isNaN(Math.floor(data.calculated)) ? Math.floor(data.calculated) : 0;
+            }
+          }
+          return item;
+        });
+        return currentList.sort((a, b) => (b.calculated || 0) - (a.calculated || 0));
+      });
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock("div", {
           class: "unique-item",
@@ -165,7 +6778,11 @@
                   }, null, 8, _hoisted_6)
                 ])
               ]),
-              _hoisted_7
+              vue.createElementVNode("div", _hoisted_7, [
+                vue.withDirectives(vue.createElementVNode("span", null, vue.toDisplayString(item.calculated) + " C", 513), [
+                  [vue.vShow, item.calculated]
+                ])
+              ])
             ]);
           }), 128)),
           !current.value || !current.value.length ? (vue.openBlock(), vue.createElementBlock("div", _hoisted_8, "暂无数据")) : vue.createCommentVNode("", true)
@@ -173,7 +6790,7 @@
       };
     }
   });
-  const UniqueItem = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-31329ef8"]]);
+  const UniqueItem = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-2f78f109"]]);
   const _sfc_main$1 = /* @__PURE__ */ vue.defineComponent({
     __name: "Hover",
     props: {
@@ -206,7 +6823,7 @@
       };
     }
   });
-  const Hover = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-f4ed1fca"]]);
+  const Hover = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-b3f42858"]]);
   const MODAL_SELECTOR = "n-modal-container";
   const MODAL_CONTENT_SELECTOR = ".h-full.flex-1>.n-scrollbar .n-scrollbar-content";
   const CARD_CONTENT_SELECTOR = ".wh-full";
@@ -294,10 +6911,14 @@
     };
     return initObserver;
   }
+  var _GM_deleteValue = /* @__PURE__ */ (() => typeof GM_deleteValue != "undefined" ? GM_deleteValue : void 0)();
+  var _GM_getValue = /* @__PURE__ */ (() => typeof GM_getValue != "undefined" ? GM_getValue : void 0)();
+  var _GM_setValue = /* @__PURE__ */ (() => typeof GM_setValue != "undefined" ? GM_setValue : void 0)();
   const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     __name: "App",
     setup(__props) {
       const initObserver = useObsrver();
+      const priceData = vue.ref(null);
       const visible = vue.ref(false);
       const name = vue.ref("");
       const type = vue.ref("card");
@@ -305,6 +6926,7 @@
         x: 0,
         y: 0
       });
+      vue.provide(PriceDataKey, priceData);
       const setting = {
         命运卡: {
           type: "card",
@@ -333,11 +6955,30 @@
           position.value = getModalPosition(target, setting[dataType].target);
         });
       };
+      const getGMStorageData = () => {
+        const text = _GM_getValue(PRICE_MESSAGE);
+        if (!text)
+          return;
+        const result = JSON.parse(text);
+        if ((Date.now() - result.PRICE_TIME_STAMP) / 1e3 / 60 / 60 / 24 >= 1) {
+          _GM_deleteValue(PRICE_TIME_STAMP);
+          return;
+        }
+        priceData.value = result.list;
+        const timeStamp = window.localStorage.getItem(PRICE_TIME_STAMP) || "";
+        if (result.PRICE_TIME_STAMP === Number(timeStamp))
+          return;
+        window.localStorage.setItem(PRICE_TIME_STAMP, `${result.PRICE_TIME_STAMP}`);
+      };
       vue.onMounted(() => {
+        document.addEventListener("visibilitychange", function() {
+          if (document.visibilityState !== "visible")
+            return;
+          getGMStorageData();
+        });
+        getGMStorageData();
         initObserver({
-          over: handleShowDivCard,
-          change: (node) => {
-          }
+          over: handleShowDivCard
         });
         document.body.addEventListener("click", () => {
           visible.value = false;
@@ -350,19 +6991,50 @@
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => visible.value = $event),
             position: position.value,
             type: type.value,
-            name: name.value
-          }, null, 8, ["modelValue", "position", "type", "name"])
+            name: name.value,
+            priceData: priceData.value
+          }, null, 8, ["modelValue", "position", "type", "name", "priceData"])
         ]);
       };
     }
   });
-  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-83987bd6"]]);
-  vue.createApp(App).mount(
-    (() => {
-      const app = document.createElement("div");
-      document.body.append(app);
-      return app;
-    })()
-  );
+  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-ccb3046d"]]);
+  function priceInit() {
+    window.JSON.parse = new Proxy(window.JSON.parse, {
+      apply: (target, thisArg, argArray) => {
+        if (/混沌石/.test(argArray[0])) {
+          setParseJson(Reflect.apply(target, thisArg, argArray));
+        }
+        const result = Reflect.apply(target, thisArg, argArray);
+        return result;
+      }
+    });
+    const setParseJson = (data) => {
+      const result = data.filter((e) => e.frameType === 3).map((item) => ({
+        baseType: item.baseType,
+        name: item.name,
+        calculated: item.calculated
+      }));
+      if (!result.length)
+        return;
+      _GM_setValue(PRICE_MESSAGE, JSON.stringify({
+        PRICE_TIME_STAMP: Date.now(),
+        list: result
+      }));
+      console.log("%c 数据成功推送", "color:#4ade80");
+    };
+  }
+  if (window.location.host === "edit.filtereditor.cn") {
+    vue.createApp(App).mount(
+      (() => {
+        const app = document.createElement("div");
+        document.body.append(app);
+        return app;
+      })()
+    );
+  }
+  if (window.location.host === "price.filtereditor.cn") {
+    priceInit();
+  }
 
 })(Vue);

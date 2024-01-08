@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js';
+// import CryptoJS from 'crypto-js';
 
 /** 动态获取渲染位置 */
 export const getModalPosition = (el: Element, ract: string) => {
@@ -15,10 +15,10 @@ export const getModalPosition = (el: Element, ract: string) => {
 };
 
 /** 解密 */
-export const decode = (e: string) => {
-    const a = CryptoJS.AES.decrypt(e, 'asdfg!@#$%12345', {
-        mode: CryptoJS.mode.ECB,
-        padding: CryptoJS.pad.Pkcs7
-    });
-    return CryptoJS.enc.Utf8.stringify(a).toString()
-}
+// export const decode = (e: string) => {
+//     const a = CryptoJS.AES.decrypt(e, 'asdfg!@#$%12345', {
+//         mode: CryptoJS.mode.ECB,
+//         padding: CryptoJS.pad.Pkcs7
+//     });
+//     return CryptoJS.enc.Utf8.stringify(a).toString()
+// }

@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { computed } from 'vue';
 import { CARD_POOL } from '@/database/card.data';
 import { CardData } from '@/types';
 

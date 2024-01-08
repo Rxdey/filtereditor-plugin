@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, inject } from 'vue';
+import { computed, inject } from 'vue';
 import { UNIQUE_POOL } from '@/database/unique.data';
 import { PriceDataKey } from '@/const';
 

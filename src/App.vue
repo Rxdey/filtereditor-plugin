@@ -1,27 +1,32 @@
 <template>
   <div>
-    <Hover v-model="visible" :position="position" :type="type" :name="name" />
+    <Hover v-model="visible" :position="position" :type="type" :name="name" :priceData="priceData" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch, nextTick } from 'vue';
-import { getModalPosition, decode } from '@/utils';
-// import { proxy } from "ajax-hook";
+import { ref, onMounted, nextTick, provide } from 'vue';
+import { getModalPosition } from '@/utils';
 import Hover from '@/container/Hover.vue';
 import useObsrver from '@/hooks/useObsrver';
+import { PriceData } from '@/types';
+import { GM_getValue, GM_deleteValue } from "$";
+import { PRICE_MESSAGE, PRICE_TIME_STAMP, PriceDataKey } from '@/const';
 
 type ItemType = 'card' | 'unique';
 const initObserver = useObsrver();
 
+// 直接传吧
+const priceData = ref<PriceData[] | null>(null);
 const visible = ref(false);
 const name = ref('');
 const type = ref<ItemType>('card');
-
 const position = ref({
   x: 0,
   y: 0
 });
+
+provide(PriceDataKey, priceData)
 
 const setting: Record<string, { type: ItemType, target: string }> = {
   命运卡: {
@@ -54,31 +59,35 @@ const handleShowDivCard = (event: MouseEvent) => {
   })
 }
 
-/** 弃用，改为劫持JSON.parse */
-const parseData = (e: MouseEvent) => {
-  console.log(e)
-  let btn = e.target as HTMLButtonElement;
-  if (btn.nodeName !== 'BUTTON') btn = btn.parentNode as HTMLButtonElement;
-  const prve = btn.previousElementSibling;
-  if (!prve) return;
-  const input = prve.querySelector('input');
-  if (!input) return;
-  const data = decode(input.value);
-  console.log(data);
-}
+/** 获取物价榜页面推送的数据(如果有) */
+const getGMStorageData = () => {
+  const text: string = GM_getValue(PRICE_MESSAGE);
+  if (!text) return;
+  const result: {
+    PRICE_TIME_STAMP: number,
+    list: PriceData[]
+  } = JSON.parse(text);
+  // 超过一天清除存储
+  if ((Date.now() - result.PRICE_TIME_STAMP) / 1000 / 60 / 60 / 24 >= 1) {
+    GM_deleteValue(PRICE_TIME_STAMP);
+    return;
+  }
+  priceData.value = result.list;
+  const timeStamp = window.localStorage.getItem(PRICE_TIME_STAMP) || '';
+  if (result.PRICE_TIME_STAMP === Number(timeStamp)) return;
+  window.localStorage.setItem(PRICE_TIME_STAMP, `${result.PRICE_TIME_STAMP}`);
+
+};
+
 onMounted(() => {
+  // 获取跨页面数据 (GM_addValueChangeListener监听不到
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState !== "visible") return;
+    getGMStorageData();
+  });
+  getGMStorageData();
   initObserver({
-    over: handleShowDivCard,
-    change: (node) => {
-      // 复制的数据没有带价格，所以不做了(笑)
-      // console.log('change')
-      // const btnList: NodeListOf<HTMLButtonElement> = node.querySelectorAll('.n-button');
-      // btnList.forEach(btn => {
-      //   if (btn.innerText !== '解析数据') return;
-      //   btn.removeEventListener('click', parseData);
-      //   btn.addEventListener('click', parseData);
-      // });
-    }
+    over: handleShowDivCard
   });
   document.body.addEventListener('click', () => {
     visible.value = false;

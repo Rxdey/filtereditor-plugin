@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { computed } from 'vue';
 import DivinationCard from '@/components/DivinationCard/DivinationCard.vue';
 import UniqueItem from '@/components/UniqueItem/UniqueItem.vue';
 

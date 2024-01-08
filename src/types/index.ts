@@ -23,4 +23,12 @@ export type Unique = {
     icon: string;
     baseType: string;
     limit?: string;
+    calculated?: number;
+};
+
+/** 物价榜 */
+export type PriceData = {
+    baseType: string;
+    name: string;
+    calculated: number;
 };

@@ -16,7 +16,8 @@ export default defineConfig({
         license: 'MIT',
         icon: 'https://edit.filtereditor.cn/favicon.ico',
         namespace: 'npm/vite-plugin-monkey',
-        match: ['https://edit.filtereditor.cn/'],
+        match: ['https://edit.filtereditor.cn/*', 'https://price.filtereditor.cn/*'],
+        "run-at": 'document-start'
       },
       build: {
         externalGlobals: {

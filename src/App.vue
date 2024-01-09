@@ -12,6 +12,7 @@ import useObsrver from '@/hooks/useObsrver';
 import { PriceData } from '@/types';
 import { GM_getValue, GM_deleteValue } from "$";
 import { PRICE_MESSAGE, PRICE_TIME_STAMP, PriceDataKey } from '@/const';
+import { UNIQUE_POOL } from '@/database/unique.data';
 
 type ItemType = 'card' | 'unique';
 const initObserver = useObsrver();
@@ -25,9 +26,7 @@ const position = ref({
   x: 0,
   y: 0
 });
-
 provide(PriceDataKey, priceData)
-
 const setting: Record<string, { type: ItemType, target: string }> = {
   命运卡: {
     type: 'card',
@@ -38,10 +37,44 @@ const setting: Record<string, { type: ItemType, target: string }> = {
     target: '.unique-item'
   }
 };
-/** 鼠标经过新增的dom */
+/**
+ * 新增向国际服增加限制描述
+ */
+const addLimitToTarget = (target: HTMLDivElement) => {
+  if (!target) return;
+  const listItem: NodeListOf<HTMLLIElement> = target.querySelectorAll('.n-list-item');
+  if (!listItem.length) return;
+  listItem.forEach(el => {
+    const nameWrap: HTMLDivElement | null = el.querySelector('.flex-y-center');
+    if (!nameWrap) return;
+    const name = nameWrap.innerText;
+    const limit = (UNIQUE_POOL.find(item => item.name === name)?.limit || '').replace(/「/g, '[').replace(/」/g, '] ').trim().replace(/(限定掉落|升级)/g, '<span style="color: #98f1d4">$1</span>');
+    if (!limit) return;
+    nameWrap.style.flex = '1';
+    (nameWrap.querySelector('div') as HTMLDivElement).innerHTML = `
+    <p>${name}</p>
+    <p style="color: var(--color-default);font-size: 12px;line-height: 1.2;white-space: pre-wrap;">${limit}</p>
+    `;
+    const list: HTMLDivElement | null = target.querySelector('.n-list');
+    if (!list) return;
+    list.style.maxHeight = '400px';
+    list.style.overflowY = 'auto';
+  })
+}
+
+/** 鼠标经过新增的dom事件 */
 const handleShowDivCard = (event: MouseEvent) => {
   const target = event.target as HTMLElement;
-  if (!/hover-span/g.test(target.className)) {
+  if (target.classList.contains('original')) {
+    // 有个大概300毫秒的动画需要延时查询
+    setTimeout(() => {
+      // 查找显示的popover
+      const activeList: NodeListOf<HTMLDivElement> = document.querySelectorAll('.n-popover:not([style*="display: none"])');
+      addLimitToTarget(activeList[0]);
+    }, 301);
+    return;
+  }
+  if (!target.classList.contains('hover-span')) {
     visible.value = false;
     return;
   }
@@ -80,7 +113,7 @@ const getGMStorageData = () => {
 };
 
 onMounted(() => {
-  // 获取跨页面数据 (GM_addValueChangeListener监听不到
+  // 获取跨页面数据 (GM_addValueChangeListener监听不到)
   document.addEventListener("visibilitychange", function () {
     if (document.visibilityState !== "visible") return;
     getGMStorageData();

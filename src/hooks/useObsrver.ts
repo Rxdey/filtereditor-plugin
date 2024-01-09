@@ -1,6 +1,3 @@
-// import { ref, onMounted, computed, watch } from 'vue';
-// import { decode } from '@/utils';
-
 /** 弹窗节点 */
 const MODAL_SELECTOR = 'n-modal-container';
 /** 动态卡片/物品的固定父节点 */
@@ -23,13 +20,6 @@ export default function () {
         });
         return observer;
     }
-    /** hover */
-    // const onSpanOver = (event: MouseEvent, callBack = (e: MouseEvent) => { }) => {
-    //     const t = event.target as HTMLElement;
-    //     if (!/hover-span/g.test(t.className)) return;
-    //     // console.log(t.dataset.name);
-    //     callBack(event);
-    // };
 
     /** 添加dom */
     const addCustomDom = (el: HTMLDivElement, node: HTMLDivElement) => {
@@ -43,7 +33,11 @@ export default function () {
         // if (!content) return;
         const name = content.innerText;
         const hoverName = 'hover-span inline-flex i-solar:hamburger-menu-bold ml-2 text-14 wh-14';
-        if (content.querySelector('.inline-flex')) return;
+        // 如果已存在图标(国际服暗金),跳过处理
+        if (content.querySelector('.inline-flex')) {
+            content.querySelector('.inline-flex')?.classList.add('original')
+            return;
+        };
         const span = document.createElement('span');
         span.className = hoverName;
         span.dataset.name = name;
@@ -97,7 +91,7 @@ export default function () {
         observerFnc(body, (mutationsList, obs) => {
             mutationsList.some(item => {
                 return Array.from(item.addedNodes as NodeListOf<HTMLDivElement>).some((node) => {
-                    if (/^高级编辑/.test((node as HTMLDivElement).innerText) && (node).className === MODAL_SELECTOR) {
+                    if (/^高级编辑/.test((node as HTMLDivElement).innerText) && node.classList.contains(MODAL_SELECTOR)) {
                         const container: HTMLDivElement | null = document.querySelector(MODAL_CONTENT_SELECTOR);
                         if (!container) return false;
                         container.onmouseover = over;

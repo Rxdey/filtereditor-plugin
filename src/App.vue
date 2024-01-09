@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <Hover v-model="visible" :position="position" :type="type" :name="name" />
-  </div>
+  <Hover v-model="visible" :position="position" :type="type" :name="name" />
 </template>
 
 <script setup lang="ts">

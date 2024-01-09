@@ -33,7 +33,7 @@ const current = computed(() => {
   const currentList = UNIQUE_POOL.filter(e => e.baseType === props.name).map(item => {
     // 显示限定
     if (item.limit) {
-      item.limit = item.limit.replace(/「/g, '[').replace(/」/g, '] ').trim().replace('限定掉落', '<span style="color: #f00">限定掉落</span>')
+      item.limit = item.limit.replace(/「/g, '[').replace(/」/g, '] ').trim().replace(/(限定掉落|升级)/g, '<span style="color: #98f1d4">$1</span>')
     }
     // 合并物价
     if (priceData?.value) {
@@ -50,57 +50,5 @@ const current = computed(() => {
 </script>
 
 <style lang="less" scoped>
-.unique-item {
-  background-color: rgb(72, 72, 78);
-  padding: 0 8px;
-  color: rgba(255, 255, 255, 0.82);
-  max-height: 400px;
-  overflow-y: auto;
-  box-shadow: 0 0 16px rgba(0, 0, 0, .5);
-}
-
-.unique-cell {
-  display: flex;
-  flex-flow: row nowrap;
-  font-size: 14px;
-  align-items: center;
-  padding: 8px 12px;
-  border-bottom: 1px solid rgba(88, 88, 94, 1);
-
-  &:last-child {
-    border: none;
-  }
-
-  &__icon {
-    width: 32px;
-    height: 32px;
-  }
-
-  &__body {
-    flex: 1;
-    padding: 0 16px;
-
-    .name {
-      // color: var(--color-uniqueitem);
-    }
-
-    .limit {
-      white-space: pre-wrap;
-      color: var(--color-default);
-      font-size: 12px;
-      line-height: 1.2;
-    }
-  }
-
-  &__price {
-    text-align: right;
-    color: var(--color-currencyitem);
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
-}
+@import url('./index.less');
 </style>

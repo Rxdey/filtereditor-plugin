@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Hover v-model="visible" :position="position" :type="type" :name="name" :priceData="priceData" />
+    <Hover v-model="visible" :position="position" :type="type" :name="name" />
   </div>
 </template>
 

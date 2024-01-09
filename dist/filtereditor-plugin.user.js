@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         一乐编辑器命运卡高级编辑扩展
 // @namespace    npm/vite-plugin-monkey
-// @version      2.0.1
+// @version      2.0.2
 // @author       rxdey
 // @description  命运卡/暗金高级编辑预览
 // @license      MIT
@@ -16,7 +16,7 @@
 // @run-at       document-start
 // ==/UserScript==
 
-(e=>{if(typeof GM_addStyle=="function"){GM_addStyle(e);return}const t=document.createElement("style");t.textContent=e,document.head.append(t)})(" .divination-card[data-v-02ed4905]{--txt-color: #fff;--card-width: 160px;--card-height: calc(var(--card-width) / 440 * 670);font-size:12px;color:var(--txt-color);text-align:center;display:inline-block;width:var(--card-width);height:var(--card-height);position:relative;overflow:hidden;cursor:pointer;line-height:1}.divination-card--background[data-v-02ed4905]{position:absolute;top:8%;left:4%;z-index:1;width:90%;overflow:hidden}.divination-card--background img[data-v-02ed4905]{width:100%;object-fit:contain}.divination-card__exmod[data-v-02ed4905]{width:100%;height:100%;background-image:url(https://cdn.poedb.tw/image/item/popup/divination-card.webp);background-repeat:no-repeat;background-position:center;background-size:cover;position:absolute;top:0;left:0;z-index:2}.divination-card__exmod.disabled[data-v-02ed4905]{filter:brightness(.4)}.divination-card--name[data-v-02ed4905]{color:#111;font-weight:800;position:absolute;width:100%;top:2.9%;font-size:13px}.divination-card--stack[data-v-02ed4905]{position:absolute;top:47.5%;left:8%;font-size:80%;color:#c8c8c8;text-align:center;min-width:17%;transform:scale(.8)}.divination-card--stack.single[data-v-02ed4905]{color:#00bafe}.divination-card--wrap[data-v-02ed4905]{position:absolute;top:49%;left:0;bottom:0;right:0;font-size:109%;display:flex;flex-direction:column;transform:scale(.9)}.divination-card--line[data-v-02ed4905]{width:70%;background:url(data:image/webp;base64,UklGRvgBAABXRUJQVlA4IOwBAADwCwCdASoCAQQAPmUmjkWhoqIitpqrMIAMiWkA0JW+9ohbg3wONHHO2hWE+EZ3lcxPjAzpf5YdP7nUdGxoW/0ve42n0S1KbDYneakrOTFwunEr1C/VdrPGG/8G+9uM8OHcTjfvxu6qAAD++qDUzYUYStwr0qga4Q9GikbOaphkTdftbRXFk3dtQDAZL61gqoreKdI5KbcowsLTKQVQhFJzeuhIPiTBuShrcx5E9Q2ZpYzwXaCtHpzTibwo2vk4ieVHmtFuAVXFbDQLAPOqk6qK+8w2LXI9mQn8w/Ltfi/isVOuC+g2Q8eO8bebbooA+Zqs2r//6/13ZFhuK56wcGbATjlGfoO6N1K+BUnNddT0ac4Z8h+3nsu7e+iPparpOw9Dl8bNPcLMAy3v8LEeJijm8x/R5wMT6/vMh+LHiqS95t6VARBQrm/QwLrWBY42dyRO0gnqWQT5Kq2wqDgTwigtuoNbNw/dMeLZ+IByQrKHetqW2F7VZv63bz47qftPirH84flMSvGOa1YJvBy9K+SFLaxwvGp4t74koNwFx2AcHT/mepDZAGtCdA9Bmyv7+YMQTI+KmM5RjuvKvc1bhoLcZtShvFD/0iI5wukZlAooI3FDImliYp0AWoSbO1bmQXdUeaMvWCt6M0YAAAA=) no-repeat center;background-size:contain;height:3px;margin:0 auto;flex:0 0 3px}.divination-card--reward[data-v-02ed4905]{min-height:45px;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1;transform:scale(.9)}.divination-card--reward .explicit-mod[data-v-02ed4905]{color:var(--mod-color)}.divination-card--flavour[data-v-02ed4905]{width:115%;margin-left:-7.5%;margin-top:-4%;white-space:pre-wrap;color:var(--color-uniqueitem);flex:1 1 auto;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1.3;font-style:italic;transform:scale(.85);font-size:11px}.unique-item[data-v-cd4c3f59]{background-color:#48484e;padding:0 8px;color:#ffffffd1;max-height:400px;overflow-y:auto;box-shadow:0 0 16px #00000080}.unique-cell[data-v-cd4c3f59]{display:flex;flex-flow:row nowrap;font-size:14px;align-items:center;padding:8px 12px;border-bottom:1px solid #58585e}.unique-cell[data-v-cd4c3f59]:last-child{border:none}.unique-cell__icon[data-v-cd4c3f59]{width:32px;height:32px}.unique-cell__body[data-v-cd4c3f59]{flex:1;padding:0 16px}.unique-cell__body .limit[data-v-cd4c3f59]{white-space:pre-wrap;color:var(--color-default);font-size:12px;line-height:1.2}.unique-cell__price[data-v-cd4c3f59]{text-align:right;color:var(--color-currencyitem)}.unique-cell img[data-v-cd4c3f59]{width:100%;height:100%;object-fit:contain}.hover-wrap[data-v-b3f42858]{position:fixed;top:0;left:0;z-index:10000}.hover-span[data-v-ccb3046d]{cursor:pointer}:root{--color-uniqueitem: #af6025;--color-gemitem: #1ba29b;--color-currencyitem: #aa9e82;--color-rareitem: #ffff77;--color-whiteitem: #c8c8c8;--color-corrupted: #d20000;--color-magicitem: #8888ff;--color-default: #7f7f7f;--color-augmented: #8888ff;--color-enchanted: #b8daf2;--color-divination: #0ebaff} ");
+(e=>{if(typeof GM_addStyle=="function"){GM_addStyle(e);return}const t=document.createElement("style");t.textContent=e,document.head.append(t)})(" .divination-card[data-v-02ed4905]{--txt-color: #fff;--card-width: 160px;--card-height: calc(var(--card-width) / 440 * 670);font-size:12px;color:var(--txt-color);text-align:center;display:inline-block;width:var(--card-width);height:var(--card-height);position:relative;overflow:hidden;cursor:pointer;line-height:1}.divination-card--background[data-v-02ed4905]{position:absolute;top:8%;left:4%;z-index:1;width:90%;overflow:hidden}.divination-card--background img[data-v-02ed4905]{width:100%;object-fit:contain}.divination-card__exmod[data-v-02ed4905]{width:100%;height:100%;background-image:url(https://cdn.poedb.tw/image/item/popup/divination-card.webp);background-repeat:no-repeat;background-position:center;background-size:cover;position:absolute;top:0;left:0;z-index:2}.divination-card__exmod.disabled[data-v-02ed4905]{filter:brightness(.4)}.divination-card--name[data-v-02ed4905]{color:#111;font-weight:800;position:absolute;width:100%;top:2.9%;font-size:13px}.divination-card--stack[data-v-02ed4905]{position:absolute;top:47.5%;left:8%;font-size:80%;color:#c8c8c8;text-align:center;min-width:17%;transform:scale(.8)}.divination-card--stack.single[data-v-02ed4905]{color:#00bafe}.divination-card--wrap[data-v-02ed4905]{position:absolute;top:49%;left:0;bottom:0;right:0;font-size:109%;display:flex;flex-direction:column;transform:scale(.9)}.divination-card--line[data-v-02ed4905]{width:70%;background:url(data:image/webp;base64,UklGRvgBAABXRUJQVlA4IOwBAADwCwCdASoCAQQAPmUmjkWhoqIitpqrMIAMiWkA0JW+9ohbg3wONHHO2hWE+EZ3lcxPjAzpf5YdP7nUdGxoW/0ve42n0S1KbDYneakrOTFwunEr1C/VdrPGG/8G+9uM8OHcTjfvxu6qAAD++qDUzYUYStwr0qga4Q9GikbOaphkTdftbRXFk3dtQDAZL61gqoreKdI5KbcowsLTKQVQhFJzeuhIPiTBuShrcx5E9Q2ZpYzwXaCtHpzTibwo2vk4ieVHmtFuAVXFbDQLAPOqk6qK+8w2LXI9mQn8w/Ltfi/isVOuC+g2Q8eO8bebbooA+Zqs2r//6/13ZFhuK56wcGbATjlGfoO6N1K+BUnNddT0ac4Z8h+3nsu7e+iPparpOw9Dl8bNPcLMAy3v8LEeJijm8x/R5wMT6/vMh+LHiqS95t6VARBQrm/QwLrWBY42dyRO0gnqWQT5Kq2wqDgTwigtuoNbNw/dMeLZ+IByQrKHetqW2F7VZv63bz47qftPirH84flMSvGOa1YJvBy9K+SFLaxwvGp4t74koNwFx2AcHT/mepDZAGtCdA9Bmyv7+YMQTI+KmM5RjuvKvc1bhoLcZtShvFD/0iI5wukZlAooI3FDImliYp0AWoSbO1bmQXdUeaMvWCt6M0YAAAA=) no-repeat center;background-size:contain;height:3px;margin:0 auto;flex:0 0 3px}.divination-card--reward[data-v-02ed4905]{min-height:45px;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1;transform:scale(.9)}.divination-card--reward .explicit-mod[data-v-02ed4905]{color:var(--mod-color)}.divination-card--flavour[data-v-02ed4905]{width:115%;margin-left:-7.5%;margin-top:-4%;white-space:pre-wrap;color:var(--color-uniqueitem);flex:1 1 auto;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1.3;font-style:italic;transform:scale(.85);font-size:11px}.unique-item[data-v-1179124e]{background-color:#48484e;padding:0 8px;color:#ffffffd1;max-height:400px;overflow-y:auto;box-shadow:0 0 16px #00000080}.unique-cell[data-v-1179124e]{display:flex;flex-flow:row nowrap;font-size:14px;align-items:center;padding:8px 12px;border-bottom:1px solid #58585e}.unique-cell[data-v-1179124e]:last-child{border:none}.unique-cell__icon[data-v-1179124e]{width:32px;height:32px}.unique-cell__body[data-v-1179124e]{flex:1;padding:0 16px}.unique-cell__body .limit[data-v-1179124e]{white-space:pre-wrap;color:var(--color-default);font-size:12px;line-height:1.2}.unique-cell__price[data-v-1179124e]{text-align:right;color:var(--color-currencyitem)}.unique-cell img[data-v-1179124e]{width:100%;height:100%;object-fit:contain}.hover-wrap[data-v-b3f42858]{position:fixed;top:0;left:0;z-index:10000}.hover-span[data-v-3f524916]{cursor:pointer}:root{--color-uniqueitem: #af6025;--color-gemitem: #1ba29b;--color-currencyitem: #aa9e82;--color-rareitem: #ffff77;--color-whiteitem: #c8c8c8;--color-corrupted: #d20000;--color-magicitem: #8888ff;--color-default: #7f7f7f;--color-augmented: #8888ff;--color-enchanted: #b8daf2;--color-divination: #0ebaff} ");
 
 (function (vue) {
   'use strict';
@@ -147,7 +147,7 @@
       const current = vue.computed(() => {
         const currentList = UNIQUE_POOL.filter((e) => e.baseType === props.name).map((item) => {
           if (item.limit) {
-            item.limit = item.limit.replace(/「/g, "[").replace(/」/g, "] ").trim().replace("限定掉落", '<span style="color: #f00">限定掉落</span>');
+            item.limit = item.limit.replace(/「/g, "[").replace(/」/g, "] ").trim().replace(/(限定掉落|升级)/g, '<span style="color: #98f1d4">$1</span>');
           }
           if (priceData == null ? void 0 : priceData.value) {
             const data = priceData.value.find((d) => `${d.name} ${d.baseType}` === item.name);
@@ -195,7 +195,7 @@
       };
     }
   });
-  const UniqueItem = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-cd4c3f59"]]);
+  const UniqueItem = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-1179124e"]]);
   const _sfc_main$1 = /* @__PURE__ */ vue.defineComponent({
     __name: "Hover",
     props: {
@@ -245,6 +245,7 @@
       return observer;
     };
     const addCustomDom = (el, node) => {
+      var _a;
       const activeTag = node.querySelector(EDIT_TYPE_SELECTOR);
       if (!activeTag)
         return;
@@ -255,8 +256,10 @@
       let content = parent.querySelector(".flex-y-center") || parent;
       const name = content.innerText;
       const hoverName = "hover-span inline-flex i-solar:hamburger-menu-bold ml-2 text-14 wh-14";
-      if (content.querySelector(".inline-flex"))
+      if (content.querySelector(".inline-flex")) {
+        (_a = content.querySelector(".inline-flex")) == null ? void 0 : _a.classList.add("original");
         return;
+      }
       const span = document.createElement("span");
       span.className = hoverName;
       span.dataset.name = name;
@@ -298,7 +301,7 @@
       observerFnc(body, (mutationsList, obs) => {
         mutationsList.some((item) => {
           return Array.from(item.addedNodes).some((node) => {
-            if (/^高级编辑/.test(node.innerText) && node.className === MODAL_SELECTOR) {
+            if (/^高级编辑/.test(node.innerText) && node.classList.contains(MODAL_SELECTOR)) {
               const container = document.querySelector(MODAL_CONTENT_SELECTOR);
               if (!container)
                 return false;
@@ -342,9 +345,43 @@
           target: ".unique-item"
         }
       };
+      const addLimitToTarget = (target) => {
+        if (!target)
+          return;
+        const listItem = target.querySelectorAll(".n-list-item");
+        if (!listItem.length)
+          return;
+        listItem.forEach((el) => {
+          var _a;
+          const nameWrap = el.querySelector(".flex-y-center");
+          if (!nameWrap)
+            return;
+          const name2 = nameWrap.innerText;
+          const limit = (((_a = UNIQUE_POOL.find((item) => item.name === name2)) == null ? void 0 : _a.limit) || "").replace(/「/g, "[").replace(/」/g, "] ").trim().replace(/(限定掉落|升级)/g, '<span style="color: #98f1d4">$1</span>');
+          if (!limit)
+            return;
+          nameWrap.style.flex = "1";
+          nameWrap.querySelector("div").innerHTML = `
+    <p>${name2}</p>
+    <p style="color: var(--color-default);font-size: 12px;line-height: 1.2;white-space: pre-wrap;">${limit}</p>
+    `;
+          const list = target.querySelector(".n-list");
+          if (!list)
+            return;
+          list.style.maxHeight = "400px";
+          list.style.overflowY = "auto";
+        });
+      };
       const handleShowDivCard = (event) => {
         const target = event.target;
-        if (!/hover-span/g.test(target.className)) {
+        if (target.classList.contains("original")) {
+          setTimeout(() => {
+            const activeList = document.querySelectorAll('.n-popover:not([style*="display: none"])');
+            addLimitToTarget(activeList[0]);
+          }, 301);
+          return;
+        }
+        if (!target.classList.contains("hover-span")) {
           visible.value = false;
           return;
         }
@@ -396,14 +433,13 @@
             "onUpdate:modelValue": _cache[0] || (_cache[0] = ($event) => visible.value = $event),
             position: position.value,
             type: type.value,
-            name: name.value,
-            priceData: priceData.value
-          }, null, 8, ["modelValue", "position", "type", "name", "priceData"])
+            name: name.value
+          }, null, 8, ["modelValue", "position", "type", "name"])
         ]);
       };
     }
   });
-  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-ccb3046d"]]);
+  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-3f524916"]]);
   function priceInit() {
     window.JSON.parse = new Proxy(window.JSON.parse, {
       apply: (target, thisArg, argArray) => {

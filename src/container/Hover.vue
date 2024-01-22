@@ -1,6 +1,6 @@
 <template>
     <div class="hover-wrap" v-show="modelValue" :style="currentStyle">
-        <component :is="currentCom" :name="name"/>
+        <component :is="currentCom" :name="name" :showPrice="showPrice"/>
     </div>
 </template>
 
@@ -13,7 +13,8 @@ type Props = {
     modelValue: boolean;
     position: { x: number, y: number };
     type: 'card' | 'unique';
-    name: string
+    name: string,
+    showPrice: boolean,
 };
 const coms: Record<Props['type'], any> = {
     card: DivinationCard,

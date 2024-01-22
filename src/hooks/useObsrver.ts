@@ -10,8 +10,12 @@ const CARD_CONTENT_SELECTOR = '.wh-full';
 const EDIT_TYPE_SELECTOR = '.n-menu-item-content--selected';
 /** 卡片/物品节点 */
 const TAG_SELECTOR = '.n-tag';
-
-export default function () {
+/**
+ * 
+ * @param isPrice 是否物价页面
+ * @returns 
+ */
+export default function (isPrice: boolean) {
     const observerFnc = (node: Element, callBack: MutationCallback) => {
         if (!node) return;
         const observer = new MutationObserver(callBack);
@@ -33,15 +37,23 @@ export default function () {
         // if (!content) return;
         const name = content.innerText;
         const hoverName = 'hover-span inline-flex i-solar:hamburger-menu-bold ml-2 text-14 wh-14';
-        // 如果已存在图标(国际服暗金),跳过处理
-        if (content.querySelector('.inline-flex')) {
-            content.querySelector('.inline-flex')?.classList.add('original')
-            return;
+        // 如果已存在图标(国际服暗金,物价榜),跳过处理
+        const icon = content.querySelector('.i-solar\\:hamburger-menu-bold');
+        if (icon) {
+            // 物价榜移除原dom，改用插件显示
+            if (isPrice) {
+                content.removeChild(icon);
+            } else {
+                icon?.classList.add('original')
+                return;
+            }
         };
+        const server: HTMLElement|null = document.querySelector('.n-radio-button--checked');
         const span = document.createElement('span');
         span.className = hoverName;
         span.dataset.name = name;
         span.dataset.type = type;
+        span.dataset.server = server ? server.innerText : ''
         content.appendChild(span);
         // 每个单独监听事件性能开销大，放到父级
     }
@@ -51,19 +63,11 @@ export default function () {
         // 触发切换
         const target = mutationsList[0].target as HTMLDivElement;
         const itemList: NodeListOf<HTMLDivElement> = target.querySelectorAll(TAG_SELECTOR);
-
-        // 物价榜监听input内容并解析
-        // const inputList: NodeListOf<HTMLInputElement> = node.querySelectorAll('input');
-        // inputList.forEach(input => {
-        //     if (!/粘贴国服物价榜/.test(input.getAttribute('placeholder') || '')) return;
-        //     if (!input.value) return;
-        //     const data = decode(input.value);
-        //     // console.log(input.value)
-        // });
-
         callBack(node)
+        console.log('触发切换')
         // // console.log('正在浏览: ', type, itemList);
         // 列表已加载 遍历已存在的卡片并添加dom
+        // if (!isPrice) {
         itemList.forEach(e => {
             addCustomDom(e as HTMLDivElement, node);
         });
@@ -80,6 +84,7 @@ export default function () {
                 });
             })
         });
+        // }
     }
     /** 监听高级编辑弹窗 */
     const initObserver = ({
@@ -91,7 +96,8 @@ export default function () {
         observerFnc(body, (mutationsList, obs) => {
             mutationsList.some(item => {
                 return Array.from(item.addedNodes as NodeListOf<HTMLDivElement>).some((node) => {
-                    if (/^高级编辑/.test((node as HTMLDivElement).innerText) && node.classList.contains(MODAL_SELECTOR)) {
+                    const REG = isPrice ? /^价格排序/ : /^高级编辑/;
+                    if (REG.test((node as HTMLDivElement).innerText) && node.classList.contains(MODAL_SELECTOR)) {
                         const container: HTMLDivElement | null = document.querySelector(MODAL_CONTENT_SELECTOR);
                         if (!container) return false;
                         container.onmouseover = over;

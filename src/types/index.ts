@@ -31,4 +31,5 @@ export type PriceData = {
     baseType: string;
     name: string;
     calculated: number;
+    frameType: number;
 };

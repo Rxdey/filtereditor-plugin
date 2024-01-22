@@ -15,4 +15,11 @@ if (window.location.host === 'edit.filtereditor.cn') {
 }
 if (window.location.host === 'price.filtereditor.cn') {
   priceInit();
+  createApp(App).mount(
+    (() => {
+      const app = document.createElement('div');
+      document.body.append(app);
+      return app;
+    })(),
+  );
 }

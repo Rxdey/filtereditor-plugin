@@ -1,9 +1,9 @@
 <template>
-  <Hover v-model="visible" :position="position" :type="type" :name="name" />
+  <Hover v-model="visible" :position="position" :type="type" :name="name" :showPrice="showPrice"/>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick, provide } from 'vue';
+import { ref, onMounted, nextTick, provide, computed } from 'vue';
 import { getModalPosition } from '@/utils';
 import Hover from '@/container/Hover.vue';
 import useObsrver from '@/hooks/useObsrver';
@@ -13,11 +13,12 @@ import { PRICE_MESSAGE, PRICE_TIME_STAMP, PriceDataKey } from '@/const';
 import { UNIQUE_POOL } from '@/database/unique.data';
 
 type ItemType = 'card' | 'unique';
-const initObserver = useObsrver();
+
 
 // 直接传吧
 const priceData = ref<PriceData[] | null>(null);
 const visible = ref(false);
+const showPrice = ref(false);
 const name = ref('');
 const type = ref<ItemType>('card');
 const position = ref({
@@ -28,13 +29,16 @@ provide(PriceDataKey, priceData)
 const setting: Record<string, { type: ItemType, target: string }> = {
   命运卡: {
     type: 'card',
-    target: '.divination-card'
+    target: '#divination-wrap'
   },
   暗金装备: {
     type: 'unique',
     target: '.unique-item'
   }
 };
+const isPrice = computed(() => window.location.host === 'price.filtereditor.cn');
+
+const initObserver = useObsrver(isPrice.value);
 /**
  * 新增向国际服增加限制描述
  */
@@ -60,6 +64,11 @@ const addLimitToTarget = (target: HTMLDivElement) => {
   })
 }
 
+const changePriceDisplay = (target: HTMLDivElement) => {
+  // const text: string = GM_getValue(PRICE_MESSAGE);
+  // console.log(target, text)
+}
+
 /** 鼠标经过新增的dom事件 */
 const handleShowDivCard = (event: MouseEvent) => {
   const target = event.target as HTMLElement;
@@ -68,7 +77,11 @@ const handleShowDivCard = (event: MouseEvent) => {
     setTimeout(() => {
       // 查找显示的popover
       const activeList: NodeListOf<HTMLDivElement> = document.querySelectorAll('.n-popover:not([style*="display: none"])');
-      addLimitToTarget(activeList[0]);
+      if (!isPrice.value) {
+        addLimitToTarget(activeList[0]);
+      } else {
+        changePriceDisplay(activeList[0])
+      }
     }, 301);
     return;
   }
@@ -76,11 +89,13 @@ const handleShowDivCard = (event: MouseEvent) => {
     visible.value = false;
     return;
   }
-  const { name: dataName, type: dataType } = target.dataset;
+  const { name: dataName, type: dataType, server } = target.dataset;
   if (!dataName || !type) {
     visible.value = false;
     return;
   }
+  // 兼容物价榜
+  showPrice.value = (!server || server === '国服');
   name.value = dataName;
   visible.value = true;
   type.value = setting[dataType as keyof typeof setting].type;

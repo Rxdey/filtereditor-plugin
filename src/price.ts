@@ -1,4 +1,4 @@
-import { GM_setValue, GM_getValue, GM_listValues, GM_addValueChangeListener } from "$";
+import { GM_setValue, GM_getValue } from "$";
 import fetchIntercept from 'fetch-intercept';
 import { PRICE_MESSAGE } from './const';
 /**
@@ -30,10 +30,11 @@ export default function priceInit() {
     });
 
     const setParseJson = (data: any[]) => {
-        const result = data.filter(e => e.frameType === 3).map(item => ({
+        const result = data.filter(e => e.frameType === 3 || e.frameType === 6).map(item => ({
             baseType: item.baseType,
             name: item.name,
-            calculated: item.calculated
+            calculated: item.calculated,
+            frameType: item.frameType
         }));
         if (!result.length) return;
         GM_setValue(PRICE_MESSAGE, JSON.stringify({

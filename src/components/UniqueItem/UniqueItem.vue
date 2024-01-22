@@ -24,7 +24,8 @@ import { UNIQUE_POOL } from '@/database/unique.data';
 import { PriceDataKey } from '@/const';
 
 const props = defineProps<{
-  name: string
+  name: string,
+  showPrice: boolean
 }>();
 
 const priceData = inject(PriceDataKey);

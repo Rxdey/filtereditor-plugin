@@ -5,7 +5,10 @@
         <img :src="item.icon">
       </div>
       <div class="unique-cell__body">
-        <div class="name">{{ item.name }}</div>
+        <div class="name">
+          <a :href="TRADE_URL + item.searchCode" v-if="item.searchCode" target="_blank" title="点击跳转市集搜索">{{ item.name }}</a>
+          <span v-else>{{ item.name }}</span>
+        </div>
         <div class="limit">
           <div v-html="item.limit"></div>
         </div>
@@ -21,7 +24,7 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue';
 import { UNIQUE_POOL } from '@/database/unique.data';
-import { PriceDataKey } from '@/const';
+import { PriceDataKey, TRADE_URL } from '@/const';
 
 const props = defineProps<{
   name: string,
@@ -41,6 +44,7 @@ const current = computed(() => {
       const data = priceData.value.find(d => `${d.name} ${d.baseType}` === item.name);
       if (data) {
         item.calculated = !isNaN(Math.floor(data.calculated)) ? Math.floor(data.calculated) : 0;
+        item.searchCode = data.searchCode;
       }
     }
     return item

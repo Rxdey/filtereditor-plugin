@@ -32,9 +32,11 @@
         </template>
       </div>
     </div>
-    <div class="price" v-if="price && showPrice">
-      <span>{{ price }}</span>
+    <div class="price" v-if="price.calculated && showPrice">
+      <!-- <span>{{ calculated }}</span> -->
+      <a :href="TRADE_URL + price.searchCode" target="_blank" class="trade" title="点击跳转市集搜索">{{ calculated }}</a>
       <span> × </span>
+      <span class="chaos"></span>
     </div>
   </div>
 </template>
@@ -43,7 +45,7 @@
 import { computed, inject } from 'vue';
 import { CARD_POOL } from '@/database/card.data';
 import { CardData } from '@/types';
-import { PriceDataKey } from '@/const';
+import { PriceDataKey, TRADE_URL } from '@/const';
 
 
 const priceData = inject(PriceDataKey);
@@ -72,9 +74,11 @@ const current = computed<CardData | null>(() => {
 });
 
 const price = computed(() => {
-  if (!priceData || !priceData.value) return 0;
-  return Math.floor(priceData.value.find(e => e.frameType === 6 && e.name === props.name)?.calculated || 0)
-})
+  if (!priceData || !priceData.value) return { calculated: 0, searchCode: '' };
+  return priceData.value.find(e => e.frameType === 6 && e.name === props.name) || { calculated: 0, searchCode: '' }
+});
+
+const calculated = computed(() => Math.floor(price.value.calculated));
 
 </script>
 

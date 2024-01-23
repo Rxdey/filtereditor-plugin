@@ -34,7 +34,8 @@ export default function priceInit() {
             baseType: item.baseType,
             name: item.name,
             calculated: item.calculated,
-            frameType: item.frameType
+            frameType: item.frameType,
+            searchCode: item.searchCode,
         }));
         if (!result.length) return;
         GM_setValue(PRICE_MESSAGE, JSON.stringify({

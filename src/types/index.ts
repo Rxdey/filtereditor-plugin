@@ -24,6 +24,7 @@ export type Unique = {
     baseType: string;
     limit?: string;
     calculated?: number;
+    searchCode?: string;
 };
 
 /** 物价榜 */
@@ -32,4 +33,5 @@ export type PriceData = {
     name: string;
     calculated: number;
     frameType: number;
+    searchCode: string;
 };

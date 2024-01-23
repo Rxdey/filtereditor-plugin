@@ -64,7 +64,7 @@ export default function (isPrice: boolean) {
         const target = mutationsList[0].target as HTMLDivElement;
         const itemList: NodeListOf<HTMLDivElement> = target.querySelectorAll(TAG_SELECTOR);
         callBack(node)
-        console.log('触发切换')
+        // console.log('触发切换')
         // // console.log('正在浏览: ', type, itemList);
         // 列表已加载 遍历已存在的卡片并添加dom
         // if (!isPrice) {

@@ -12,9 +12,11 @@ import { GM_getValue, GM_deleteValue } from "$";
 import { PRICE_MESSAGE, PRICE_TIME_STAMP, PriceDataKey } from '@/const';
 import { UNIQUE_POOL } from '@/database/unique.data';
 import Radio from '@/components/Radio/Radio.vue';
+import { CARD_POOL } from "./database/card.data";
 
 type ItemType = 'card' | 'unique';
 
+let radio: any = null;
 
 // 直接传吧
 const priceData = ref<PriceData[] | null>(null);
@@ -135,6 +137,7 @@ onMounted(() => {
     getGMStorageData();
     initObserver({
         over: handleShowDivCard,
+        // 奖励类型高亮，随便写写用着
         change: (node) => {
             const activeTag: HTMLDivElement | null = node.querySelector(EDIT_TYPE_SELECTOR);
             if (!activeTag) return;
@@ -142,14 +145,39 @@ onMounted(() => {
             const content = node.querySelector('.n-card-header__main');
             if (!content) return;
             if (type !== '命运卡') {
-                if (!content.querySelector('#d-radio')) return;
-                return;
+                // 其它模块隐藏
+                radio?.hide();
             } else {
-
-                if (content.querySelector('#d-radio')) return;
+                if (radio) {
+                    radio.show();
+                    return;
+                }
                 const div = document.createElement('div');
                 content.appendChild(div);
-                createApp(Radio, {}).mount(div)
+                radio = createApp(Radio, {
+                    onChange: (val: string) => {
+                        if (!val) {
+                            if (document.querySelector('#styleTag')) {
+                                document.querySelector('#styleTag')!.innerHTML = '';
+                            }
+                            return;
+                        }
+                        const list = CARD_POOL.filter(card => card.Tags?.split(',').some(str => str.trim() === val));
+                        const styles = list.map(item => `.n-tag[data-name="${item.name}"] {
+                            background-color: #c23131;
+                            color: #fff;
+                        }`).join('\n');
+                        if (document.querySelector('#styleTag')) {
+                            document.querySelector('#styleTag')!.innerHTML = styles;
+                        } else {
+                            const styleTag = document.createElement('style');
+                            styleTag.id = 'styleTag';
+                            styleTag.innerHTML = styles;
+                            document.head.appendChild(styleTag);
+                        }
+                    }
+                }).mount(div);
+                console.log(radio);
             }
 
         }

@@ -1,8 +1,8 @@
 <template>
-    <div id="d-radio">
-        <div class="text-sm">类型高亮:</div>
+    <div id="d-radio" v-show="visible">
+        <div class="">奖励类型高亮(油猴插件提供):</div>
         <div class="radio">
-            <div class="radio-item" :class="{ active: active === tag.value }" v-for="tag in TAGES" :key="tag.key" @click="onChange(tag)">{{ tag.key }}</div>
+            <div class="radio-item" :class="{ active: active === tag.value }" v-for="tag in TAGES" :key="tag.key" @click="onClick(tag)">{{ tag.key }}</div>
         </div>
     </div>
 </template>
@@ -11,13 +11,30 @@
 import { TAGES } from "@/database/tags";
 import { ref, onMounted, computed, watch } from 'vue';
 
+const props = withDefaults(defineProps<{
+    onChange?: (v: string) => void
+}>(), {
+    onChange: () => { }
+})
+const visible = ref(true);
 const active = ref<string>('');
 
-const onChange = (tag: typeof TAGES[number]) => {
+const onClick = (tag: typeof TAGES[number]) => {
     const { key, value } = tag;
-    active.value = value === active.value ? '' : value
+    active.value = value === active.value ? '' : value;
+    props.onChange(active.value);
 }
 
+const show = () => {
+    visible.value = true;
+}
+const hide = () => {
+    visible.value = false;
+}
+defineExpose({
+    show,
+    hide
+})
 </script>
 
 <style scoped>

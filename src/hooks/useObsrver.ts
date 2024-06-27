@@ -7,13 +7,13 @@ const MODAL_CONTENT_SELECTOR = '.h-full.flex-1>.n-scrollbar .n-scrollbar-content
 const CARD_CONTENT_SELECTOR = '.wh-full';
 
 /** 激活标签类型 */
-const EDIT_TYPE_SELECTOR = '.n-menu-item-content--selected';
+export const EDIT_TYPE_SELECTOR = '.n-menu-item-content--selected';
 /** 卡片/物品节点 */
 const TAG_SELECTOR = '.n-tag';
 /**
- * 
+ *
  * @param isPrice 是否物价页面
- * @returns 
+ * @returns
  */
 export default function (isPrice: boolean) {
     const observerFnc = (node: Element, callBack: MutationCallback) => {
@@ -23,7 +23,7 @@ export default function (isPrice: boolean) {
             childList: true,
         });
         return observer;
-    }
+    };
 
     /** 添加dom */
     const addCustomDom = (el: HTMLDivElement, node: HTMLDivElement) => {
@@ -44,28 +44,28 @@ export default function (isPrice: boolean) {
             if (isPrice) {
                 content.removeChild(icon);
             } else {
-                icon?.classList.add('original')
+                icon?.classList.add('original');
                 return;
             }
-        };
-        const server: HTMLElement|null = document.querySelector('.n-radio-button--checked');
+        }
+        const server: HTMLElement | null = document.querySelector('.n-radio-button--checked');
         const span = document.createElement('span');
         span.className = hoverName;
         span.dataset.name = name;
         span.dataset.type = type;
-        span.dataset.server = server ? server.innerText : ''
+        span.dataset.server = server ? server.innerText : '';
+        el.dataset.name = name;
         content.appendChild(span);
         // 每个单独监听事件性能开销大，放到父级
-    }
+    };
 
     /** 监听列表节点是否挂载(切换类型和重新渲染都会触发) */
-    const observerChildren = (node: HTMLDivElement, mutationsList: MutationRecord[], obs: MutationObserver, callBack = (e: HTMLDivElement) => { }) => {
+    const observerChildren = (node: HTMLDivElement, mutationsList: MutationRecord[], obs: MutationObserver, callBack = (e: HTMLDivElement) => {}) => {
         // 触发切换
         const target = mutationsList[0].target as HTMLDivElement;
         const itemList: NodeListOf<HTMLDivElement> = target.querySelectorAll(TAG_SELECTOR);
-        callBack(node)
-        // console.log('触发切换')
-        // // console.log('正在浏览: ', type, itemList);
+        callBack(node);
+        // console.log('正在浏览: ', type, itemList);
         // 列表已加载 遍历已存在的卡片并添加dom
         // if (!isPrice) {
         itemList.forEach(e => {
@@ -80,35 +80,40 @@ export default function (isPrice: boolean) {
                         if (!/n-tag/.test(el.className)) return;
                         if (el.querySelector('.hover-span')) return;
                         addCustomDom(el, node);
-                    })
+                    });
                 });
-            })
+            });
         });
         // }
-    }
-    /** 监听高级编辑弹窗 */
-    const initObserver = ({
-        over = (e: MouseEvent) => { },
-        change = (e: HTMLDivElement) => { },
-    }) => {
-        const body = document.querySelector("body");
+    };
+    /**
+     * 监听高级编辑弹窗
+     * @param over 鼠标经过事件 
+     * @param change 变更挂载节点 
+     * @returns 
+     */
+    const initObserver = ({ over = (e: MouseEvent) => {}, change = (e: HTMLDivElement) => {} }) => {
+        const body = document.querySelector('body');
         if (!body) return;
         observerFnc(body, (mutationsList, obs) => {
+            if (document.title !== '下载和编辑') return;
             mutationsList.some(item => {
-                return Array.from(item.addedNodes as NodeListOf<HTMLDivElement>).some((node) => {
+                return Array.from(item.addedNodes as NodeListOf<HTMLDivElement>).some(node => {
                     const REG = isPrice ? /^价格排序/ : /^高级编辑/;
-                    if (REG.test((node as HTMLDivElement).innerText) && node.classList.contains(MODAL_SELECTOR)) {
+                    if (REG.test(node.innerText) && node.classList.contains(MODAL_SELECTOR)) {
                         const container: HTMLDivElement | null = document.querySelector(MODAL_CONTENT_SELECTOR);
                         if (!container) return false;
                         container.onmouseover = over;
-                        observerFnc(container, (list, fnc) => { observerChildren(node, list, fnc, change) })
+                        observerFnc(container, (list, fnc) => {
+                            observerChildren(node, list, fnc, change);
+                        });
                         obs.disconnect();
                         return true;
                     }
                     return false;
-                })
-            })
+                });
+            });
         });
     };
-    return initObserver
+    return initObserver;
 }

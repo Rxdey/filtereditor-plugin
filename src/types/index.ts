@@ -13,8 +13,9 @@ export type CardData = {
     url?: string;
     href?: string;
     icon: string;
-    explicitMod: ExplicitMod[];
+    explicitMod: string;
     num?: number;
+    Tags?: string;
 };
 /** 传奇 */
 export type Unique = {

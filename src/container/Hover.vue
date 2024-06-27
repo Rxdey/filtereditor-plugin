@@ -1,6 +1,6 @@
 <template>
     <div class="hover-wrap" v-show="modelValue" :style="currentStyle">
-        <component :is="currentCom" :name="name" :showPrice="showPrice"/>
+        <component :is="currentCom" :name="name" :showPrice="showPrice" v-if="type !== 'card' || name" />
     </div>
 </template>
 

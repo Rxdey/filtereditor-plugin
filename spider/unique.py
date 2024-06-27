@@ -91,4 +91,4 @@ def init():
     saveFile('./spider/result/unique_pool.json', result)
     return
 
-# init()
+init()

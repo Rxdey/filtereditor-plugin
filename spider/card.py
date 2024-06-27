@@ -42,26 +42,29 @@ def parseList(url):
             return
         list = []
         doc = pq(text)
-        lines = doc('table').eq(0).find('tbody tr')
+        lines = doc('#命运卡物品 ').find('.row .col')
         for line in lines:
-            explicitMod = []
-            if len(doc(line).find('.explicitMod span')) <= 0:
-                explicitMod = [{
-                    'type': 'magicitem', 'value': doc(line).find('.explicitMod').text()
-                }]
-            else:
-                exList = doc(line).find('.explicitMod span')
-                for ex in exList:
-                    exObj = {
-                        'type': doc(ex).attr('class'),
-                        'value': doc(ex).text()
-                    }
-                    explicitMod.append(exObj)
+            # explicitMod = []
+            
+            # if len(doc(line).find('.explicitMod span')) <= 0:
+            #     explicitMod = [{
+            #         'type': 'magicitem', 'value': doc(line).find('.explicitMod').text()
+            #     }]
+
+            # else:
+            #     exList = doc(line).find('.explicitMod span')
+            #     for ex in exList:
+            #         exObj = {
+            #             'type': doc(ex).attr('class'),
+            #             'value': doc(ex).text()
+            #         }
+            #         explicitMod.append(exObj)
             obj = {
-                'name': doc(line).find('td').eq(1).find('a').text(), 
-                'href': base_url + doc(line).find('td').eq(1).find('a').attr('href'),
-                'type': doc(line).find('td').eq(1).find('a').attr('href').replace('/cn/', '').replace('_', ' '),
-                'explicitMod': explicitMod
+                'name': doc(line).find('.flex-grow-1 a').text(), 
+                'href': base_url + doc(line).find('.flex-grow-1 a').attr('href'),
+                'type': doc(line).find('.flex-grow-1 a').attr('href').replace('/cn/', '').replace('_', ' '),
+                # 更新(直接获取全部html文本)
+                'explicitMod': doc(line).find('.explicitMod').html()
             }
             list.append(obj)
         return list
@@ -84,6 +87,7 @@ def fetchCardDetail(data):
         print(f'请求卡片:{data["name"]} 详情失败')
         return
     doc = pq(text)
+    # 提取flavourText信息
     title = doc('.FlavourText').text()
     data['flavourText'] = title
     data['stack'] = int(doc('.stackSize').text())
@@ -92,6 +96,12 @@ def fetchCardDetail(data):
     style_attribute = icon_div.attr('style')
     imgUrl = getImageUrl(style_attribute)
     data['icon'] = imgUrl
+    
+    tableLines = doc('table tbody tr')
+    for line in tableLines:
+        if doc(line).find('td').eq(0).text() == 'Tags':
+            data['Tags'] = doc(line).find('td').eq(1).text()
+            break
     result.append(data)
     return
 
@@ -101,7 +111,7 @@ def init():
     if card_index == False:
         print('解析索引列表失败')
         return
-    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
         futures = [executor.submit(fetchCardDetail, item) for item in card_index]
         # 初始化已完成和未完成任务计数器
         completed_count = 0
@@ -112,4 +122,4 @@ def init():
             print(f"已完成 {completed_count}/{total_count} 任务")
     saveFile('./spider/result/card_pool.json', result)
 
-# init()
+init()

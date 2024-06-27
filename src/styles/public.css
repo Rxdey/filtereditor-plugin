@@ -1,0 +1,42 @@
+.uniqueitem {
+    color: var(--color-uniqueitem);
+}
+.gemitem {
+    color: var(--color-gemitem);
+}
+.currencyitem {
+    color: var(--color-currencyitem);
+}
+.rareitem {
+    color: var(--color-rareitem);
+}
+.whiteitem {
+    color: var(--color-whiteitem);
+}
+.corrupted {
+    color: var(--color-corrupted);
+}
+.magicitem {
+    color: var(--color-magicitem);
+}
+.default {
+    color: var(--color-default);
+}
+.augmented {
+    color: var(--color-augmented);
+}
+.enchanted {
+    color: var(--color-enchanted);
+}
+.divination {
+    color: var(--color-divination);
+}
+.fractured {
+    color: var(--color-fractured);
+}
+.normal {
+    color: var(--color-normal);
+}
+.Gemitem {
+    color: var(--color-magicitem);
+}

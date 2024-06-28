@@ -820,10 +820,10 @@ untildify@^4.0.0:
   resolved "https://registry.npmjs.org/untildify/-/untildify-4.0.0.tgz#2bc947b953652487e4600949fb091e3ae8cd919b"
   integrity sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==
 
-vite-plugin-monkey@^3.4.0:
-  version "3.5.1"
-  resolved "https://registry.npmjs.org/vite-plugin-monkey/-/vite-plugin-monkey-3.5.1.tgz#71da41dabacfdbb93b0cf4bf537bad0c5f76624d"
-  integrity sha512-sLbWbhvhXbm1d4SFY9eVx3KFqDP1gbjqUJlbpf/KRKLAFcjO3VIMOJb0oqxH77zlmSZhITrqLcsB3AyH+92i/w==
+vite-plugin-monkey@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.npmmirror.com/vite-plugin-monkey/-/vite-plugin-monkey-3.5.2.tgz#61c88901b319a067e3db1c688d9e1e71840ddd26"
+  integrity sha512-UaMfHv6PbuSzX11NFmxxpdI9/+WNdRt6OZLfrhKTkySpgPvbFqvME38J/1LpjqFXMgwjKWCTW28RRSEt+ygSRA==
   dependencies:
     acorn-walk "^8.3.1"
     cross-spawn "^7.0.3"

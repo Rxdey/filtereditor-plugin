@@ -1,5 +1,5 @@
 export const TAGES = [
-    { key: '传奇', value: 'unique_divination' },
+    { key: '暗金', value: 'unique_divination' },
     { key: '首饰(珠宝)', value: 'jewellery_divination' },
     { key: '通货', value: 'currency_divination' },
     { key: '护甲', value: 'armour_divination' },

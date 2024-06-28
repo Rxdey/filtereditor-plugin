@@ -2,24 +2,29 @@
     <div id="d-radio" v-show="visible">
         <div class="">奖励类型高亮(油猴插件提供):</div>
         <div class="radio">
-            <div class="radio-item" :class="{ active: active === tag.value }" v-for="tag in TAGES" :key="tag.key" @click="onClick(tag)">{{ tag.key }}</div>
+            <div class="radio-item" :class="{ active: active === tag.value }" v-for="tag in options" :key="tag.key" @click="onClick(tag)">{{ tag.key }}</div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { TAGES } from "@/database/tags";
 import { ref, onMounted, computed, watch } from 'vue';
 
+type Tags = {
+    key: string;
+    value: string;
+}
 const props = withDefaults(defineProps<{
-    onChange?: (v: string) => void
+    onChange?: (v: string) => void;
+    options: Tags[]
 }>(), {
-    onChange: () => { }
+    onChange: () => { },
+    options: () => ([])
 })
 const visible = ref(true);
 const active = ref<string>('');
 
-const onClick = (tag: typeof TAGES[number]) => {
+const onClick = (tag: Tags) => {
     const { key, value } = tag;
     active.value = value === active.value ? '' : value;
     props.onChange(active.value);

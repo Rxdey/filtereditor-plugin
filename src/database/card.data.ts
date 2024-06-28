@@ -1,6 +1,5 @@
-import { type CardData } from '@/types';
 /** 命运卡卡池 */
-export const CARD_POOL: CardData[] = [
+export const CARD_POOL = [
     {
         name: '疯医',
         href: 'https://poedb.tw/cn/The_Doctor',

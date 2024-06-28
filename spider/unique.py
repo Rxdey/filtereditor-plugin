@@ -1,37 +1,20 @@
 import json
-import urllib.parse
+from pathlib import Path
 import requests
 from pyquery import PyQuery as pq
-import threading
 import concurrent.futures
 import re
-import os
+from utils.utils import crawl_url, saveFile, transform2ts
 
+# 获取当前脚本文件的目录
+base_dir = Path(__file__).parent.absolute()
 # 编年史
 base_url = 'https://poedb.tw'
 # 全部在同一页
 unique_url = 'https://poedb.tw/cn/Unique_item'
 # 结果
 result = []
-# 保存文件
-def saveFile(fileName, text):
-    with open(fileName, 'w', encoding='utf-8') as json_file:
-        json.dump(text, json_file, ensure_ascii=False, indent=4)
-        print(f"操作完成，结果已保存到 {fileName} 文件中。")
 
-# 发送请求
-def crawl_url(url):
-    try:
-        response = requests.get(url=url, timeout=(30, 50))
-        if response.status_code == 200:
-           return response.text
-        else:
-            print(f"请求失败")
-        return False
-
-    except requests.exceptions.RequestException as e:
-        # print(f"请求异常")
-        return False
 # 解析索引列表
 def parseList(url):
     try:
@@ -43,12 +26,12 @@ def parseList(url):
         ids = ['#Weapon传奇', '#Armour传奇', '#Other传奇']
         doc = pq(text)
         for id in ids:
-            lines = doc(id).find('table tbody tr')
+            lines = doc(id).find('.row .col')
             for line in lines:
                 obj = {
-                    'name': doc(line).find('td').eq(1).find('a').eq(0).text(), 
-                    'href': base_url + doc(line).find('td').eq(1).find('a').attr('href'),
-                    'icon': doc(line).find('td').eq(0).find('img').attr('src'),
+                    'name': doc(line).find('.flex-grow-1 a').text(), 
+                    'href': base_url + doc(line).find('.flex-grow-1 a').attr('href'),
+                    'icon': doc(line).find('.flex-shrink-0 img').attr('src'),
                     'baseType': ''
                 }
                 list.append(obj)
@@ -79,7 +62,7 @@ def init():
         return
     print(len(unique_index))
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=200) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
         futures = [executor.submit(fetchDetail, item) for item in unique_index]
         # 初始化已完成和未完成任务计数器
         completed_count = 0
@@ -88,7 +71,8 @@ def init():
         for future in concurrent.futures.as_completed(futures):
             completed_count += 1
             print(f"已完成 {completed_count}/{total_count} 任务")
-    saveFile('./spider/result/unique_pool.json', result)
+    # saveFile('./spider/result/unique_pool.json', result)
+    saveFile(base_dir / '../src/database/unique.data.ts', transform2ts('UNIQUE_POOL', result))
     return
 
 init()

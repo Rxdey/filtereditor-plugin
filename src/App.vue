@@ -13,6 +13,7 @@ import { PRICE_MESSAGE, PRICE_TIME_STAMP, PriceDataKey } from '@/const';
 import { UNIQUE_POOL } from '@/database/unique.data';
 import Radio from '@/components/Radio/Radio.vue';
 import { CARD_POOL } from "./database/card.data";
+import { TAGES } from "./database/tags";
 
 type ItemType = 'card' | 'unique';
 
@@ -155,6 +156,7 @@ onMounted(() => {
                 const div = document.createElement('div');
                 content.appendChild(div);
                 radio = createApp(Radio, {
+                    options: TAGES,
                     onChange: (val: string) => {
                         if (!val) {
                             if (document.querySelector('#styleTag')) {

@@ -1,37 +1,20 @@
 import json
-import urllib.parse
+from pathlib import Path
 import requests
 from pyquery import PyQuery as pq
-import threading
 import concurrent.futures
 import re
-import os
 
+from utils.utils import crawl_url, saveFile, transform2ts
+
+# 获取当前脚本文件的目录
+base_dir = Path(__file__).parent.absolute()
 # 编年史
 base_url = 'https://poedb.tw'
 # 卡片索引列表
 card_index_url = 'https://poedb.tw/cn/Divination_Cards'
 # 结果
 result = []
-# 保存文件
-def saveFile(fileName, text):
-    with open(fileName, 'w', encoding='utf-8') as json_file:
-        json.dump(text, json_file, ensure_ascii=False, indent=4)
-        print(f"操作完成，结果已保存到 {fileName} 文件中。")
-
-# 发送请求
-def crawl_url(url):
-    try:
-        response = requests.get(url=url, timeout=(30, 50))
-        if response.status_code == 200:
-           return response.text
-        else:
-            print(f"请求失败")
-        return False
-
-    except requests.exceptions.RequestException as e:
-        # print(f"请求异常")
-        return False
 
 # 解析索引列表
 def parseList(url):
@@ -44,21 +27,6 @@ def parseList(url):
         doc = pq(text)
         lines = doc('#命运卡物品 ').find('.row .col')
         for line in lines:
-            # explicitMod = []
-            
-            # if len(doc(line).find('.explicitMod span')) <= 0:
-            #     explicitMod = [{
-            #         'type': 'magicitem', 'value': doc(line).find('.explicitMod').text()
-            #     }]
-
-            # else:
-            #     exList = doc(line).find('.explicitMod span')
-            #     for ex in exList:
-            #         exObj = {
-            #             'type': doc(ex).attr('class'),
-            #             'value': doc(ex).text()
-            #         }
-            #         explicitMod.append(exObj)
             obj = {
                 'name': doc(line).find('.flex-grow-1 a').text(), 
                 'href': base_url + doc(line).find('.flex-grow-1 a').attr('href'),
@@ -120,6 +88,6 @@ def init():
         for future in concurrent.futures.as_completed(futures):
             completed_count += 1
             print(f"已完成 {completed_count}/{total_count} 任务")
-    saveFile('./spider/result/card_pool.json', result)
+    saveFile(base_dir / '../src/database/card.data.ts', transform2ts('CARD_POOL', result))
 
 init()

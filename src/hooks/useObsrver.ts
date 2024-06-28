@@ -88,15 +88,14 @@ export default function (isPrice: boolean) {
     };
     /**
      * 监听高级编辑弹窗
-     * @param over 鼠标经过事件 
-     * @param change 变更挂载节点 
-     * @returns 
+     * @param over 鼠标经过事件
+     * @param change 变更挂载节点
+     * @returns
      */
     const initObserver = ({ over = (e: MouseEvent) => {}, change = (e: HTMLDivElement) => {} }) => {
         const body = document.querySelector('body');
         if (!body) return;
         observerFnc(body, (mutationsList, obs) => {
-            if (document.title !== '下载和编辑') return;
             mutationsList.some(item => {
                 return Array.from(item.addedNodes as NodeListOf<HTMLDivElement>).some(node => {
                     const REG = isPrice ? /^价格排序/ : /^高级编辑/;

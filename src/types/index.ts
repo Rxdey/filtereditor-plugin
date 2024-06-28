@@ -1,3 +1,5 @@
+export type HoverComType = 'card' | 'unique' | 'scarab' | 'allflame';
+
 /** 命运卡模组 */
 export type ExplicitMod = {
     type: string;
@@ -35,4 +37,11 @@ export type PriceData = {
     calculated: number;
     frameType: number;
     searchCode: string;
+};
+
+
+/** 其他 */
+export type OtherItem = {
+    name: string;
+    explicitMod: string;
 };

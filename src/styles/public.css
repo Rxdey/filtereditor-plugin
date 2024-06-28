@@ -40,3 +40,17 @@
 .Gemitem {
     color: var(--color-magicitem);
 }
+
+.n-card > .n-card-header {
+    padding-bottom: 24px!important;
+}
+
+.simpleitem-wrap {
+    box-shadow: 0 0 16px rgba(0, 0, 0, .5);
+    background-color: rgb(72, 72, 78);
+    padding: 4px 8px;
+    color: rgba(255, 255, 255, 0.82);
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.2;
+  }

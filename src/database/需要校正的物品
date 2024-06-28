@@ -1,0 +1,32 @@
+;  备份一下
+    {
+        name: '套娃',
+        href: 'https://poedb.tw/cn/Matryoshka',
+        type: 'Matryoshka',
+        explicitMod: '<span class="rareitem">黑曜护身符</span><br /><span class="default">物品等级：</span><span class="normal">85</span><br /><span class="default">品质：</span><span class="augmented">+20%</span><br /><span class="default">受影响物品</span><br /><span class="enchanted">4圣油</span><br /><span class="enchanted">魔符孕育物品</span><br /><span class="corrupted">腐化</span>',
+        flavourText: '{我无法控制自己，\n只能发出几声吱叫，\n有那么多话想对你说，\n我要能说话就好了！}',
+        stack: 8,
+        icon: 'https://poe.game.qq.com/image/divination-card/Matryoshka.png',
+        Tags: 'jewellery_divination, corrupted_divination, boss_drop_card, divination_card',
+    }
+{
+        name: '虔诚的代价',
+        href: 'https://poedb.tw/cn/The_Price_of_Devotion',
+        type: 'The Price of Devotion',
+        explicitMod: '<span class="uniqueitem">法师之血</span><br/><span class="default">质量：</span> <span class="augmented">+20%</span><br/><span class="corrupted">二重基底</span><br/> <span class="corrupted">腐化</span>',
+        flavourText: '{Atziri最优秀的奇术师并不知道，他们的忠诚需要做到比单纯的研究工作更多的奉献。}',
+        stack: 7,
+        icon: 'https://poe.game.qq.com/image/divination-card/ThePriceOfDevotion.png',
+        Tags: 'jewellery_divination, unique_divination, corrupted_divination, unique_corrupted_divination, unique_jewellery_divination, divination_card',
+}
+
+    {
+        name: '海怪',
+        href: 'https://poedb.tw/cn/The_Leviathan',
+        type: 'The Leviathan',
+        explicitMod: '<span class="uniqueitem">贤主物品</span><br/><span class="corrupted">二重基底</span><br/><span class="corrupted">腐化</span>',
+        flavourText: '{早在人类踏上这片土地之前，远古巨兽就在海洋深处游动。}',
+        stack: 7,
+        icon: 'https://poe.game.qq.com/image/divination-card/TheLeviathan.png',
+        Tags: 'unique_divination, corrupted_divination, unique_corrupted_divination, boss_drop_card, divination_card',
+    },

@@ -25,6 +25,7 @@
 import { computed, inject } from 'vue';
 import { UNIQUE_POOL } from '@/database/unique.data';
 import { PriceDataKey, TRADE_URL } from '@/const';
+import { Unique } from "@/types";
 
 const props = defineProps<{
   name: string,
@@ -34,7 +35,7 @@ const props = defineProps<{
 const priceData = inject(PriceDataKey);
 
 const current = computed(() => {
-  const currentList = UNIQUE_POOL.filter(e => e.baseType === props.name).map(item => {
+  const currentList = (UNIQUE_POOL as Unique[]).filter(e => e.baseType === props.name).map(item => {
     // 显示限定
     if (item.limit) {
       item.limit = item.limit.replace(/「/g, '[').replace(/」/g, '] ').trim().replace(/(限定掉落|升级)/g, '<span style="color: #98f1d4">$1</span>')

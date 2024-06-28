@@ -1,6 +1,6 @@
 <template>
     <div id="d-radio" v-show="visible">
-        <div class="">奖励类型高亮(油猴插件提供):</div>
+        <div style="margin-right: 4px;">命运卡奖励分类:</div>
         <div class="radio">
             <div class="radio-item" :class="{ active: active === tag.value }" v-for="tag in options" :key="tag.key" @click="onClick(tag)">{{ tag.key }}</div>
         </div>
@@ -43,6 +43,17 @@ defineExpose({
 </script>
 
 <style scoped>
+/* 页面的布局有点问题，弹窗插入的内容高度会把下面的按钮撑没，所以用这个 */
+#d-radio {
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    display: flex;
+    flex-flow: row;
+    font-size: 11px;
+    align-items: center;
+}
+
 .radio {
     display: flex;
     flex-flow: row wrap;
@@ -50,8 +61,8 @@ defineExpose({
 }
 
 .radio-item {
-    min-width: 64px;
-    padding: 8px 12px;
+    min-width: 48px;
+    padding: 4px 8px;
     font-size: 12px;
     line-height: 1;
     cursor: pointer;

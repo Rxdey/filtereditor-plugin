@@ -7,7 +7,7 @@ import { ref, onMounted, nextTick, provide, computed, createApp } from 'vue';
 import { getModalPosition } from '@/utils';
 import Hover from '@/container/Hover.vue';
 import useObsrver, { EDIT_TYPE_SELECTOR } from '@/hooks/useObsrver';
-import { PriceData } from '@/types';
+import { HoverComType, PriceData } from '@/types';
 import { GM_getValue, GM_deleteValue } from "$";
 import { PRICE_MESSAGE, PRICE_TIME_STAMP, PriceDataKey } from '@/const';
 import { UNIQUE_POOL } from '@/database/unique.data';
@@ -15,7 +15,7 @@ import Radio from '@/components/Radio/Radio.vue';
 import { CARD_POOL } from "./database/card.data";
 import { TAGES } from "./database/tags";
 
-type ItemType = 'card' | 'unique';
+// type HoverComType = 'card' | 'unique' | 'scarab' | 'allflame';
 
 let radio: any = null;
 
@@ -24,13 +24,14 @@ const priceData = ref<PriceData[] | null>(null);
 const visible = ref(false);
 const showPrice = ref(false);
 const name = ref('');
-const type = ref<ItemType>('card');
+// 展示组件类型
+const type = ref<HoverComType>('card');
 const position = ref({
     x: 0,
     y: 0
 });
 provide(PriceDataKey, priceData)
-const setting: Record<string, { type: ItemType, target: string }> = {
+const setting: Record<string, { type: HoverComType, target: string }> = {
     命运卡: {
         type: 'card',
         target: '#divination-wrap'
@@ -38,7 +39,15 @@ const setting: Record<string, { type: ItemType, target: string }> = {
     暗金装备: {
         type: 'unique',
         target: '.unique-item'
-    }
+    },
+    圣甲虫: {
+        type: 'scarab',
+        target: '.scarab-item'
+    },
+    不灭余烬: {
+        type: 'allflame',
+        target: '.allflame-item'
+    },
 };
 const isPrice = computed(() => window.location.host === 'price.filtereditor.cn');
 
@@ -73,7 +82,11 @@ const changePriceDisplay = (target: HTMLDivElement) => {
     // console.log(target, text)
 }
 
-/** 鼠标经过新增的dom事件 */
+/**
+ * 鼠标经过新增的dom事件
+ * 通过获取附加在target元素上的data-name和data-type来指定Hover组件展示的浮窗内容
+ * @param event 
+ */
 const handleShowDivCard = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
     if (target.classList.contains('original')) {
@@ -93,8 +106,9 @@ const handleShowDivCard = (event: MouseEvent) => {
         visible.value = false;
         return;
     }
+    // console.log(target);
     const { name: dataName, type: dataType, server } = target.dataset;
-    if (!dataName || !type) {
+    if (!dataName || !dataType || !setting[dataType as keyof typeof setting]) {
         visible.value = false;
         return;
     }
@@ -102,7 +116,7 @@ const handleShowDivCard = (event: MouseEvent) => {
     showPrice.value = (!server || server === '国服');
     name.value = dataName;
     visible.value = true;
-    type.value = setting[dataType as keyof typeof setting].type;
+    type.value = setting[dataType as keyof typeof setting]?.type;
     // dom隐藏时获取不到宽高，等显示再获取
     nextTick(() => {
         position.value = getModalPosition(target, setting[dataType as keyof typeof setting].target);
@@ -143,7 +157,7 @@ onMounted(() => {
             const activeTag: HTMLDivElement | null = node.querySelector(EDIT_TYPE_SELECTOR);
             if (!activeTag) return;
             const type = activeTag.innerText;
-            const content = node.querySelector('.n-card-header__main');
+            const content: HTMLDivElement | null = node.querySelector('.n-card-header__main');
             if (!content) return;
             if (type !== '命运卡') {
                 // 其它模块隐藏
@@ -154,6 +168,7 @@ onMounted(() => {
                     return;
                 }
                 const div = document.createElement('div');
+                content.style.position = 'relative';
                 content.appendChild(div);
                 radio = createApp(Radio, {
                     options: TAGES,
@@ -166,7 +181,7 @@ onMounted(() => {
                         }
                         const list = CARD_POOL.filter(card => card.Tags?.split(',').some(str => str.trim() === val));
                         const styles = list.map(item => `.n-tag[data-name="${item.name}"] {
-                            background-color: #c23131;
+                            background-color: #a745c0;
                             color: #fff;
                         }`).join('\n');
                         if (document.querySelector('#styleTag')) {

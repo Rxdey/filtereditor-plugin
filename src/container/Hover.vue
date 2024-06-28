@@ -8,17 +8,22 @@
 import { computed } from 'vue';
 import DivinationCard from '@/components/DivinationCard/DivinationCard.vue';
 import UniqueItem from '@/components/UniqueItem/UniqueItem.vue';
+import ScarabItem from '@/components/ScarabItem/ScarabItem.vue';
+import AllflameItem from '@/components/AllflameItem/AllflameItem.vue';
+import { HoverComType } from "@/types";
 
 type Props = {
     modelValue: boolean;
     position: { x: number, y: number };
-    type: 'card' | 'unique';
+    type: HoverComType;
     name: string,
     showPrice: boolean,
 };
 const coms: Record<Props['type'], any> = {
     card: DivinationCard,
-    unique: UniqueItem
+    unique: UniqueItem,
+    scarab: ScarabItem,
+    allflame: AllflameItem,
 };
 
 const props = withDefaults(defineProps<Props>(), {

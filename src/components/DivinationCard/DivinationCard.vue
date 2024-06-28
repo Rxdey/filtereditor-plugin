@@ -16,11 +16,8 @@
           <div class="divination-card--wrap">
             <!-- 奖励 -->
             <div class="divination-card--reward">
-              <div>
-                <template v-for="(item, index) in current.explicitMod">
-                  <span class="explicit-mod" :style="{ '--mod-color': `var(--color-${item.type})` }">{{ item.value }}</span>
-                  <br v-if="item.type != 'default'" />
-                </template>
+              <div v-html="current.explicitMod">
+
               </div>
             </div>
             <div class="divination-card--line"></div>

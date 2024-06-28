@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import priceInit from './price';
 import './styles/color.css';
+import './styles/public.css';
 
 
 if (window.location.host === 'edit.filtereditor.cn') {

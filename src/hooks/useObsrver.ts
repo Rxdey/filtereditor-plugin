@@ -97,6 +97,7 @@ export default function (isPrice: boolean) {
         if (!body) return;
         observerFnc(body, (mutationsList, obs) => {
             mutationsList.some(item => {
+                // console.log(item)
                 return Array.from(item.addedNodes as NodeListOf<HTMLDivElement>).some(node => {
                     const REG = isPrice ? /^价格排序/ : /^高级编辑/;
                     if (REG.test(node.innerText) && node.classList.contains(MODAL_SELECTOR)) {
@@ -106,6 +107,7 @@ export default function (isPrice: boolean) {
                         observerFnc(container, (list, fnc) => {
                             observerChildren(node, list, fnc, change);
                         });
+                        // 高级编辑弹窗关闭时没有销毁，故只需处理一次
                         obs.disconnect();
                         return true;
                     }

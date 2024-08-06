@@ -21,7 +21,7 @@ export default defineConfig({
       },
       build: {
         externalGlobals: {
-          vue: cdn.bootcdn('Vue', 'vue.global.prod.min.js'),
+          vue: cdn.unpkg('Vue', 'dist/vue.global.prod.js'),
         },
       },
     }),

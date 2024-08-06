@@ -1,11 +1,12 @@
 import json
 from pathlib import Path
+import time
 import requests
 from pyquery import PyQuery as pq
 import concurrent.futures
 import re
 
-from utils.utils import crawl_url, saveFile, transform2ts
+from utils.utils import crawl_url, saveFile, transform2ts, outputRoot
 
 # 获取当前脚本文件的目录
 base_dir = Path(__file__).parent.absolute()
@@ -88,6 +89,7 @@ def init():
         for future in concurrent.futures.as_completed(futures):
             completed_count += 1
             print(f"已完成 {completed_count}/{total_count} 任务")
-    saveFile(base_dir / '../src/database/card.data.ts', transform2ts('CARD_POOL', result))
+            time.sleep(0.2)
+    saveFile(base_dir / outputRoot / 'database/card.data.ts', transform2ts('CARD_POOL', result))
 
 init()

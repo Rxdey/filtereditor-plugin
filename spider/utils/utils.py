@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import requests
 
+outputRoot = '../src'
 
 def saveFile(fileName, text):
     # 如果目录不存在，则创建目录

@@ -4,7 +4,7 @@ import requests
 from pyquery import PyQuery as pq
 import concurrent.futures
 import re
-from utils.utils import crawl_url, saveFile, transform2ts
+from utils.utils import crawl_url, saveFile, transform2ts, outputRoot
 
 # 获取当前脚本文件的目录
 base_dir = Path(__file__).parent.absolute()
@@ -64,14 +64,16 @@ def fetchAllflame():
             print(f"解析异常：{e}")
             return False
 
+
 def init():
     scarab_list = fetchScarab()
     if scarab_list == False:
         return
-    saveFile(base_dir / '../src/database/scarab.data.ts', transform2ts('SCARAB_POOL', scarab_list))
+    # outputRoot = '../src/'
+    saveFile(base_dir / outputRoot / 'database/scarab.data.ts', transform2ts('SCARAB_POOL', scarab_list))
     allflame_pool = fetchAllflame()
     if allflame_pool == False:
         return
-    saveFile(base_dir / '../src/database/allflame.data.ts', transform2ts('ALLFLAME_POOL', allflame_pool))
+    saveFile(base_dir / outputRoot / 'database/allflame.data.ts', transform2ts('ALLFLAME_POOL', allflame_pool))
 
 init()

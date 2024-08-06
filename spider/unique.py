@@ -1,10 +1,11 @@
 import json
 from pathlib import Path
+import time
 import requests
 from pyquery import PyQuery as pq
 import concurrent.futures
 import re
-from utils.utils import crawl_url, saveFile, transform2ts
+from utils.utils import crawl_url, saveFile, transform2ts, outputRoot
 
 # 获取当前脚本文件的目录
 base_dir = Path(__file__).parent.absolute()
@@ -62,7 +63,7 @@ def init():
         return
     print(len(unique_index))
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=50) as executor:
         futures = [executor.submit(fetchDetail, item) for item in unique_index]
         # 初始化已完成和未完成任务计数器
         completed_count = 0
@@ -71,8 +72,8 @@ def init():
         for future in concurrent.futures.as_completed(futures):
             completed_count += 1
             print(f"已完成 {completed_count}/{total_count} 任务")
-    # saveFile('./spider/result/unique_pool.json', result)
-    saveFile(base_dir / '../src/database/unique.data.ts', transform2ts('UNIQUE_POOL', result))
+            time.sleep(0.3)
+    saveFile(base_dir / outputRoot / 'database/unique.data.ts', transform2ts('UNIQUE_POOL', result))
     return
 
 init()

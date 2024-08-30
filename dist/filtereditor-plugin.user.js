@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         一乐编辑器命运卡高级编辑扩展
 // @namespace    npm/vite-plugin-monkey
-// @version      2.0.8
+// @version      2.1.1
 // @author       rxdey
 // @description  命运卡/暗金高级编辑预览
 // @license      MIT
@@ -16,7 +16,7 @@
 // @run-at       document-start
 // ==/UserScript==
 
-(e=>{if(typeof GM_addStyle=="function"){GM_addStyle(e);return}const o=document.createElement("style");o.textContent=e,document.head.append(o)})(' .divination-card[data-v-a9d759f8]{--txt-color: #fff;--card-width: 180px;--card-height: calc(var(--card-width) / 440 * 670);font-size:12px;color:var(--txt-color);text-align:center;display:inline-block;width:var(--card-width);height:var(--card-height);position:relative;overflow:hidden;cursor:pointer;line-height:1}.divination-card--background[data-v-a9d759f8]{position:absolute;top:8%;left:4%;z-index:1;width:90%;overflow:hidden}.divination-card--background img[data-v-a9d759f8]{width:100%;object-fit:contain}.divination-card__exmod[data-v-a9d759f8]{width:100%;height:100%;background-image:url(https://poecdn.game.qq.com/protected/image/item/popup/divination-card.png?v=1713750437430&key=FeT51JhtvdZwH-iROFE-CA);background-repeat:no-repeat;background-position:center;background-size:cover;position:absolute;top:0;left:0;z-index:2}.divination-card__exmod.disabled[data-v-a9d759f8]{filter:brightness(.4)}.divination-card--name[data-v-a9d759f8]{color:#111;font-weight:800;position:absolute;width:100%;top:2.9%;font-size:13px}.divination-card--stack[data-v-a9d759f8]{position:absolute;top:47.5%;left:8%;font-size:80%;color:#c8c8c8;text-align:center;min-width:17%;transform:scale(.8)}.divination-card--stack.single[data-v-a9d759f8]{color:#00bafe}.divination-card--wrap[data-v-a9d759f8]{position:absolute;top:49%;left:0;bottom:0;right:0;font-size:109%;display:flex;flex-direction:column;transform:scale(.9)}.divination-card--line[data-v-a9d759f8]{width:70%;background:url(data:image/webp;base64,UklGRvgBAABXRUJQVlA4IOwBAADwCwCdASoCAQQAPmUmjkWhoqIitpqrMIAMiWkA0JW+9ohbg3wONHHO2hWE+EZ3lcxPjAzpf5YdP7nUdGxoW/0ve42n0S1KbDYneakrOTFwunEr1C/VdrPGG/8G+9uM8OHcTjfvxu6qAAD++qDUzYUYStwr0qga4Q9GikbOaphkTdftbRXFk3dtQDAZL61gqoreKdI5KbcowsLTKQVQhFJzeuhIPiTBuShrcx5E9Q2ZpYzwXaCtHpzTibwo2vk4ieVHmtFuAVXFbDQLAPOqk6qK+8w2LXI9mQn8w/Ltfi/isVOuC+g2Q8eO8bebbooA+Zqs2r//6/13ZFhuK56wcGbATjlGfoO6N1K+BUnNddT0ac4Z8h+3nsu7e+iPparpOw9Dl8bNPcLMAy3v8LEeJijm8x/R5wMT6/vMh+LHiqS95t6VARBQrm/QwLrWBY42dyRO0gnqWQT5Kq2wqDgTwigtuoNbNw/dMeLZ+IByQrKHetqW2F7VZv63bz47qftPirH84flMSvGOa1YJvBy9K+SFLaxwvGp4t74koNwFx2AcHT/mepDZAGtCdA9Bmyv7+YMQTI+KmM5RjuvKvc1bhoLcZtShvFD/0iI5wukZlAooI3FDImliYp0AWoSbO1bmQXdUeaMvWCt6M0YAAAA=) no-repeat center;background-size:contain;height:3px;margin:0 auto;flex:0 0 3px}.divination-card--reward[data-v-a9d759f8]{min-height:55px;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1.3;transform:scale(.9)}.divination-card--flavour[data-v-a9d759f8]{width:115%;margin-left:-7.5%;margin-top:-4%;white-space:pre-wrap;color:var(--color-uniqueitem);flex:1 1 auto;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1.2;font-style:italic;transform:scale(.85);font-size:11px}.price[data-v-a9d759f8]{background-color:#000000b3;padding:5px 10px;text-align:center;line-height:1.3;margin-top:-10px;margin-left:auto;margin-right:auto;color:var(--color-currencyitem);font-size:12px;display:flex;flex-flow:row nowrap;align-items:center;justify-content:center;text-decoration:underline}.price .chaos[data-v-a9d759f8]{content:"";background:url(https://poe.game.qq.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lSZXJvbGxSYXJlIiwic2NhbGUiOjF9XQ/46a2347805/CurrencyRerollRare.png) no-repeat center;background-size:contain;width:18px;height:18px}.unique-item[data-v-6dd1140d]{background-color:#48484e;padding:0 8px;color:#ffffffd1;max-height:400px;overflow-y:auto;box-shadow:0 0 16px #00000080}.unique-cell[data-v-6dd1140d]{display:flex;flex-flow:row nowrap;font-size:14px;align-items:center;padding:8px 12px;border-bottom:1px solid #58585e}.unique-cell[data-v-6dd1140d]:last-child{border:none}.unique-cell__icon[data-v-6dd1140d]{width:32px;height:32px}.unique-cell__body[data-v-6dd1140d]{flex:1;padding:0 16px;line-height:1.5}.unique-cell__body .name[data-v-6dd1140d]{color:var(--color-uniqueitem)}.unique-cell__body .limit[data-v-6dd1140d]{white-space:pre-wrap;color:var(--color-default);font-size:12px}.unique-cell__body .desc[data-v-6dd1140d]{color:var(--color-default);font-size:12px}.unique-cell__body .desc .val[data-v-6dd1140d]{color:var(--color-enchanted)}.unique-cell__price[data-v-6dd1140d]{text-align:right;color:var(--color-currencyitem)}.unique-cell img[data-v-6dd1140d]{width:100%;height:100%;object-fit:contain}.hover-wrap[data-v-c47f1024]{position:fixed;top:0;left:0;z-index:10000}#d-radio[data-v-9b0fec42]{position:absolute;bottom:-20px;left:0;display:flex;flex-flow:row;font-size:11px;align-items:center}.radio[data-v-9b0fec42]{display:flex;flex-flow:row wrap;gap:4px}.radio-item[data-v-9b0fec42]{min-width:48px;padding:4px 8px;font-size:12px;line-height:1;cursor:pointer;background-color:#3f4448;border-radius:100px;color:#dcddde;text-align:center;border:1px solid #3f4448}.radio-item[data-v-9b0fec42].active[data-v-9b0fec42]{background-color:#e8808033;color:#e88080;border-color:#e88080}.slider[data-v-d490d5e2]{position:absolute;bottom:-20px;left:0;width:70%;display:flex;flex-flow:row nowrap;align-items:center;font-size:11px;gap:8px}.slider .slider-inner[data-v-d490d5e2]{flex:1;min-width:0}.slider .slider-select[data-v-d490d5e2]{display:flex;flex-flow:row nowrap;align-items:center;gap:4px}.slider .slider-btn[data-v-d490d5e2]{border-radius:100px;min-width:42px;background-color:#3f4448;padding:2px 6px;cursor:pointer;text-align:center}.slider .slider-btn.submit[data-v-d490d5e2]{background-color:#63e2b7;color:#333}.hover-span[data-v-d4375866]{cursor:pointer}:root{--color-uniqueitem: #af6025;--color-gemitem: #1ba29b;--color-currencyitem: #aa9e82;--color-rareitem: #ffff77;--color-whiteitem: #c8c8c8;--color-corrupted: #d20000;--color-magicitem: #8888ff;--color-default: #7f7f7f;--color-augmented: #8888ff;--color-enchanted: #b8daf2;--color-divination: #0ebaff;--color-fractured: #a29162;--color-normal: #c8c8c8}.uniqueitem{color:var(--color-uniqueitem)}.gemitem{color:var(--color-gemitem)}.currencyitem{color:var(--color-currencyitem)}.rareitem{color:var(--color-rareitem)}.whiteitem{color:var(--color-whiteitem)}.corrupted{color:var(--color-corrupted)}.magicitem{color:var(--color-magicitem)}.default{color:var(--color-default)}.augmented{color:var(--color-augmented)}.enchanted{color:var(--color-enchanted)}.divination{color:var(--color-divination)}.fractured{color:var(--color-fractured)}.normal{color:var(--color-normal)}.Gemitem{color:var(--color-magicitem)}.n-card>.n-card-header{padding-bottom:24px!important}.simpleitem-wrap{box-shadow:0 0 16px #00000080;background-color:#48484e;padding:4px 8px;color:#ffffffd1;border-radius:4px;font-size:14px;line-height:1.2} ');
+(e=>{if(typeof GM_addStyle=="function"){GM_addStyle(e);return}const o=document.createElement("style");o.textContent=e,document.head.append(o)})(' .divination-card[data-v-a9d759f8]{--txt-color: #fff;--card-width: 180px;--card-height: calc(var(--card-width) / 440 * 670);font-size:12px;color:var(--txt-color);text-align:center;display:inline-block;width:var(--card-width);height:var(--card-height);position:relative;overflow:hidden;cursor:pointer;line-height:1}.divination-card--background[data-v-a9d759f8]{position:absolute;top:8%;left:4%;z-index:1;width:90%;overflow:hidden}.divination-card--background img[data-v-a9d759f8]{width:100%;object-fit:contain}.divination-card__exmod[data-v-a9d759f8]{width:100%;height:100%;background-image:url(https://poecdn.game.qq.com/protected/image/item/popup/divination-card.png?v=1713750437430&key=FeT51JhtvdZwH-iROFE-CA);background-repeat:no-repeat;background-position:center;background-size:cover;position:absolute;top:0;left:0;z-index:2}.divination-card__exmod.disabled[data-v-a9d759f8]{filter:brightness(.4)}.divination-card--name[data-v-a9d759f8]{color:#111;font-weight:800;position:absolute;width:100%;top:2.9%;font-size:13px}.divination-card--stack[data-v-a9d759f8]{position:absolute;top:47.5%;left:8%;font-size:80%;color:#c8c8c8;text-align:center;min-width:17%;transform:scale(.8)}.divination-card--stack.single[data-v-a9d759f8]{color:#00bafe}.divination-card--wrap[data-v-a9d759f8]{position:absolute;top:49%;left:0;bottom:0;right:0;font-size:109%;display:flex;flex-direction:column;transform:scale(.9)}.divination-card--line[data-v-a9d759f8]{width:70%;background:url(data:image/webp;base64,UklGRvgBAABXRUJQVlA4IOwBAADwCwCdASoCAQQAPmUmjkWhoqIitpqrMIAMiWkA0JW+9ohbg3wONHHO2hWE+EZ3lcxPjAzpf5YdP7nUdGxoW/0ve42n0S1KbDYneakrOTFwunEr1C/VdrPGG/8G+9uM8OHcTjfvxu6qAAD++qDUzYUYStwr0qga4Q9GikbOaphkTdftbRXFk3dtQDAZL61gqoreKdI5KbcowsLTKQVQhFJzeuhIPiTBuShrcx5E9Q2ZpYzwXaCtHpzTibwo2vk4ieVHmtFuAVXFbDQLAPOqk6qK+8w2LXI9mQn8w/Ltfi/isVOuC+g2Q8eO8bebbooA+Zqs2r//6/13ZFhuK56wcGbATjlGfoO6N1K+BUnNddT0ac4Z8h+3nsu7e+iPparpOw9Dl8bNPcLMAy3v8LEeJijm8x/R5wMT6/vMh+LHiqS95t6VARBQrm/QwLrWBY42dyRO0gnqWQT5Kq2wqDgTwigtuoNbNw/dMeLZ+IByQrKHetqW2F7VZv63bz47qftPirH84flMSvGOa1YJvBy9K+SFLaxwvGp4t74koNwFx2AcHT/mepDZAGtCdA9Bmyv7+YMQTI+KmM5RjuvKvc1bhoLcZtShvFD/0iI5wukZlAooI3FDImliYp0AWoSbO1bmQXdUeaMvWCt6M0YAAAA=) no-repeat center;background-size:contain;height:3px;margin:0 auto;flex:0 0 3px}.divination-card--reward[data-v-a9d759f8]{min-height:55px;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1.3;transform:scale(.9)}.divination-card--flavour[data-v-a9d759f8]{width:115%;margin-left:-7.5%;margin-top:-4%;white-space:pre-wrap;color:var(--color-uniqueitem);flex:1 1 auto;display:flex;flex-flow:column;align-items:center;justify-content:center;line-height:1.2;font-style:italic;transform:scale(.85);font-size:11px}.price[data-v-a9d759f8]{background-color:#000000b3;padding:5px 10px;text-align:center;line-height:1.3;margin-top:-10px;margin-left:auto;margin-right:auto;color:var(--color-currencyitem);font-size:12px;display:flex;flex-flow:row nowrap;align-items:center;justify-content:center;text-decoration:underline}.price .chaos[data-v-a9d759f8]{content:"";background:url(https://poe.game.qq.com/gen/image/WzI1LDE0LHsiZiI6IjJESXRlbXMvQ3VycmVuY3kvQ3VycmVuY3lSZXJvbGxSYXJlIiwic2NhbGUiOjF9XQ/46a2347805/CurrencyRerollRare.png) no-repeat center;background-size:contain;width:18px;height:18px}.unique-item[data-v-6dd1140d]{background-color:#48484e;padding:0 8px;color:#ffffffd1;max-height:400px;overflow-y:auto;box-shadow:0 0 16px #00000080}.unique-cell[data-v-6dd1140d]{display:flex;flex-flow:row nowrap;font-size:14px;align-items:center;padding:8px 12px;border-bottom:1px solid #58585e}.unique-cell[data-v-6dd1140d]:last-child{border:none}.unique-cell__icon[data-v-6dd1140d]{width:32px;height:32px}.unique-cell__body[data-v-6dd1140d]{flex:1;padding:0 16px;line-height:1.5}.unique-cell__body .name[data-v-6dd1140d]{color:var(--color-uniqueitem)}.unique-cell__body .limit[data-v-6dd1140d]{white-space:pre-wrap;color:var(--color-default);font-size:12px}.unique-cell__body .desc[data-v-6dd1140d]{color:var(--color-default);font-size:12px}.unique-cell__body .desc .val[data-v-6dd1140d]{color:var(--color-enchanted)}.unique-cell__price[data-v-6dd1140d]{text-align:right;color:var(--color-currencyitem)}.unique-cell img[data-v-6dd1140d]{width:100%;height:100%;object-fit:contain}.hover-wrap[data-v-c47f1024]{position:fixed;top:0;left:0;z-index:10000}#d-radio[data-v-9b0fec42]{position:absolute;bottom:-20px;left:0;display:flex;flex-flow:row;font-size:11px;align-items:center}.radio[data-v-9b0fec42]{display:flex;flex-flow:row wrap;gap:4px}.radio-item[data-v-9b0fec42]{min-width:48px;padding:4px 8px;font-size:12px;line-height:1;cursor:pointer;background-color:#3f4448;border-radius:100px;color:#dcddde;text-align:center;border:1px solid #3f4448}.radio-item[data-v-9b0fec42].active[data-v-9b0fec42]{background-color:#e8808033;color:#e88080;border-color:#e88080}.slider[data-v-86e2c617]{position:absolute;bottom:-20px;left:0;width:70%;display:flex;flex-flow:row nowrap;align-items:center;font-size:11px;gap:8px}.slider .slider-inner[data-v-86e2c617]{flex:1;min-width:0}.slider .slider-select[data-v-86e2c617]{display:flex;flex-flow:row nowrap;align-items:center;gap:4px}.slider .slider-btn[data-v-86e2c617]{border-radius:100px;min-width:42px;background-color:#3f4448;padding:2px 6px;cursor:pointer;text-align:center}.slider .slider-btn.submit[data-v-86e2c617]{background-color:#63e2b7;color:#333}.hover-span[data-v-aebcc6e1]{cursor:pointer}:root{--color-uniqueitem: #af6025;--color-gemitem: #1ba29b;--color-currencyitem: #aa9e82;--color-rareitem: #ffff77;--color-whiteitem: #c8c8c8;--color-corrupted: #d20000;--color-magicitem: #8888ff;--color-default: #7f7f7f;--color-augmented: #8888ff;--color-enchanted: #b8daf2;--color-divination: #0ebaff;--color-fractured: #a29162;--color-normal: #c8c8c8}.uniqueitem{color:var(--color-uniqueitem)}.gemitem{color:var(--color-gemitem)}.currencyitem{color:var(--color-currencyitem)}.rareitem{color:var(--color-rareitem)}.whiteitem{color:var(--color-whiteitem)}.corrupted{color:var(--color-corrupted)}.magicitem{color:var(--color-magicitem)}.default{color:var(--color-default)}.augmented{color:var(--color-augmented)}.enchanted{color:var(--color-enchanted)}.divination{color:var(--color-divination)}.fractured{color:var(--color-fractured)}.normal{color:var(--color-normal)}.Gemitem{color:var(--color-magicitem)}.n-card>.n-card-header{padding-bottom:24px!important}.simpleitem-wrap{box-shadow:0 0 16px #00000080;background-color:#48484e;padding:4px 8px;color:#ffffffd1;border-radius:4px;font-size:14px;line-height:1.2} ');
 
 (function (require$$0) {
   'use strict';
@@ -1859,7 +1859,6 @@
         }
       };
       const handleChange = (val) => {
-        console.log(val);
         if (!val) {
           if (document.querySelector("#styleTag")) {
             document.querySelector("#styleTag").innerHTML = "";
@@ -1879,8 +1878,15 @@
         sliderValue.value = val;
         onFilter();
       };
+      const onClear = () => {
+        sliderValue.value = 0;
+        onFilter();
+      };
       const onFilter = () => {
-        if (sliderValue.value <= 2e3) {
+        if (sliderValue.value <= 0) {
+          if (document.querySelector("#uniqueTypes")) {
+            document.querySelector("#uniqueTypes").innerHTML = "";
+          }
           return;
         }
         const filterList = UNIQUE_POOL.filter((item) => {
@@ -1927,14 +1933,18 @@
                 "track-color": "#FEFEFE",
                 max: 28e5,
                 min: 0,
-                step: 1e4
+                step: 1e3
               }, null, 8, ["modelValue"])
             ]),
             require$$0.createElementVNode("div", _hoisted_7, require$$0.toDisplayString(displayValue.value), 1),
             require$$0.createElementVNode("div", {
               class: "slider-btn submit",
               onClick: onFilter
-            }, " 提交过滤 ")
+            }, " 提交过滤 "),
+            require$$0.createElementVNode("div", {
+              class: "slider-btn",
+              onClick: onClear
+            }, " 清除 ")
           ], 512), [
             [require$$0.vShow, actionType.value === "暗金装备"]
           ])
@@ -1942,7 +1952,7 @@
       };
     }
   });
-  const ActionBar = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-d490d5e2"]]);
+  const ActionBar = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["__scopeId", "data-v-86e2c617"]]);
   const _sfc_main = /* @__PURE__ */ require$$0.defineComponent({
     __name: "App",
     setup(__props) {
@@ -2079,6 +2089,8 @@
           over: handleShowDivCard,
           // 奖励类型高亮，随便写写用着
           change: (node) => {
+            if (isPrice.value)
+              return;
             const activeTag = node.querySelector(EDIT_TYPE_SELECTOR);
             if (!activeTag)
               return;
@@ -2105,7 +2117,7 @@
       };
     }
   });
-  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-d4375866"]]);
+  const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-aebcc6e1"]]);
   function priceInit() {
     window.JSON.parse = new Proxy(window.JSON.parse, {
       apply: (target, thisArg, argArray) => {

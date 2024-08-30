@@ -175,6 +175,7 @@ onMounted(() => {
         over: handleShowDivCard,
         // 奖励类型高亮，随便写写用着
         change: node => {
+            if (isPrice.value) return;
             const activeTag: HTMLDivElement | null = node.querySelector(EDIT_TYPE_SELECTOR);
             if (!activeTag) return;
             actionType.value = activeTag.innerText;

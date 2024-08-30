@@ -30,7 +30,7 @@
                     track-color="#FEFEFE"
                     :max="2800000"
                     :min="0"
-                    :step="10000"
+                    :step="1000"
                 />
             </div>
             <div class="slider-value">{{ displayValue }}</div>
@@ -39,6 +39,12 @@
                 @click="onFilter"
             >
                 提交过滤
+            </div>
+            <div
+                class="slider-btn"
+                @click="onClear"
+            >
+                清除
             </div>
         </div>
     </div>
@@ -83,7 +89,7 @@ const setStyle = (list: string[], id = 'styleTag') => {
     }
 };
 const handleChange = (val: string) => {
-    console.log(val);
+    // console.log(val);
     if (!val) {
         if (document.querySelector('#styleTag')) {
             document.querySelector('#styleTag')!.innerHTML = '';
@@ -95,29 +101,20 @@ const handleChange = (val: string) => {
         list.map(e => e.name),
         'styleTag'
     );
-    // const styles = list
-    //     .map(
-    //         item => `.n-tag[data-name="${item.name}"] {
-    //                         background-color: #a745c0;
-    //                         color: #fff;
-    //                     }`
-    //     )
-    //     .join('\n');
-    // if (document.querySelector('#styleTag')) {
-    //     document.querySelector('#styleTag')!.innerHTML = styles;
-    // } else {
-    //     const styleTag = document.createElement('style');
-    //     styleTag.id = 'styleTag';
-    //     styleTag.innerHTML = styles;
-    //     document.head.appendChild(styleTag);
-    // }
 };
 const onSelect = (val: number) => {
     sliderValue.value = val;
-    onFilter(); 
-}
+    onFilter();
+};
+const onClear = () => {
+    sliderValue.value = 0;
+    onFilter();
+};
 const onFilter = () => {
-    if (sliderValue.value <= 2000) {
+    if (sliderValue.value <= 0) {
+        if (document.querySelector('#uniqueTypes')) {
+            document.querySelector('#uniqueTypes')!.innerHTML = '';
+        }
         return;
     }
     const filterList = UNIQUE_POOL.filter(item => {

@@ -1,3 +1,5 @@
+import { ref } from "vue";
+
 /** 弹窗节点 */
 const MODAL_SELECTOR = 'n-modal-container';
 /** 动态卡片/物品的固定父节点 */
@@ -16,20 +18,22 @@ const TAG_SELECTOR = '.n-tag';
  * @returns
  */
 export default function (isPrice: boolean) {
-    const observerFnc = (node: Element, callBack: MutationCallback) => {
+    const actionType = ref('');
+    const observerFnc = (node: Element, subtree = false, callBack: MutationCallback) => {
         if (!node) return;
         const observer = new MutationObserver(callBack);
         observer.observe(node, {
             childList: true,
+            subtree: subtree,
         });
         return observer;
     };
 
     /** 添加dom */
     const addCustomDom = (el: HTMLDivElement, node: HTMLDivElement) => {
-        const activeTag: HTMLDivElement | null = node.querySelector(EDIT_TYPE_SELECTOR);
-        if (!activeTag) return;
-        const type = activeTag.innerText;
+        // const activeTag: HTMLDivElement | null = node.querySelector(EDIT_TYPE_SELECTOR);
+        // if (!activeTag) return;
+        // const type = activeTag.innerText;
 
         const parent: HTMLDivElement | null = el.querySelector('.n-tag__content');
         if (!parent) return;
@@ -52,7 +56,7 @@ export default function (isPrice: boolean) {
         const span = document.createElement('span');
         span.className = hoverName;
         span.dataset.name = name;
-        span.dataset.type = type;
+        span.dataset.type = actionType.value;
         span.dataset.server = server ? server.innerText : '';
         el.dataset.name = name;
         content.appendChild(span);
@@ -60,10 +64,22 @@ export default function (isPrice: boolean) {
     };
 
     /** 监听列表节点是否挂载(切换类型和重新渲染都会触发) */
-    const observerChildren = (node: HTMLDivElement, mutationsList: MutationRecord[], obs: MutationObserver, callBack = (e: HTMLDivElement) => {}) => {
+    const observerChildren = (
+        node: HTMLDivElement,
+        mutationsList: MutationRecord[],
+        obs: MutationObserver,
+        callBack = (e: HTMLDivElement) => {}
+    ) => {
         // 触发切换
         const target = mutationsList[0].target as HTMLDivElement;
         const itemList: NodeListOf<HTMLDivElement> = target.querySelectorAll(TAG_SELECTOR);
+
+        const activeTag: HTMLDivElement | null = node.querySelector(EDIT_TYPE_SELECTOR);
+        if (!activeTag || actionType.value === activeTag.innerText)  {
+            return;
+        }
+        actionType.value = activeTag.innerText;
+        // console.log('触发切换');
         callBack(node);
         // console.log('正在浏览: ', type, itemList);
         // 列表已加载 遍历已存在的卡片并添加dom
@@ -72,9 +88,10 @@ export default function (isPrice: boolean) {
             addCustomDom(e as HTMLDivElement, node);
         });
         // 监听动态添加的卡片添加dom
-        const childrenList: NodeListOf<HTMLDivElement> = target.querySelectorAll(CARD_CONTENT_SELECTOR);
+        const childrenList: NodeListOf<HTMLDivElement> =
+            target.querySelectorAll(CARD_CONTENT_SELECTOR);
         childrenList.forEach(child => {
-            observerFnc(child, (mutationsList, obs) => {
+            observerFnc(child, false, (mutationsList, obs) => {
                 mutationsList.forEach(item => {
                     (item.addedNodes as NodeListOf<HTMLDivElement>).forEach(el => {
                         if (!/n-tag/.test(el.className)) return;
@@ -95,16 +112,18 @@ export default function (isPrice: boolean) {
     const initObserver = ({ over = (e: MouseEvent) => {}, change = (e: HTMLDivElement) => {} }) => {
         const body = document.querySelector('body');
         if (!body) return;
-        observerFnc(body, (mutationsList, obs) => {
+        observerFnc(body, false, (mutationsList, obs) => {
             mutationsList.some(item => {
                 // console.log(item)
                 return Array.from(item.addedNodes as NodeListOf<HTMLDivElement>).some(node => {
                     const REG = isPrice ? /^价格排序/ : /^高级编辑/;
                     if (REG.test(node.innerText) && node.classList.contains(MODAL_SELECTOR)) {
-                        const container: HTMLDivElement | null = document.querySelector(MODAL_CONTENT_SELECTOR);
+                        const container: HTMLDivElement | null =
+                            document.querySelector(MODAL_CONTENT_SELECTOR);
                         if (!container) return false;
                         container.onmouseover = over;
-                        observerFnc(container, (list, fnc) => {
+                        // 只监听内容的children有时候监听不到，故监整个树变化
+                        observerFnc(container, true, (list, fnc) => {
                             observerChildren(node, list, fnc, change);
                         });
                         // 高级编辑弹窗关闭时没有销毁，故只需处理一次
@@ -116,5 +135,8 @@ export default function (isPrice: boolean) {
             });
         });
     };
-    return initObserver;
+    return {
+        initObserver,
+        actionType
+    };
 }

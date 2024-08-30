@@ -28,6 +28,8 @@ export type Unique = {
     limit?: string;
     calculated?: number;
     searchCode?: string;
+    /** S26 奇术之尘 */
+    value?: string|number;
 };
 
 /** 物价榜 */

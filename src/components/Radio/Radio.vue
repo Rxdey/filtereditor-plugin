@@ -1,8 +1,16 @@
 <template>
-    <div id="d-radio" v-show="visible">
-        <div style="margin-right: 4px;">命运卡奖励分类:</div>
+    <div id="d-radio">
+        <div style="margin-right: 4px">{{ title }}</div>
         <div class="radio">
-            <div class="radio-item" :class="{ active: active === tag.value }" v-for="tag in options" :key="tag.key" @click="onClick(tag)">{{ tag.key }}</div>
+            <div
+                class="radio-item"
+                :class="{ active: active === tag.value }"
+                v-for="tag in options"
+                :key="tag.key"
+                @click="onClick(tag)"
+            >
+                {{ tag.key }}
+            </div>
         </div>
     </div>
 </template>
@@ -13,33 +21,38 @@ import { ref, onMounted, computed, watch } from 'vue';
 type Tags = {
     key: string;
     value: string;
-}
-const props = withDefaults(defineProps<{
-    onChange?: (v: string) => void;
-    options: Tags[]
-}>(), {
-    onChange: () => { },
-    options: () => ([])
-})
+};
+const emit = defineEmits(['onChange']);
+
+const props = withDefaults(
+    defineProps<{
+        options: Tags[];
+        title: string;
+    }>(),
+    {
+        options: () => [],
+    }
+);
 const visible = ref(true);
-const active = ref<string>('');
+// const active = ref<string>('');
+const active = defineModel({ type: String, default: '' });
 
 const onClick = (tag: Tags) => {
     const { key, value } = tag;
     active.value = value === active.value ? '' : value;
-    props.onChange(active.value);
-}
+    emit('onChange', value === active.value ? '' : value);
+};
 
 const show = () => {
     visible.value = true;
-}
+};
 const hide = () => {
     visible.value = false;
-}
+};
 defineExpose({
     show,
-    hide
-})
+    hide,
+});
 </script>
 
 <style scoped>
@@ -73,7 +86,7 @@ defineExpose({
     border: 1px solid #3f4448;
 
     &.active {
-        background-color: rgba(232, 128, 128, .2);
+        background-color: rgba(232, 128, 128, 0.2);
         color: rgb(232, 128, 128);
         border-color: rgb(232, 128, 128);
     }

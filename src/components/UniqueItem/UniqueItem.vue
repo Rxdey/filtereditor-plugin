@@ -2,7 +2,7 @@
   <div class="unique-item" @click.stop>
     <div class="unique-cell" v-for="item in current" :key="item.name">
       <div class="unique-cell__icon">
-        <img :src="item.icon">
+        <img :src="'https://web.poecdn.com' + item.icon">
       </div>
       <div class="unique-cell__body">
         <div class="name">
@@ -11,6 +11,10 @@
         </div>
         <div class="limit">
           <div v-html="item.limit"></div>
+        </div>
+        <div class="desc">
+          <span>奇术之尘: </span>
+          <span class="val">{{ item.value }}</span>
         </div>
       </div>
       <div class="unique-cell__price">

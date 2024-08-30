@@ -1,5 +1,11 @@
 <template>
-    <Hover v-model="visible" :position="position" :type="type" :name="name" :showPrice="showPrice" />
+    <Hover
+        v-model="visible"
+        :position="position"
+        :type="type"
+        :name="name"
+        :showPrice="showPrice"
+    />
 </template>
 
 <script setup lang="ts">
@@ -8,50 +14,47 @@ import { getModalPosition } from '@/utils';
 import Hover from '@/container/Hover.vue';
 import useObsrver, { EDIT_TYPE_SELECTOR } from '@/hooks/useObsrver';
 import { HoverComType, PriceData } from '@/types';
-import { GM_getValue, GM_deleteValue } from "$";
-import { PRICE_MESSAGE, PRICE_TIME_STAMP, PriceDataKey } from '@/const';
+import { GM_getValue, GM_deleteValue } from '$';
+import { PRICE_MESSAGE, PRICE_TIME_STAMP, PriceDataKey, ActionType } from '@/const';
 import { UNIQUE_POOL } from '@/database/unique.data';
-import Radio from '@/components/Radio/Radio.vue';
-import { CARD_POOL } from "./database/card.data";
-import { TAGES } from "./database/tags";
+import ActionBar from '@/container/ActionBar.vue';
 
-// type HoverComType = 'card' | 'unique' | 'scarab' | 'allflame';
-
-let radio: any = null;
-
+let actionBar: any = null;
 // 直接传吧
 const priceData = ref<PriceData[] | null>(null);
 const visible = ref(false);
 const showPrice = ref(false);
 const name = ref('');
-// 展示组件类型
+const initRadio = ref(false);
+// 展示组件类型(忘了是干嘛的了😀)
 const type = ref<HoverComType>('card');
 const position = ref({
     x: 0,
-    y: 0
+    y: 0,
 });
-provide(PriceDataKey, priceData)
-const setting: Record<string, { type: HoverComType, target: string }> = {
+provide(PriceDataKey, priceData);
+
+const setting: Record<string, { type: HoverComType; target: string }> = {
     命运卡: {
         type: 'card',
-        target: '#divination-wrap'
+        target: '#divination-wrap',
     },
     暗金装备: {
         type: 'unique',
-        target: '.unique-item'
+        target: '.unique-item',
     },
     圣甲虫: {
         type: 'scarab',
-        target: '.scarab-item'
+        target: '.scarab-item',
     },
     不灭余烬: {
         type: 'allflame',
-        target: '.allflame-item'
+        target: '.allflame-item',
     },
 };
 const isPrice = computed(() => window.location.host === 'price.filtereditor.cn');
 
-const initObserver = useObsrver(isPrice.value);
+const { initObserver, actionType } = useObsrver(isPrice.value);
 /**
  * 新增向国际服增加限制描述
  */
@@ -63,7 +66,11 @@ const addLimitToTarget = (target: HTMLDivElement) => {
         const nameWrap: HTMLDivElement | null = el.querySelector('.flex-y-center');
         if (!nameWrap) return;
         const name = nameWrap.innerText;
-        const limit = (UNIQUE_POOL.find(item => item.name === name)?.limit || '').replace(/「/g, '[').replace(/」/g, '] ').trim().replace(/(限定掉落|升级)/g, '<span style="color: #98f1d4">$1</span>');
+        const limit = (UNIQUE_POOL.find(item => item.name === name)?.limit || '')
+            .replace(/「/g, '[')
+            .replace(/」/g, '] ')
+            .trim()
+            .replace(/(限定掉落|升级)/g, '<span style="color: #98f1d4">$1</span>');
         if (!limit) return;
         nameWrap.style.flex = '1';
         (nameWrap.querySelector('div') as HTMLDivElement).innerHTML = `
@@ -74,18 +81,18 @@ const addLimitToTarget = (target: HTMLDivElement) => {
         if (!list) return;
         list.style.maxHeight = '400px';
         list.style.overflowY = 'auto';
-    })
-}
+    });
+};
 
 const changePriceDisplay = (target: HTMLDivElement) => {
     // const text: string = GM_getValue(PRICE_MESSAGE);
     // console.log(target, text)
-}
+};
 
 /**
  * 鼠标经过新增的dom事件
  * 通过获取附加在target元素上的data-name和data-type来指定Hover组件展示的浮窗内容
- * @param event 
+ * @param event
  */
 const handleShowDivCard = (event: MouseEvent) => {
     const target = event.target as HTMLElement;
@@ -93,11 +100,13 @@ const handleShowDivCard = (event: MouseEvent) => {
         // 有个大概300毫秒的动画需要延时查询
         setTimeout(() => {
             // 查找显示的popover
-            const activeList: NodeListOf<HTMLDivElement> = document.querySelectorAll('.n-popover:not([style*="display: none"])');
+            const activeList: NodeListOf<HTMLDivElement> = document.querySelectorAll(
+                '.n-popover:not([style*="display: none"])'
+            );
             if (!isPrice.value) {
                 addLimitToTarget(activeList[0]);
             } else {
-                changePriceDisplay(activeList[0])
+                changePriceDisplay(activeList[0]);
             }
         }, 301);
         return;
@@ -113,23 +122,23 @@ const handleShowDivCard = (event: MouseEvent) => {
         return;
     }
     // 兼容物价榜
-    showPrice.value = (!server || server === '国服');
+    showPrice.value = !server || server === '国服';
     name.value = dataName;
     visible.value = true;
     type.value = setting[dataType as keyof typeof setting]?.type;
     // dom隐藏时获取不到宽高，等显示再获取
     nextTick(() => {
         position.value = getModalPosition(target, setting[dataType as keyof typeof setting].target);
-    })
-}
+    });
+};
 
 /** 获取物价榜页面推送的数据(如果有) */
 const getGMStorageData = () => {
     const text: string = GM_getValue(PRICE_MESSAGE);
     if (!text) return;
     const result: {
-        PRICE_TIME_STAMP: number,
-        list: PriceData[]
+        PRICE_TIME_STAMP: number;
+        list: PriceData[];
     } = JSON.parse(text);
     // 超过一天清除存储
     if ((Date.now() - result.PRICE_TIME_STAMP) / 1000 / 60 / 60 / 24 >= 1) {
@@ -140,69 +149,44 @@ const getGMStorageData = () => {
     const timeStamp = window.localStorage.getItem(PRICE_TIME_STAMP) || '';
     if (result.PRICE_TIME_STAMP === Number(timeStamp)) return;
     window.localStorage.setItem(PRICE_TIME_STAMP, `${result.PRICE_TIME_STAMP}`);
-
+};
+const highlightDivCard = (content: HTMLDivElement) => {
+    if (!initRadio.value) {
+        const div = document.createElement('div');
+        content.style.position = 'relative';
+        content.appendChild(div);
+        actionBar = createApp(ActionBar).mount(div);
+        actionBar.setActionType(actionType.value);
+        initRadio.value = true;
+    } else {
+        actionBar.setActionType(actionType.value);
+        console.log('已加载 Action');
+    }
 };
 
 onMounted(() => {
     // 获取跨页面数据 (GM_addValueChangeListener监听不到)
-    document.addEventListener("visibilitychange", function () {
-        if (document.visibilityState !== "visible") return;
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState !== 'visible') return;
         getGMStorageData();
     });
     getGMStorageData();
     initObserver({
         over: handleShowDivCard,
         // 奖励类型高亮，随便写写用着
-        change: (node) => {
+        change: node => {
             const activeTag: HTMLDivElement | null = node.querySelector(EDIT_TYPE_SELECTOR);
             if (!activeTag) return;
-            const type = activeTag.innerText;
+            actionType.value = activeTag.innerText;
             const content: HTMLDivElement | null = node.querySelector('.n-card-header__main');
             if (!content) return;
-            if (type !== '命运卡') {
-                // 其它模块隐藏
-                radio?.hide();
-            } else {
-                if (radio) {
-                    radio.show();
-                    return;
-                }
-                const div = document.createElement('div');
-                content.style.position = 'relative';
-                content.appendChild(div);
-                radio = createApp(Radio, {
-                    options: TAGES,
-                    onChange: (val: string) => {
-                        if (!val) {
-                            if (document.querySelector('#styleTag')) {
-                                document.querySelector('#styleTag')!.innerHTML = '';
-                            }
-                            return;
-                        }
-                        const list = CARD_POOL.filter(card => card.Tags?.split(',').some(str => str.trim() === val));
-                        const styles = list.map(item => `.n-tag[data-name="${item.name}"] {
-                            background-color: #a745c0;
-                            color: #fff;
-                        }`).join('\n');
-                        if (document.querySelector('#styleTag')) {
-                            document.querySelector('#styleTag')!.innerHTML = styles;
-                        } else {
-                            const styleTag = document.createElement('style');
-                            styleTag.id = 'styleTag';
-                            styleTag.innerHTML = styles;
-                            document.head.appendChild(styleTag);
-                        }
-                    }
-                }).mount(div);
-                console.log(radio);
-            }
-
-        }
+            highlightDivCard(content);
+        },
     });
     document.body.addEventListener('click', () => {
         visible.value = false;
     });
-})
+});
 </script>
 
 <style scoped>

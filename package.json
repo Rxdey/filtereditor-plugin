@@ -1,7 +1,7 @@
 {
   "name": "filtereditor-plugin",
   "private": true,
-  "version": "2.0.7",
+  "version": "2.0.8",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,8 @@
     "@types/node": "^20.10.6",
     "fetch-intercept": "^2.4.0",
     "less": "^4.2.0",
-    "vue": "^3.3.4"
+    "vue": "^3.4.38",
+    "vue3-slider": "^1.9.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.2.3",

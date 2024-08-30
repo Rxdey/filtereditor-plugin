@@ -2,7 +2,7 @@
   <div id="divination-wrap">
     <div class="divination-card" @click.stop>
       <div class="divination-card--background" v-if="!props.disabled">
-        <img v-if="!!current" :src="current.icon" :key="current.icon" />
+        <img v-if="!!current" :src="'https://poe.game.qq.com/image/divination-card/' + current.icon" :key="current.icon" />
       </div>
       <div class="divination-card__exmod" :class="{ disabled }" v-if="!!current">
         <!-- 名字 -->

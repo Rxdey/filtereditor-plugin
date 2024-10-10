@@ -60,7 +60,7 @@ import Slider from 'vue3-slider';
 
 const title: Record<string, string> = {
     命运卡: '命运卡奖励分类:',
-    暗金装备: '含粉尘基底:',
+    暗金装备: '含粉尘基底(lv84q0):',
 };
 const actionType = ref('');
 const value = ref('');

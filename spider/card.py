@@ -7,6 +7,7 @@ import concurrent.futures
 import re
 
 from utils.utils import crawl_url, saveFile, transform2ts, outputRoot
+# 暗金装备信息爬取
 
 # 获取当前脚本文件的目录
 base_dir = Path(__file__).parent.absolute()

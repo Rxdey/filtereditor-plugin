@@ -6,6 +6,8 @@ import concurrent.futures
 import re
 from utils.utils import crawl_url, saveFile, transform2ts, outputRoot
 
+# 暗金装备粉尘信息获取
+
 # 获取当前脚本文件的目录
 base_dir = Path(__file__).parent.absolute()
 
@@ -31,7 +33,8 @@ def fetchItems():
         for line in lines:
             obj = {
                 'name': doc(line).find('td').eq(0).text(), 
-                'val': doc(line).find('td').eq(3).text()
+                'val': doc(line).find('td').eq(2).text(),
+                # 'val2': doc(line).find('td').eq(2).text()
             }
             list.append(obj)
         return list
